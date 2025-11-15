@@ -1,0 +1,16 @@
+
+/* Se pueden agregar estilos personalizados aquí si es necesario. */
+/* Por ejemplo, para una transición más suave en el menú móvil. */
+#mobile-menu {
+    transition: max-height 0.3s ease-in-out;
+    max-height: 0;
+    overflow: hidden;
+}
+
+#mobile-menu.open {
+    max-height: 500px; /* Un valor suficientemente grande para contener los enlaces */
+}
+
+.text-shadow-lg {
+  text-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+}
