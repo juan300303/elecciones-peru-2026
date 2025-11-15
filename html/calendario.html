@@ -4,6 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calendario - Elecciones Perú 2026</title>
+    <!-- Theme detection script - runs before page renders to prevent flash -->
+    <script>
+      (function() {
+        const isDarkMode = localStorage.getItem('color-theme') === 'dark' || 
+                           (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (isDarkMode) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -37,6 +47,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/calendario.css">
   </head>
   <body class="bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text font-sans transition-colors duration-300">
     
@@ -86,9 +97,60 @@
       </div>
     </header>
 
-    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h1 class="text-4xl font-bold text-center">Calendario Electoral</h1>
-        <p class="text-center mt-4 text-light-text-secondary dark:text-dark-text-secondary">Próximamente...</p>
+    <main class="flex flex-col lg:flex-row gap-0 min-h-screen" style="margin-top: -60px; padding-top: 80px;">
+      <!-- Sidebar calendar (left) -->
+      <aside class="calendario-sidebar lg:w-1/3 bg-light-bg-secondary dark:bg-dark-bg-secondary/40 px-4 sm:px-6 py-8">
+        <div class="mini-calendar sticky top-20 bg-white dark:bg-dark-bg rounded-lg p-4 border border-gray-100 dark:border-gray-700 shadow-sm">
+          <h2 class="text-lg font-semibold mb-4 text-light-text dark:text-dark-text">Calendario</h2>
+          <div class="flex items-center justify-between mb-4">
+            <button id="mini-prev" class="text-sm px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800">◀</button>
+            <div id="mini-month" class="text-sm font-semibold"></div>
+            <button id="mini-next" class="text-sm px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800">▶</button>
+          </div>
+          <div id="mini-calendar" class="mini-calendar-grid" role="grid" aria-label="Calendario mini"></div>
+          <div id="selected-info" class="selected-info mt-4 text-sm text-light-text-secondary dark:text-dark-text-secondary bg-gray-50 dark:bg-gray-800/30 p-3 rounded">Selecciona una fecha para ver eventos</div>
+        </div>
+      </aside>
+
+      <!-- Main content (right) -->
+      <div class="calendario-main lg:w-2/3 bg-white dark:bg-dark-bg px-4 sm:px-6 py-8">
+        <div class="calendario-header mb-6">
+          <h1 class="text-3xl font-bold text-light-text dark:text-dark-text mb-2">Calendario Electoral</h1>
+          <p class="text-light-text-secondary dark:text-dark-text-secondary">Selecciona una vista para ver fechas relevantes</p>
+        </div>
+
+        <div class="calendario-selector mb-6" role="tablist" aria-label="Seleccionar calendario">
+          <button class="btn-calendario active" data-tipo="elector" aria-pressed="true">👤 Electores</button>
+          <button class="btn-calendario" data-tipo="miembro" aria-pressed="false">🪑 Miembro Mesa</button>
+          <button class="btn-calendario" data-tipo="proceso" aria-pressed="false">🏛️ Proceso</button>
+        </div>
+
+        <div class="calendario-content">
+          <div id="elector-content" class="calendario-vista active" aria-hidden="false">
+            <div class="vista-header mb-4">
+              <h2 class="text-xl font-semibold text-light-text dark:text-dark-text">Electores</h2>
+              <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Fechas relevantes para votantes</p>
+            </div>
+            <div class="event-list" id="elector-list"></div>
+          </div>
+
+          <div id="miembro-content" class="calendario-vista" aria-hidden="true">
+            <div class="vista-header mb-4">
+              <h2 class="text-xl font-semibold text-light-text dark:text-dark-text">Miembro de Mesa</h2>
+              <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Eventos y responsabilidades para jurados</p>
+            </div>
+            <div class="event-list" id="miembro-list"></div>
+          </div>
+
+          <div id="proceso-content" class="calendario-vista" aria-hidden="true">
+            <div class="vista-header mb-4">
+              <h2 class="text-xl font-semibold text-light-text dark:text-dark-text">Proceso Electoral</h2>
+              <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Cronograma oficial completo</p>
+            </div>
+            <div class="event-list" id="proceso-list"></div>
+          </div>
+        </div>
+      </div>
     </main>
 
     <footer class="text-light-text-secondary dark:text-dark-text-secondary">
@@ -102,5 +164,6 @@
     </footer>
 
     <script src="../js/script.js"></script>
+    <script src="../js/calendario.js"></script>
   </body>
 </html>

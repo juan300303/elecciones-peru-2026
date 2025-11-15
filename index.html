@@ -6,6 +6,16 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Elecciones Perú 2026</title>
+    <!-- Theme detection script - runs before page renders to prevent flash -->
+    <script>
+      (function() {
+        const isDarkMode = localStorage.getItem('color-theme') === 'dark' || 
+                           (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (isDarkMode) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -39,7 +49,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="/index.css">
 </head>
   <body class="bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text font-sans transition-colors duration-300">
     
@@ -238,43 +247,34 @@
                         <h2 class="text-2xl font-bold mb-6">RANKING DE CANDIDATOS</h2>
                         <div class="space-y-3">
                             <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-lg p-3 flex items-center space-x-4">
-                                <div class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 w-8 h-8 rounded-full flex items-center justify-center font-bold">1</div>
+                                <div class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 w-8 h-8 rounded-full flex items-center justify-center font-bold">2</div>
                                 <div class="flex-grow">
-                                    <p class="font-bold">María Fernández</p>
-                                    <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Partido Progresista</p>
+                                    <p class="font-bold">Carlos Méndez</p>
+                                    <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Partido Nacional</p>
                                 </div>
-                                <p class="font-semibold">45%</p>
-                                <div class="px-2 py-1 text-xs font-bold rounded bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300">+2.8%</div>
+                                <p class="font-semibold">38%</p>
+                                <div class="px-2 py-1 text-xs font-bold rounded bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300">+1.2%</div>
                             </div>
                             <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-lg p-3 flex items-center space-x-4">
-                                <div class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 w-8 h-8 rounded-full flex items-center justify-center font-bold">1</div>
+                                <div class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 w-8 h-8 rounded-full flex items-center justify-center font-bold">3</div>
                                 <div class="flex-grow">
-                                    <p class="font-bold">María Fernández</p>
-                                    <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Partido Progresista</p>
+                                    <p class="font-bold">Ana Rodríguez</p>
+                                    <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Frente Democrático</p>
                                 </div>
-                                <p class="font-semibold">45%</p>
-                                <div class="px-2 py-1 text-xs font-bold rounded bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300">+2.8%</div>
+                                <p class="font-semibold">32%</p>
+                                <div class="px-2 py-1 text-xs font-bold rounded bg-red-100 dark:bg-red-900 text-red-500 dark:text-red-300">-0.5%</div>
                             </div>
                             <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-lg p-3 flex items-center space-x-4">
-                                <div class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 w-8 h-8 rounded-full flex items-center justify-center font-bold">1</div>
+                                <div class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 w-8 h-8 rounded-full flex items-center justify-center font-bold">4</div>
                                 <div class="flex-grow">
-                                    <p class="font-bold">María Fernández</p>
-                                    <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Partido Progresista</p>
+                                    <p class="font-bold">Pedro López</p>
+                                    <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Alianza por el Cambio</p>
                                 </div>
-                                <p class="font-semibold">45%</p>
-                                <div class="px-2 py-1 text-xs font-bold rounded bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300">+2.8%</div>
+                                <p class="font-semibold">42%</p>
+                                <div class="px-2 py-1 text-xs font-bold rounded bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300">+3.1%</div>
                             </div>
                             <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-lg p-3 flex items-center space-x-4">
-                                <div class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 w-8 h-8 rounded-full flex items-center justify-center font-bold">1</div>
-                                <div class="flex-grow">
-                                    <p class="font-bold">María Fernández</p>
-                                    <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Partido Progresista</p>
-                                </div>
-                                <p class="font-semibold">45%</p>
-                                <div class="px-2 py-1 text-xs font-bold rounded bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300">+2.8%</div>
-                            </div>
-                            <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-lg p-3 flex items-center space-x-4">
-                                <div class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 w-8 h-8 rounded-full flex items-center justify-center font-bold">1</div>
+                                <div class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 w-8 h-8 rounded-full flex items-center justify-center font-bold">5</div>
                                 <div class="flex-grow">
                                     <p class="font-bold">María Fernández</p>
                                     <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Partido Progresista</p>
@@ -349,10 +349,10 @@
                 <h2 class="text-xl md:text-2xl font-serif max-w-2xl text-center md:text-left mb-6 md:mb-0">
                     Mantente al día. Suscríbete y se el primero en recibir las noticias y alertas críticas de las Elecciones Generales Perú.
                 </h2>
-                <form class="w-full max-w-md">
+                <form class="w-full max-w-md" id="newsletter-form">
                     <div class="flex items-center bg-white rounded-lg overflow-hidden">
-                        <input type="email" placeholder="Escribe tu correo aquí" class="w-full p-3 text-gray-800 placeholder-gray-500 focus:outline-none" />
-                        <button type="submit" class="bg-gray-800 text-white font-bold px-6 py-3 hover:bg-gray-700 transition-colors">
+                        <input type="email" placeholder="Escribe tu correo aquí" class="w-full p-3 text-gray-800 placeholder-gray-500 focus:outline-none" required aria-label="Email para suscripción" />
+                        <button type="submit" class="bg-gray-800 text-white font-bold px-6 py-3 hover:bg-gray-700 transition-colors" aria-label="Suscribirse a newsletter">
                             Inscribirme
                         </button>
                     </div>
@@ -394,6 +394,21 @@
     </footer>
 
     <script src="js/script.js"></script>
-  <script type="module" src="/index.tsx"></script>
+    <script>
+      // Newsletter form validation
+      document.addEventListener('DOMContentLoaded', function(){
+        const form = document.getElementById('newsletter-form');
+        if(form){
+          form.addEventListener('submit', function(e){
+            const emailInput = form.querySelector('input[type="email"]');
+            if(!emailInput.value.trim() || !emailInput.checkValidity()){
+              e.preventDefault();
+              alert('Por favor ingresa un correo electrónico válido');
+              emailInput.focus();
+            }
+          });
+        }
+      });
+    </script>
 </body>
 </html>
