@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="es" class="">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Noticias - Elecciones Perú 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#DC2626',
+              secondary: '#1D4ED8',
+              dark: {
+                bg: '#111827',
+                'bg-secondary': '#1F2937',
+                text: '#F9FAFB',
+                'text-secondary': '#9CA3AF',
+              },
+              light: {
+                 bg: '#F9FAFB',
+                'bg-secondary': '#FFFFFF',
+                text: '#111827',
+                'text-secondary': '#4B5563',
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+  </head>
+  <body class="bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text font-sans transition-colors duration-300">
+    
+    <header class="bg-light-bg-secondary/80 dark:bg-dark-bg-secondary/80 backdrop-blur-sm sticky top-0 z-50 shadow-md">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+          <div class="flex-shrink-0">
+            <a href="index.html" class="flex flex-col items-start">
+              <span class="font-bold text-xl text-primary tracking-tight">ELECCIONES PERÚ 2026</span>
+              <span class="text-xs text-light-text-secondary dark:text-dark-text-secondary">Infórmate Perú</span>
+            </a>
+          </div>
+          
+          <nav class="hidden md:flex md:items-center md:space-x-8">
+            <a href="index.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Inicio</a>
+            <a href="calendario.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Calendario</a>
+            <a href="candidatos.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Candidatos</a>
+            <a href="partido-politico.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Partido Político</a>
+            <a href="noticias.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Noticias</a>
+            <a href="#" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Idioma</a>
+          </nav>
+
+          <div class="flex items-center">
+             <button id="theme-toggle" type="button" class="p-2 rounded-full text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" aria-label="Toggle dark mode">
+                <svg id="theme-toggle-dark-icon" class="hidden w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                <svg id="theme-toggle-light-icon" class="hidden w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </button>
+            <div class="md:hidden ml-2">
+              <button id="mobile-menu-button" type="button" class="p-2 rounded-md text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700" aria-controls="mobile-menu" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hidden md:hidden" id="mobile-menu">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Inicio</a>
+          <a href="calendario.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Calendario</a>
+          <a href="candidatos.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Candidatos</a>
+          <a href="partido-politico.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Partido Político</a>
+          <a href="noticias.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Noticias</a>
+          <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Idioma</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <h1 class="text-4xl font-bold text-center">Noticias</h1>
+        <p class="text-center mt-4 text-light-text-secondary dark:text-dark-text-secondary">Próximamente...</p>
+    </main>
+
+    <footer class="text-light-text-secondary dark:text-dark-text-secondary">
+        <div class="bg-gray-200 dark:bg-gray-800 py-12">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mt-12 border-t border-gray-300 dark:border-gray-700 pt-8 flex flex-col sm:flex-row justify-between items-center">
+                     <p class="text-sm mb-4 sm:mb-0">&copy; 2025 Elecciones Perú 2026. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+  </body>
+</html>
