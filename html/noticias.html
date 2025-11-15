@@ -97,9 +97,50 @@
       </div>
     </header>
 
-    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h1 class="text-4xl font-bold text-center">Noticias</h1>
-        <p class="text-center mt-4 text-light-text-secondary dark:text-dark-text-secondary">Próximamente...</p>
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <section aria-labelledby="news-heading" class="max-w-7xl mx-auto">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          <div class="flex-1">
+            <h1 id="news-heading" class="text-3xl lg:text-4xl font-bold">Noticias</h1>
+            <p class="text-sm mt-1 text-light-text-secondary dark:text-dark-text-secondary">Últimas novedades sobre el proceso electoral.</p>
+          </div>
+
+          <div class="w-full lg:w-1/2">
+            <label for="search-news" class="sr-only">Buscar noticias</label>
+            <div class="relative">
+              <input id="search-news" type="search" placeholder="Buscar en titulares y descripciones..." class="w-full rounded-md border border-gray-200 dark:border-gray-700 px-4 py-2 pr-12 bg-white dark:bg-dark-bg-secondary text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+              <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 text-light-text-secondary dark:text-dark-text-secondary hover:text-primary" aria-label="Buscar">
+                🔎
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="mt-6 flex items-center gap-3">
+          <div class="inline-flex rounded-md shadow-sm" role="tablist" aria-label="Filtros de noticias">
+            <button type="button" data-filter="all" class="filter-btn px-4 py-2 rounded-l-md border border-gray-200 dark:border-gray-700 bg-primary text-white hover:opacity-90 focus:outline-none" aria-pressed="true">Todas</button>
+            <button type="button" data-filter="oficial" class="filter-btn px-4 py-2 border-t border-b border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-bg-secondary text-light-text dark:text-dark-text hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none">🏛️ Oficial</button>
+            <button type="button" data-filter="medios" class="filter-btn px-4 py-2 rounded-r-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-bg-secondary text-light-text dark:text-dark-text hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none">📢 Medios</button>
+          </div>
+        </div>
+
+        <!-- News list (rendered dynamically) -->
+        <section class="mt-8 grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2" id="news-list">
+          <!-- Cards will be injected here by JS -->
+        </section>
+
+        <!-- Pagination -->
+        <div class="mt-8 flex items-center justify-center gap-3">
+          <button type="button" id="page-prev" class="page-btn px-4 py-2 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-bg-secondary text-light-text dark:text-dark-text hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none">‹ Anterior</button>
+          <div class="inline-flex items-center space-x-2" role="navigation" aria-label="Paginación">
+            <button type="button" class="page-number px-3 py-2 rounded-md bg-primary text-white" data-page="1" aria-current="page">1</button>
+            <button type="button" class="page-number px-3 py-2 rounded-md bg-white dark:bg-dark-bg-secondary text-light-text dark:text-dark-text" data-page="2">2</button>
+            <button type="button" class="page-number px-3 py-2 rounded-md bg-white dark:bg-dark-bg-secondary text-light-text dark:text-dark-text" data-page="3">3</button>
+          </div>
+          <button type="button" id="page-next" class="page-btn px-4 py-2 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-bg-secondary text-light-text dark:text-dark-text hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none">Siguiente ›</button>
+        </div>
+      </section>
     </main>
 
     <footer class="text-light-text-secondary dark:text-dark-text-secondary">
@@ -112,6 +153,161 @@
         </div>
     </footer>
 
+    <script>
+      // Full dynamic behavior: render newsData (static array), real search filtering, real filters (oficial/medios), and pagination (6 items/page)
+      document.addEventListener('DOMContentLoaded', function(){
+        const newsList = document.getElementById('news-list');
+        const searchInput = document.getElementById('search-news');
+        const filterBtns = Array.from(document.querySelectorAll('.filter-btn'));
+        const pagePrev = document.getElementById('page-prev');
+        const pageNext = document.getElementById('page-next');
+        const pageNumbers = Array.from(document.querySelectorAll('.page-number'));
+
+        // Static predefined news (18 items) — sourceType: 'oficial' | 'medio'
+        const newsData = [
+          {id:1, source:'ONPE', badge:'🏛️ ONPE', date:'2025-11-15', title:'Publican cronogramas oficiales para el proceso electoral 2026', desc:'La ONPE ha publicado el cronograma oficial que detalla las fechas clave para inscripción, campaña y jornada de votación.', url:'https://www.onpe.gob.pe', sourceType:'oficial'},
+          {id:2, source:'JNE', badge:'🏛️ JNE', date:'2025-11-12', title:'Actualizaciones en normas y procedimientos electorales', desc:'El JNE comunica ajustes en los procedimientos para mejora de transparencia y control del proceso electoral.', url:'https://www.jne.gob.pe', sourceType:'oficial'},
+          {id:3, source:'EL COMERCIO', badge:'📢 EL COMERCIO', date:'2025-11-10', title:'Debate en agenda: principales propuestas de los candidatos', desc:'Análisis de propuestas sobre economía, salud y educación tras el primer debate nacional.', url:'https://elcomercio.pe', sourceType:'medio'},
+          {id:4, source:'EL COMERCIO', badge:'📢 EL COMERCIO', date:'2025-11-08', title:'Protocolos de bioseguridad para la jornada de votación', desc:'Recomendaciones y medidas adoptadas por las autoridades para garantizar la seguridad sanitaria durante el día de votación.', url:'https://elcomercio.pe', sourceType:'medio'},
+          {id:5, source:'ONPE', badge:'🏛️ ONPE', date:'2025-11-05', title:'Capacitación a miembros de mesa: calendario y recursos', desc:'La ONPE publica materiales y fechas para la capacitación dirigida a los miembros de mesa en todo el país.', url:'https://www.onpe.gob.pe', sourceType:'oficial'},
+          {id:6, source:'LA REPÚBLICA', badge:'📢 LA REPÚBLICA', date:'2025-11-03', title:'Análisis de propuestas: impacto en política social', desc:'Expertos discuten la viabilidad y costo de las nuevas propuestas en educación y salud presentadas por los candidatos.', url:'https://larepublica.pe', sourceType:'medio'},
+          {id:7, source:'JNE', badge:'🏛️ JNE', date:'2025-11-01', title:'Procedimientos de votación: instrucciones actualizadas', desc:'El JNE publica guías que explican los procedimientos para el votante y los funcionarios electorales durante la jornada.', url:'https://www.jne.gob.pe', sourceType:'oficial'},
+          {id:8, source:'RPP', badge:'📢 RPP', date:'2025-10-28', title:'Actualizaciones de organismos electorales y seguimiento de procesos', desc:'Resumen de las últimas comunicaciones emitidas por ONPE y JNE sobre cronogramas y auditorías.', url:'https://rpp.pe', sourceType:'medio'},
+          {id:9, source:'LA REPÚBLICA', badge:'📢 LA REPÚBLICA', date:'2025-10-25', title:'Presentación de candidatos: perfiles y planes de gobierno', desc:'Resumen de la presentación de los principales candidatos y sus ejes programáticos para la campaña.', url:'https://larepublica.pe', sourceType:'medio'},
+          {id:10, source:'ONPE', badge:'🏛️ ONPE', date:'2025-10-22', title:'Protocolos y seguridad en centros de votación', desc:'Medidas y protocolos de seguridad que se implementarán en los centros de votación.', url:'https://www.onpe.gob.pe', sourceType:'oficial'},
+          {id:11, source:'EL COMERCIO', badge:'📢 EL COMERCIO', date:'2025-10-20', title:'Debates: fechas confirmadas entre los principales candidatos', desc:'El cronograma de debates ha sido confirmado y se presentan los formatos y moderadores.', url:'https://elcomercio.pe', sourceType:'medio'},
+          {id:12, source:'JNE', badge:'🏛️ JNE', date:'2025-10-18', title:'Procesos de capacitación y verificación de voluntarios', desc:'Información sobre la capacitación y verificación de los miembros que apoyarán en la jornada electoral.', url:'https://www.jne.gob.pe', sourceType:'oficial'},
+          {id:13, source:'RPP', badge:'📢 RPP', date:'2025-10-15', title:'Análisis: propuestas de seguridad ciudadana en campaña', desc:'Debates sobre las propuestas en materia de seguridad y su factibilidad presupuestal.', url:'https://rpp.pe', sourceType:'medio'},
+          {id:14, source:'ONPE', badge:'🏛️ ONPE', date:'2025-10-12', title:'Procedimientos de escrutinio y actas de votación', desc:'Explicación oficial sobre cómo se realizará el escrutinio y registro de actas durante la jornada.', url:'https://www.onpe.gob.pe', sourceType:'oficial'},
+          {id:15, source:'LA REPÚBLICA', badge:'📢 LA REPÚBLICA', date:'2025-10-08', title:'Impacto de propuestas económicas en el presupuesto público', desc:'Análisis sobre el impacto fiscal de las propuestas económicas más relevantes.', url:'https://larepublica.pe', sourceType:'medio'},
+          {id:16, source:'EL COMERCIO', badge:'📢 EL COMERCIO', date:'2025-10-05', title:'Procedimientos de votación: guía rápida para electores', desc:'Guía práctica con los pasos que debe seguir cada elector en el lugar de votación.', url:'https://elcomercio.pe', sourceType:'medio'},
+          {id:17, source:'JNE', badge:'🏛️ JNE', date:'2025-10-02', title:'Actualización sobre fiscalización de campaña', desc:'El JNE informa sobre nuevas medidas de fiscalización y control del financiamiento de campañas.', url:'https://www.jne.gob.pe', sourceType:'oficial'},
+          {id:18, source:'ONPE', badge:'🏛️ ONPE', date:'2025-09-28', title:'Registro y verificación de mesas de votación', desc:'Últimos pasos y verificaciones previas a la instalación de mesas de votación en todo el país.', url:'https://www.onpe.gob.pe', sourceType:'oficial'}
+        ];
+
+        // Pagination state
+        const itemsPerPage = 6; // 6 items per page -> 3 pages
+        let currentPage = 1;
+        let currentFilter = 'all';
+        let currentQuery = '';
+
+        // Helpers
+        function matchesFilter(item){
+          if(currentFilter === 'all') return true;
+          if(currentFilter === 'oficial') return item.sourceType === 'oficial';
+          if(currentFilter === 'medios') return item.sourceType === 'medio';
+          return true;
+        }
+
+        function matchesQuery(item){
+          if(!currentQuery) return true;
+          const q = currentQuery.toLowerCase();
+          return (item.title + ' ' + item.desc + ' ' + item.source).toLowerCase().includes(q);
+        }
+
+        function getFiltered(){
+          return newsData.filter(item => matchesFilter(item) && matchesQuery(item));
+        }
+
+        function render(){
+          const all = getFiltered();
+          const total = all.length;
+          const totalPages = Math.max(1, Math.ceil(total / itemsPerPage));
+          // clamp currentPage
+          if(currentPage > totalPages) currentPage = totalPages;
+          if(currentPage < 1) currentPage = 1;
+
+          // slice items for page
+          const start = (currentPage - 1) * itemsPerPage;
+          const pageItems = all.slice(start, start + itemsPerPage);
+
+          // render
+          newsList.innerHTML = '';
+          if(pageItems.length === 0){
+            newsList.innerHTML = '<p class="text-center text-light-text-secondary dark:text-dark-text-secondary">No se encontraron noticias.</p>';
+          } else {
+            pageItems.forEach(item => {
+              const art = document.createElement('article');
+              art.className = 'news-card p-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-bg-secondary hover:shadow-lg transition-transform hover:-translate-y-0.5';
+              art.innerHTML = `
+                <div class="flex items-start justify-between">
+                  <span class="text-sm font-semibold">${item.badge}</span>
+                  <span class="text-xs text-light-text-secondary dark:text-dark-text-secondary">${item.date}</span>
+                </div>
+                <h2 class="mt-3 text-lg font-semibold leading-tight">${item.title}</h2>
+                <p class="mt-2 text-sm text-light-text-secondary dark:text-dark-text-secondary">${item.desc}</p>
+                <div class="mt-4">
+                  <a class="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline" href="${item.url}" target="_blank" rel="noopener">📖 Ver noticia completa</a>
+                </div>
+              `;
+              newsList.appendChild(art);
+            });
+          }
+
+          // update pagination UI (pages 1..3 fixed visual)
+          // enable/disable prev/next
+          if(pagePrev) pagePrev.disabled = currentPage === 1;
+          if(pageNext) pageNext.disabled = currentPage === totalPages;
+
+          // update page buttons (show up to 3 pages) — we keep 1..3 as visible buttons
+          pageNumbers.forEach(btn => {
+            const p = Number(btn.dataset.page || btn.textContent.trim());
+            if(p === currentPage){
+              btn.classList.add('bg-primary','text-white');
+              btn.classList.remove('bg-white');
+              btn.setAttribute('aria-current','page');
+            } else {
+              btn.classList.remove('bg-primary','text-white');
+              btn.classList.add('bg-white');
+              btn.removeAttribute('aria-current');
+            }
+            // visually disable page numbers beyond totalPages
+            if(p > totalPages){
+              btn.classList.add('opacity-50','pointer-events-none');
+            } else {
+              btn.classList.remove('opacity-50','pointer-events-none');
+            }
+          });
+        }
+
+        // wire filter buttons
+        filterBtns.forEach(b=>{
+          b.addEventListener('click', ()=>{
+            const f = b.dataset.filter;
+            currentFilter = f;
+            currentPage = 1;
+            // visual
+            filterBtns.forEach(x=>{ x.classList.remove('bg-primary','text-white'); x.classList.add('bg-white'); x.setAttribute('aria-pressed','false'); });
+            b.classList.add('bg-primary','text-white'); b.classList.remove('bg-white'); b.setAttribute('aria-pressed','true');
+            render();
+          });
+        });
+
+        // wire pagination
+        pagePrev && pagePrev.addEventListener('click', ()=>{ currentPage = Math.max(1, currentPage-1); render(); });
+        pageNext && pageNext.addEventListener('click', ()=>{ currentPage = currentPage+1; render(); });
+        pageNumbers.forEach(btn=> btn.addEventListener('click', ()=>{ const p = Number(btn.dataset.page); currentPage = p; render(); }));
+
+        // search input (real filtering)
+        if(searchInput){
+          let t;
+          searchInput.addEventListener('input', (e)=>{
+            clearTimeout(t);
+            t = setTimeout(()=>{
+              currentQuery = e.target.value || '';
+              currentPage = 1;
+              render();
+            }, 150);
+          });
+        }
+
+        // initial state
+        // ensure 'Todas' visual active
+        const allBtn = filterBtns.find(b=>b.dataset.filter==='all');
+        if(allBtn){ allBtn.classList.add('bg-primary','text-white'); allBtn.setAttribute('aria-pressed','true'); }
+        render();
+      });
+    </script>
     <script src="../js/script.js"></script>
   </body>
 </html>
