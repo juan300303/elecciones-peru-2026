@@ -244,53 +244,28 @@
         <div class="py-16 md:py-24 bg-light-bg dark:bg-dark-bg">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
 
-                <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div
-                        class="relative rounded-2xl overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300 group">
-                        <img src="images/info-card-1.jpg" alt="¿DÓNDE VOTO?" class="w-full h-full object-cover" />
-                        <div class="absolute inset-0 bg-black/60 group-hover:bg-black/70 transition-colors"></div>
-                        <div class="absolute inset-0 flex flex-col items-center justify-center p-4 text-white">
-                            <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                <circle cx="12" cy="10" r="3"></circle>
-                            </svg>
-                            <h3 class="mt-2 text-xl font-bold text-center">¿DÓNDE VOTO?</h3>
+                <section class="info-grid">
+                    <div class="info-card">
+                        <img src="img/cards/card-1.png" alt="">
+                        <div class="content">
+                            <img src="img/cards/img1.png" class="icon-a">
+                            <h3>¿DÓNDE VOTO?</h3>
                         </div>
                     </div>
-                    <div
-                        class="relative rounded-2xl overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300 group">
-                        <img src="images/info-card-2.jpg" alt="CONOCE A TUS CANDIDATOS"
-                            class="w-full h-full object-cover" />
-                        <div class="absolute inset-0 bg-black/60 group-hover:bg-black/70 transition-colors"></div>
-                        <div class="absolute inset-0 flex flex-col items-center justify-center p-4 text-white">
-                            <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                            </svg>
-                            <h3 class="mt-2 text-xl font-bold text-center">CONOCE A TUS CANDIDATOS</h3>
+
+                    <div class="info-card">
+                        <img src="img/cards/card-1.png" alt="">
+                        <div class="content">
+                            <img src="img/cards/img2.png" class="icon-a">
+                            <h3>CONOCE A TUS CANDIDATOS</h3>
                         </div>
                     </div>
-                    <div
-                        class="relative rounded-2xl overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300 group">
-                        <img src="images/info-card-3.jpg" alt="¿ERES MIEMBRO DE MESA?"
-                            class="w-full h-full object-cover" />
-                        <div class="absolute inset-0 bg-black/60 group-hover:bg-black/70 transition-colors"></div>
-                        <div class="absolute inset-0 flex flex-col items-center justify-center p-4 text-white">
-                            <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14.75 17.5 19.5 22.25"></path>
-                                <path
-                                    d="m14 18-6-6h9a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v3a3 3 0 0 0 3 3h1.25">
-                                </path>
-                            </svg>
-                            <h3 class="mt-2 text-xl font-bold text-center">¿ERES MIEMBRO DE MESA?</h3>
+
+                    <div class="info-card">
+                        <img src="img/cards/card-1.png" alt="">
+                        <div class="content">
+                            <img src="img/cards/img3.png" class="icon-a">
+                            <h3>¿ERES MIEMBRO DE MESA?</h3>
                         </div>
                     </div>
                 </section>
@@ -298,95 +273,109 @@
                 <section>
                     <h2 class="text-3xl font-bold text-center mb-12">ELECCIONES GENERALES 2026</h2>
                     <div class="flex flex-wrap justify-center gap-8 md:gap-16">
+                        
                         <div class="flex flex-col items-center text-center space-y-2">
-                            <div class="relative">
-                                <div
-                                    class="w-32 h-32 rounded-full bg-light-bg-secondary dark:bg-dark-bg-secondary shadow-md flex items-center justify-center border-4 border-blue-500">
-                                    <img src="images/role-presidente.png" alt="Presidente"
-                                        class="w-24 h-24 object-contain" />
-                                </div>
-                                <span
-                                    class="absolute -top-1 -left-1 bg-primary text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">1</span>
-                            </div>
-                            <h4 class="font-semibold text-light-text dark:text-dark-text">Presidente</h4>
+                        <div class="relative w-32 h-32 rounded-full bg-light-bg-secondary dark:bg-dark-bg-secondary shadow-md flex items-center justify-center border-4 border-blue-500">
+                            <img src="img/cards/residente.jpg" alt="Presidente" class="w-full h-full object-cover rounded-full" />
+                            <span class="absolute -top-1 -left-1 bg-primary text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">1</span>
                         </div>
+                        <h4 class="font-semibold text-light-text dark:text-dark-text">Presidente</h4>
+                        </div>
+                        
                         <div class="flex flex-col items-center text-center space-y-2">
-                            <div class="relative">
-                                <div
-                                    class="w-32 h-32 rounded-full bg-light-bg-secondary dark:bg-dark-bg-secondary shadow-md flex items-center justify-center border-4 border-blue-500">
-                                    <img src="images/role-vice.png" alt="Vicepresidentes"
-                                        class="w-24 h-24 object-contain" />
-                                </div>
-                                <span
-                                    class="absolute -top-1 -left-1 bg-primary text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">2</span>
-                            </div>
-                            <h4 class="font-semibold text-light-text dark:text-dark-text">Vicepresidentes</h4>
+                        <div class="relative w-32 h-32 rounded-full bg-light-bg-secondary dark:bg-dark-bg-secondary shadow-md flex items-center justify-center border-4 border-blue-500">
+                            <img src="img/cards/vicepresidencia.png" alt="Vicepresidentes" class="w-full h-full object-cover rounded-full" />
+                            <span class="absolute -top-1 -left-1 bg-primary text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">2</span>
                         </div>
+                        <h4 class="font-semibold text-light-text dark:text-dark-text">Vicepresidentes</h4>
+                        </div>
+                        
                         <div class="flex flex-col items-center text-center space-y-2">
-                            <div class="relative">
-                                <div
-                                    class="w-32 h-32 rounded-full bg-light-bg-secondary dark:bg-dark-bg-secondary shadow-md flex items-center justify-center border-4 border-blue-500">
-                                    <img src="images/role-senadores.png" alt="Senadores"
-                                        class="w-24 h-24 object-contain" />
-                                </div>
-                                <span
-                                    class="absolute -top-1 -left-1 bg-primary text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">60</span>
-                            </div>
-                            <h4 class="font-semibold text-light-text dark:text-dark-text">Senadores</h4>
+                        <div class="relative w-32 h-32 rounded-full bg-light-bg-secondary dark:bg-dark-bg-secondary shadow-md flex items-center justify-center border-4 border-blue-500">
+                            <img src="img/cards/senadores.png" alt="Senadores" class="w-full h-full object-cover rounded-full" />
+                            <span class="absolute -top-1 -left-1 bg-primary text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">60</span>
                         </div>
+                        <h4 class="font-semibold text-light-text dark:text-dark-text">Senadores</h4>
+                        </div>
+                        
                         <div class="flex flex-col items-center text-center space-y-2">
-                            <div class="relative">
-                                <div
-                                    class="w-32 h-32 rounded-full bg-light-bg-secondary dark:bg-dark-bg-secondary shadow-md flex items-center justify-center border-4 border-blue-500">
-                                    <img src="images/role-diputados.png" alt="Diputados"
-                                        class="w-24 h-24 object-contain" />
-                                </div>
-                                <span
-                                    class="absolute -top-1 -left-1 bg-primary text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">130</span>
-                            </div>
-                            <h4 class="font-semibold text-light-text dark:text-dark-text">Diputados</h4>
+                        <div class="relative w-32 h-32 rounded-full bg-light-bg-secondary dark:bg-dark-bg-secondary shadow-md flex items-center justify-center border-4 border-blue-500">
+                            <img src="img/cards/diputados.png" alt="Diputados" class="w-full h-full object-cover rounded-full" />
+                            <span class="absolute -top-1 -left-1 bg-primary text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">130</span>
                         </div>
+                        <h4 class="font-semibold text-light-text dark:text-dark-text">Diputados</h4>
+                        </div>
+                        
                         <div class="flex flex-col items-center text-center space-y-2">
-                            <div class="relative">
-                                <div
-                                    class="w-32 h-32 rounded-full bg-light-bg-secondary dark:bg-dark-bg-secondary shadow-md flex items-center justify-center border-4 border-blue-500">
-                                    <img src="images/role-andino.png" alt="Parlamento Andino"
-                                        class="w-24 h-24 object-contain" />
-                                </div>
-                                <span
-                                    class="absolute -top-1 -left-1 bg-primary text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">5</span>
-                            </div>
-                            <h4 class="font-semibold text-light-text dark:text-dark-text">Parlamento Andino</h4>
+                        <div class="relative w-32 h-32 rounded-full bg-light-bg-secondary dark:bg-dark-bg-secondary shadow-md flex items-center justify-center border-4 border-blue-500">
+                            <img src="img/cards/parlamento.png" alt="Parlamento Andino" class="w-full h-full object-cover rounded-full" />
+                            <span class="absolute -top-1 -left-1 bg-primary text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">5</span>
                         </div>
+                        <h4 class="font-semibold text-light-text dark:text-dark-text">Parlamento Andino</h4>
+                        </div>
+                        
                     </div>
                 </section>
 
                 <section>
                     <h2 class="text-3xl font-bold text-center mb-12">NOTICIAS DESTACADAS</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div
-                            class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-xl shadow-md p-4 flex items-center space-x-4 hover:shadow-xl transition-shadow">
-                            <img src="images/news-1.jpg" alt="Candidato" class="w-16 h-16 rounded-full object-cover" />
-                            <div>
-                                <h4 class="font-bold">Planes de Gobierno:</h4>
-                                <p class="text-primary text-sm">¿Qué proponen?</p>
+
+                    <!-- Contenedor del carrusel -->
+                    <div class="relative w-full overflow-hidden">
+                        <div id="news-carousel" class="flex transition-transform duration-500 ease-in-out">
+                            <!-- Noticia 1 -->
+                            <div class="flex-shrink-0 w-full md:w-1/3 p-4">
+                                <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-xl shadow-md p-4 flex items-center space-x-4 hover:shadow-xl transition-shadow">
+                                <img src="images/news-1.jpg" alt="Noticia 1" class="w-16 h-16 rounded-full object-cover" />
+                                <div>
+                                    <h4 class="font-bold">Planes de Gobierno:</h4>
+                                    <p class="text-primary text-sm">¿Qué proponen?</p>
+                                </div>
+                                </div>
                             </div>
-                        </div>
-                        <div
-                            class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-xl shadow-md p-4 flex items-center space-x-4 hover:shadow-xl transition-shadow">
-                            <img src="images/news-2.jpg" alt="Candidato" class="w-16 h-16 rounded-full object-cover" />
-                            <div>
-                                <h4 class="font-bold">Planes de Gobierno:</h4>
-                                <p class="text-primary text-sm">¿Qué proponen?</p>
+                            <!-- Noticia 2 -->
+                            <div class="flex-shrink-0 w-full md:w-1/3 p-4">
+                                <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-xl shadow-md p-4 flex items-center space-x-4 hover:shadow-xl transition-shadow">
+                                <img src="images/news-2.jpg" alt="Noticia 2" class="w-16 h-16 rounded-full object-cover" />
+                                <div>
+                                    <h4 class="font-bold">Planes de Gobierno:</h4>
+                                    <p class="text-primary text-sm">¿Qué proponen?</p>
+                                </div>
+                                </div>
                             </div>
-                        </div>
-                        <div
-                            class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-xl shadow-md p-4 flex items-center space-x-4 hover:shadow-xl transition-shadow">
-                            <img src="images/news-3.jpg" alt="Candidato" class="w-16 h-16 rounded-full object-cover" />
-                            <div>
-                                <h4 class="font-bold">Planes de Gobierno:</h4>
-                                <p class="text-primary text-sm">¿Qué proponen?</p>
+                            <!-- Noticia 3 -->
+                            <div class="flex-shrink-0 w-full md:w-1/3 p-4">
+                                <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-xl shadow-md p-4 flex items-center space-x-4 hover:shadow-xl transition-shadow">
+                                <img src="images/news-3.jpg" alt="Noticia 3" class="w-16 h-16 rounded-full object-cover" />
+                                <div>
+                                    <h4 class="font-bold">Planes de Gobierno:</h4>
+                                    <p class="text-primary text-sm">¿Qué proponen?</p>
+                                </div>
+                                </div>
                             </div>
+                            <!-- Noticia 4 -->
+                            <div class="flex-shrink-0 w-full md:w-1/3 p-4">
+                                <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-xl shadow-md p-4 flex items-center space-x-4 hover:shadow-xl transition-shadow">
+                                <img src="images/news-4.jpg" alt="Noticia 4" class="w-16 h-16 rounded-full object-cover" />
+                                <div>
+                                    <h4 class="font-bold">Planes de Gobierno:</h4>
+                                    <p class="text-primary text-sm">¿Qué proponen?</p>
+                                </div>
+                                </div>
+                            </div>
+                            <!-- Noticia 5 -->
+                            <div class="flex-shrink-0 w-full md:w-1/3 p-4">
+                                <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-xl shadow-md p-4 flex items-center space-x-4 hover:shadow-xl transition-shadow">
+                                <img src="images/news-5.jpg" alt="Noticia 5" class="w-16 h-16 rounded-full object-cover" />
+                                <div>
+                                    <h4 class="font-bold">Planes de Gobierno:</h4>
+                                    <p class="text-primary text-sm">¿Qué proponen?</p>
+                                </div>
+                                </div>
+                            </div>
+
+                            <div id="news-dots" class="flex justify-center mt-4 space-x-3"></div>
+
                         </div>
                     </div>
                 </section>
@@ -633,6 +622,7 @@
     </footer>
 
     <script src="js/script.js"></script>
+    <script src="js/noticias.js"></script>
     <script>
             (function () { if (!window.chatbase || window.chatbase("getState") !== "initialized") { window.chatbase = (...arguments) => { if (!window.chatbase.q) { window.chatbase.q = [] } window.chatbase.q.push(arguments) }; window.chatbase = new Proxy(window.chatbase, { get(target, prop) { if (prop === "q") { return target.q } return (...args) => target(prop, ...args) } }) } const onLoad = function () { const script = document.createElement("script"); script.src = "https://www.chatbase.co/embed.min.js"; script.id = "6uOPwrkFOT7qzxZHL1vmI"; script.domain = "www.chatbase.co"; document.body.appendChild(script) }; if (document.readyState === "complete") { onLoad() } else { window.addEventListener("load", onLoad) } })();
     </script>
@@ -652,6 +642,97 @@
                 });
             }
         });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const carousel = document.getElementById("news-carousel");
+            const dotsContainer = document.getElementById("carousel-dots");
+
+            let index = 1;
+            let autoplaySpeed = 4000;
+
+            let slides = Array.from(carousel.children);
+            const totalRealSlides = slides.length;
+
+            // Clonar
+            const firstClone = slides[0].cloneNode(true);
+            const lastClone = slides[slides.length - 1].cloneNode(true);
+
+            // Agregar clones
+            carousel.appendChild(firstClone);
+            carousel.insertBefore(lastClone, slides[0]);
+
+            // Actualizar lista
+            slides = Array.from(carousel.children);
+
+            function getSlideWidth() {
+                return slides[index].getBoundingClientRect().width;
+            }
+
+            function setPosition(animate = true) {
+                let width = getSlideWidth();
+
+                if (!animate) {
+                    carousel.style.transition = "none";
+                } else {
+                    carousel.style.transition = "transform 0.45s ease-in-out";
+                }
+
+                carousel.style.transform = `translateX(${-index * width}px)`;
+                updateDots();
+            }
+
+            /** --- DOTS --- */
+            const dots = [];
+            for (let i = 0; i < totalRealSlides; i++) {
+                const dot = document.createElement("span");
+                dot.className = "w-3 h-3 mx-1 rounded-full bg-gray-400 cursor-pointer";
+                dot.addEventListener("click", () => {
+                    index = i + 1;
+                    setPosition();
+                });
+                dotsContainer.appendChild(dot);
+                dots.push(dot);
+            }
+
+            function updateDots() {
+                dots.forEach((d, i) => {
+                    d.classList.toggle("bg-primary", i === index - 1);
+                    d.classList.toggle("bg-gray-400", i !== index - 1);
+                });
+            }
+
+            /** --- AUTOPLAY --- */
+            function startAutoplay() {
+                return setInterval(() => {
+                    index++;
+                    setPosition();
+                }, autoplaySpeed);
+            }
+
+            let autoplay = startAutoplay();
+
+            /** --- LOOP INFINITO --- */
+            carousel.addEventListener("transitionend", () => {
+                if (index === slides.length - 1) {
+                    index = 1;
+                    setPosition(false);
+                }
+                if (index === 0) {
+                    index = totalRealSlides;
+                    setPosition(false);
+                }
+            });
+
+            // Ajustar al inicio
+            setTimeout(() => setPosition(false), 100);
+
+            // Recalcular ancho al redimensionar
+            window.addEventListener("resize", () => {
+                setPosition(false);
+            });
+        });
+
     </script>
     <script src="js/idioma.js"></script>
 </body>
