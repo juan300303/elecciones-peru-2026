@@ -1,79 +1,48 @@
 <!DOCTYPE html>
 <html lang="es" class="">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Elecciones Perú 2026</title>
     <!-- Theme detection script - runs before page renders to prevent flash -->
-    <style>
-        /* contenedor general del widget */
-        #chatbase-bubble-window {
-            width: 500px !important;
-            height: 700px !important;
-            max-height: 700px !important;
-            bottom: 10px !important;
-            right: 20px !important;
-            transform: scale(0.85) !important;
-        }
-
-        #chatbase-bubble {
-            transform: scale(0.5) !important;
-        }
-
-        @media (max-width: 640px) {
-            #chatbase-bubble-window {
-               
-                width: calc(100vw - 40px) !important;
-                height: 80vh !important;
-                max-height: 80vh !important;
-                top: 50% !important;
-                left: 50% !important;
-                right: unset !important;
-                bottom: unset !important;
-                transform: translate(-50%, -50%) !important;
-            }
-        }
-    </style>
-
     <script>
-        (function () {
-            const isDarkMode = localStorage.getItem('color-theme') === 'dark' ||
-                (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
-            if (isDarkMode) {
-                document.documentElement.classList.add('dark');
-            }
-        })();
+      (function() {
+        const isDarkMode = localStorage.getItem('color-theme') === 'dark' || 
+                           (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (isDarkMode) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#DC2626', // A red shade for highlights
-                        secondary: '#1D4ED8', // A blue shade
-                        dark: {
-                            bg: '#111827',
-                            'bg-secondary': '#1F2937',
-                            text: '#F9FAFB',
-                            'text-secondary': '#9CA3AF',
-                        },
-                        light: {
-                            bg: '#F9FAFB',
-                            'bg-secondary': '#FFFFFF',
-                            text: '#111827',
-                            'text-secondary': '#4B5563',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    }
-                }
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#DC2626', // A red shade for highlights
+              secondary: '#1D4ED8', // A blue shade
+              dark: {
+                bg: '#111827',
+                'bg-secondary': '#1F2937',
+                text: '#F9FAFB',
+                'text-secondary': '#9CA3AF',
+              },
+              light: {
+                 bg: '#F9FAFB',
+                'bg-secondary': '#FFFFFF',
+                text: '#111827',
+                'text-secondary': '#4B5563',
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
             }
+          }
         }
+      }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -81,140 +50,92 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="img/logo.png" type="image/png">
 </head>
-
-<body class="bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text font-sans transition-colors duration-300">
-
+  <body class="bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text font-sans transition-colors duration-300">
+    
     <header class="bg-light-bg-secondary/80 dark:bg-dark-bg-secondary/80 backdrop-blur-sm sticky top-0 z-50 shadow-md">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex-shrink-0">
-                    <a href="#" class="flex flex-col items-start">
-                        <span class="font-bold text-xl text-primary tracking-tight">ELECCIONES PERÚ 2026</span>
-                        <span class="text-xs text-light-text-secondary dark:text-dark-text-secondary">Infórmate
-                            Perú</span>
-                    </a>
-                </div>
-
-                <nav class="hidden md:flex md:items-center md:space-x-8">
-                    <a href="index.html"
-                        class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Inicio</a>
-                    <a href="html/calendario.html"
-                        class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Calendario</a>
-                    <a href="html/candidatos.html"
-                        class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Candidatos</a>
-                    <a href="html/partido-politico.html"
-                        class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Partido
-                        Político</a>
-                    <a href="html/donde-voto.html"
-                        class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">¿Dónde
-                        Voto?</a>
-                    <a href="html/noticias.html"
-                        class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Noticias</a>
-                    <div class="relative inline-block text-left language-dropdown">
-                        <a href="#"
-                            class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors flex items-center"
-                            data-translate="nav_idioma">
-                            Idioma
-                            <svg class="w-4 h-4 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                        <div class="language-dropdown-menu absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-dark-bg-secondary ring-1 ring-black ring-opacity-5 focus:outline-none"
-                            style="display: none; z-index: 100;">
-                            <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                                <a href="#" data-lang="es"
-                                    class="block px-4 py-2 text-sm text-light-text dark:text-dark-text hover:bg-gray-100 dark:hover:bg-gray-700"
-                                    role="menuitem">Español</a>
-                                <a href="#" data-lang="qu"
-                                    class="block px-4 py-2 text-sm text-light-text dark:text-dark-text hover:bg-gray-100 dark:hover:bg-gray-700"
-                                    role="menuitem">Quechua</a>
-                                <a href="#" data-lang="ay"
-                                    class="block px-4 py-2 text-sm text-light-text dark:text-dark-text hover:bg-gray-100 dark:hover:bg-gray-700"
-                                    role="menuitem">Aimara</a>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-
-                <div class="flex items-center">
-                    <button id="theme-toggle" type="button"
-                        class="p-2 rounded-full text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-                        aria-label="Toggle dark mode">
-                        <svg id="theme-toggle-dark-icon" class="hidden w-6 h-6" xmlns="http://www.w3.org/2000/svg"
-                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                        </svg>
-                        <svg id="theme-toggle-light-icon" class="hidden w-6 h-6" xmlns="http://www.w3.org/2000/svg"
-                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="5"></circle>
-                            <line x1="12" y1="1" x2="12" y2="3"></line>
-                            <line x1="12" y1="21" x2="12" y2="23"></line>
-                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                            <line x1="1" y1="12" x2="3" y2="12"></line>
-                            <line x1="21" y1="12" x2="23" y2="12"></line>
-                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                        </svg>
-                    </button>
-                    <div class="md:hidden ml-2">
-                        <button id="mobile-menu-button" type="button"
-                            class="p-2 rounded-md text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700"
-                            aria-controls="mobile-menu" aria-expanded="false">
-                            <span class="sr-only">Open main menu</span>
-                            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 6h16M4 12h16m-7 6h7"></path>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="hidden md:hidden" id="mobile-menu">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="index.html"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Inicio</a>
-                <a href="html/calendario.html"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Calendario</a>
-                <a href="html/candidatos.html"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Candidatos</a>
-                <a href="html/partido-politico.html"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Partido
-                    Político</a>
-                <a href="html/donde-voto.html"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">¿Dónde
-                    Voto?</a>
-                <a href="html/noticias.html"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Noticias</a>
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+          <div class="flex-shrink-0">
+            <a href="#" class="flex flex-col items-start">
+              <span class="font-bold text-xl text-primary tracking-tight">ELECCIONES PERÚ 2026</span>
+              <span class="text-xs text-light-text-secondary dark:text-dark-text-secondary">Infórmate Perú</span>
+            </a>
+          </div>
+          
+          <nav class="hidden md:flex md:items-center md:space-x-8">
+            <a href="index.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors" data-translate="nav_inicio">Inicio</a>
+            <a href="html/calendario.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors" data-translate="nav_calendario">Calendario</a>
+            <a href="html/candidatos.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors" data-translate="nav_candidatos">Candidatos</a>
+            <a href="html/partido-politico.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors" data-translate="nav_partido_politico">Partido Político</a>
+            <a href="html/donde-voto.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors" data-translate="nav_donde_voto">¿Dónde Voto?</a>
+            <a href="html/noticias.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors" data-translate="nav_noticias">Noticias</a>
+            <div class="relative inline-block text-left language-dropdown">
                 <a href="#"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Idioma</a>
+                    class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors flex items-center" data-translate="nav_idioma">
+                    Idioma
+                    <svg class="w-4 h-4 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </a>
+                <div class="language-dropdown-menu absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-dark-bg-secondary ring-1 ring-black ring-opacity-5 focus:outline-none"
+                    style="display: none; z-index: 100;">
+                    <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                        <a href="#" data-lang="es" class="block px-4 py-2 text-sm text-light-text dark:text-dark-text hover:bg-gray-100 dark:hover:bg-gray-700"
+                            role="menuitem">Español</a>
+                        <a href="#" data-lang="qu" class="block px-4 py-2 text-sm text-light-text dark:text-dark-text hover:bg-gray-100 dark:hover:bg-gray-700"
+                            role="menuitem">Quechua</a>
+                        <a href="#" data-lang="ay" class="block px-4 py-2 text-sm text-light-text dark:text-dark-text hover:bg-gray-100 dark:hover:bg-gray-700"
+                            role="menuitem">Aimara</a>
+                    </div>
+                </div>
             </div>
+          </nav>
+
+          <div class="flex items-center">
+             <button id="theme-toggle" type="button" class="p-2 rounded-full text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" aria-label="Toggle dark mode">
+                <svg id="theme-toggle-dark-icon" class="hidden w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                <svg id="theme-toggle-light-icon" class="hidden w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </button>
+            <div class="md:hidden ml-2">
+              <button id="mobile-menu-button" type="button" class="p-2 rounded-md text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700" aria-controls="mobile-menu" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <div class="hidden md:hidden" id="mobile-menu">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors" data-translate="nav_inicio">Inicio</a>
+          <a href="html/calendario.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors" data-translate="nav_calendario">Calendario</a>
+          <a href="html/candidatos.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors" data-translate="nav_candidatos">Candidatos</a>
+          <a href="html/partido-politico.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors" data-translate="nav_partido_politico">Partido Político</a>
+          <a href="html/donde-voto.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors" data-translate="nav_donde_voto">¿Dónde Voto?</a>
+          <a href="html/noticias.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors" data-translate="nav_noticias">Noticias</a>
+          <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors" data-translate="nav_idioma">Idioma</a>
+        </div>
+      </div>
     </header>
 
     <main>
         <div class="relative h-[80vh] min-h-[600px] flex items-center justify-center text-white">
             <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('images/bg-hero.jpg')"></div>
             <div class="absolute inset-0 bg-gradient-to-r from-secondary/70 via-primary/50 to-blue-500/70"></div>
-
+            
             <div class="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
-
-                <h1 class="text-6xl md:text-8xl font-black uppercase tracking-tighter text-shadow-lg">
-                    Elecciones <span class="text-cyan-300">2026</span>
+                                
+                <h1 class="text-6xl md:text-8xl font-black uppercase tracking-tighter text-shadow-lg" data-translate="hero_title">
+                Elecciones <span class="text-cyan-300">2026</span>
                 </h1>
-
+                
                 <div class="mt-12 bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-2xl w-full max-w-4xl">
-                    <h2 class="text-2xl md:text-3xl font-bold mb-2">Tu Voz, Tu Voto. Elecciones Generales Perú 2026</h2>
-                    <p class="text-red-300 font-semibold mb-6">Información esencial y en tiempo real para un proceso
-                        transparente.</p>
+                    <h2 class="text-2xl md:text-3xl font-bold mb-2" data-translate="hero_subtitle">Tu Voz, Tu Voto. Elecciones Generales Perú 2026</h2>
+                    <p class="text-red-300 font-semibold mb-6" data-translate="hero_description">Información esencial y en tiempo real para un proceso transparente.</p>
                     <div id="countdown-timer" class="flex space-x-2 sm:space-x-4 text-center justify-center">
                         <div class="bg-black/70 p-4 rounded-lg w-20 sm:w-28 flex flex-col items-center justify-center">
                             <span id="months" class="text-3xl sm:text-5xl font-bold text-white">00</span>
@@ -243,145 +164,103 @@
 
         <div class="py-16 md:py-24 bg-light-bg dark:bg-dark-bg">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
-
+                
                 <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div
-                        class="relative rounded-2xl overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300 group">
-                        <img src="images/info-card-1.jpg" alt="¿DÓNDE VOTO?" class="w-full h-full object-cover" />
+                    <div class="relative rounded-2xl overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300 group">
+                        <img src="images/info-card-1.jpg" alt="¿DÓNDE VOTO?" class="w-full h-full object-cover"/>
                         <div class="absolute inset-0 bg-black/60 group-hover:bg-black/70 transition-colors"></div>
                         <div class="absolute inset-0 flex flex-col items-center justify-center p-4 text-white">
-                            <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                <circle cx="12" cy="10" r="3"></circle>
-                            </svg>
+                            <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                             <h3 class="mt-2 text-xl font-bold text-center">¿DÓNDE VOTO?</h3>
                         </div>
                     </div>
-                    <div
-                        class="relative rounded-2xl overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300 group">
-                        <img src="images/info-card-2.jpg" alt="CONOCE A TUS CANDIDATOS"
-                            class="w-full h-full object-cover" />
+                    <div class="relative rounded-2xl overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300 group">
+                        <img src="images/info-card-2.jpg" alt="CONOCE A TUS CANDIDATOS" class="w-full h-full object-cover"/>
                         <div class="absolute inset-0 bg-black/60 group-hover:bg-black/70 transition-colors"></div>
                         <div class="absolute inset-0 flex flex-col items-center justify-center p-4 text-white">
-                            <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                            </svg>
+                            <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                             <h3 class="mt-2 text-xl font-bold text-center">CONOCE A TUS CANDIDATOS</h3>
                         </div>
                     </div>
-                    <div
-                        class="relative rounded-2xl overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300 group">
-                        <img src="images/info-card-3.jpg" alt="¿ERES MIEMBRO DE MESA?"
-                            class="w-full h-full object-cover" />
+                    <div class="relative rounded-2xl overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300 group">
+                        <img src="images/info-card-3.jpg" alt="¿ERES MIEMBRO DE MESA?" class="w-full h-full object-cover"/>
                         <div class="absolute inset-0 bg-black/60 group-hover:bg-black/70 transition-colors"></div>
                         <div class="absolute inset-0 flex flex-col items-center justify-center p-4 text-white">
-                            <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14.75 17.5 19.5 22.25"></path>
-                                <path
-                                    d="m14 18-6-6h9a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v3a3 3 0 0 0 3 3h1.25">
-                                </path>
-                            </svg>
+                            <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.75 17.5 19.5 22.25"></path><path d="m14 18-6-6h9a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v3a3 3 0 0 0 3 3h1.25"></path></svg>
                             <h3 class="mt-2 text-xl font-bold text-center">¿ERES MIEMBRO DE MESA?</h3>
                         </div>
                     </div>
                 </section>
-
+                
                 <section>
                     <h2 class="text-3xl font-bold text-center mb-12">ELECCIONES GENERALES 2026</h2>
                     <div class="flex flex-wrap justify-center gap-8 md:gap-16">
                         <div class="flex flex-col items-center text-center space-y-2">
                             <div class="relative">
-                                <div
-                                    class="w-32 h-32 rounded-full bg-light-bg-secondary dark:bg-dark-bg-secondary shadow-md flex items-center justify-center border-4 border-blue-500">
-                                    <img src="images/role-presidente.png" alt="Presidente"
-                                        class="w-24 h-24 object-contain" />
+                                <div class="w-32 h-32 rounded-full bg-light-bg-secondary dark:bg-dark-bg-secondary shadow-md flex items-center justify-center border-4 border-blue-500">
+                                    <img src="images/role-presidente.png" alt="Presidente" class="w-24 h-24 object-contain" />
                                 </div>
-                                <span
-                                    class="absolute -top-1 -left-1 bg-primary text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">1</span>
+                                <span class="absolute -top-1 -left-1 bg-primary text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">1</span>
                             </div>
                             <h4 class="font-semibold text-light-text dark:text-dark-text">Presidente</h4>
                         </div>
                         <div class="flex flex-col items-center text-center space-y-2">
                             <div class="relative">
-                                <div
-                                    class="w-32 h-32 rounded-full bg-light-bg-secondary dark:bg-dark-bg-secondary shadow-md flex items-center justify-center border-4 border-blue-500">
-                                    <img src="images/role-vice.png" alt="Vicepresidentes"
-                                        class="w-24 h-24 object-contain" />
+                                <div class="w-32 h-32 rounded-full bg-light-bg-secondary dark:bg-dark-bg-secondary shadow-md flex items-center justify-center border-4 border-blue-500">
+                                    <img src="images/role-vice.png" alt="Vicepresidentes" class="w-24 h-24 object-contain" />
                                 </div>
-                                <span
-                                    class="absolute -top-1 -left-1 bg-primary text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">2</span>
+                                <span class="absolute -top-1 -left-1 bg-primary text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">2</span>
                             </div>
                             <h4 class="font-semibold text-light-text dark:text-dark-text">Vicepresidentes</h4>
                         </div>
                         <div class="flex flex-col items-center text-center space-y-2">
                             <div class="relative">
-                                <div
-                                    class="w-32 h-32 rounded-full bg-light-bg-secondary dark:bg-dark-bg-secondary shadow-md flex items-center justify-center border-4 border-blue-500">
-                                    <img src="images/role-senadores.png" alt="Senadores"
-                                        class="w-24 h-24 object-contain" />
+                                <div class="w-32 h-32 rounded-full bg-light-bg-secondary dark:bg-dark-bg-secondary shadow-md flex items-center justify-center border-4 border-blue-500">
+                                    <img src="images/role-senadores.png" alt="Senadores" class="w-24 h-24 object-contain" />
                                 </div>
-                                <span
-                                    class="absolute -top-1 -left-1 bg-primary text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">60</span>
+                                <span class="absolute -top-1 -left-1 bg-primary text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">60</span>
                             </div>
                             <h4 class="font-semibold text-light-text dark:text-dark-text">Senadores</h4>
                         </div>
                         <div class="flex flex-col items-center text-center space-y-2">
                             <div class="relative">
-                                <div
-                                    class="w-32 h-32 rounded-full bg-light-bg-secondary dark:bg-dark-bg-secondary shadow-md flex items-center justify-center border-4 border-blue-500">
-                                    <img src="images/role-diputados.png" alt="Diputados"
-                                        class="w-24 h-24 object-contain" />
+                                <div class="w-32 h-32 rounded-full bg-light-bg-secondary dark:bg-dark-bg-secondary shadow-md flex items-center justify-center border-4 border-blue-500">
+                                    <img src="images/role-diputados.png" alt="Diputados" class="w-24 h-24 object-contain" />
                                 </div>
-                                <span
-                                    class="absolute -top-1 -left-1 bg-primary text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">130</span>
+                                <span class="absolute -top-1 -left-1 bg-primary text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">130</span>
                             </div>
                             <h4 class="font-semibold text-light-text dark:text-dark-text">Diputados</h4>
                         </div>
                         <div class="flex flex-col items-center text-center space-y-2">
                             <div class="relative">
-                                <div
-                                    class="w-32 h-32 rounded-full bg-light-bg-secondary dark:bg-dark-bg-secondary shadow-md flex items-center justify-center border-4 border-blue-500">
-                                    <img src="images/role-andino.png" alt="Parlamento Andino"
-                                        class="w-24 h-24 object-contain" />
+                                <div class="w-32 h-32 rounded-full bg-light-bg-secondary dark:bg-dark-bg-secondary shadow-md flex items-center justify-center border-4 border-blue-500">
+                                    <img src="images/role-andino.png" alt="Parlamento Andino" class="w-24 h-24 object-contain" />
                                 </div>
-                                <span
-                                    class="absolute -top-1 -left-1 bg-primary text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">5</span>
+                                <span class="absolute -top-1 -left-1 bg-primary text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">5</span>
                             </div>
                             <h4 class="font-semibold text-light-text dark:text-dark-text">Parlamento Andino</h4>
                         </div>
                     </div>
                 </section>
-
+                
                 <section>
                     <h2 class="text-3xl font-bold text-center mb-12">NOTICIAS DESTACADAS</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div
-                            class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-xl shadow-md p-4 flex items-center space-x-4 hover:shadow-xl transition-shadow">
+                        <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-xl shadow-md p-4 flex items-center space-x-4 hover:shadow-xl transition-shadow">
                             <img src="images/news-1.jpg" alt="Candidato" class="w-16 h-16 rounded-full object-cover" />
                             <div>
                                 <h4 class="font-bold">Planes de Gobierno:</h4>
                                 <p class="text-primary text-sm">¿Qué proponen?</p>
                             </div>
                         </div>
-                        <div
-                            class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-xl shadow-md p-4 flex items-center space-x-4 hover:shadow-xl transition-shadow">
+                        <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-xl shadow-md p-4 flex items-center space-x-4 hover:shadow-xl transition-shadow">
                             <img src="images/news-2.jpg" alt="Candidato" class="w-16 h-16 rounded-full object-cover" />
                             <div>
                                 <h4 class="font-bold">Planes de Gobierno:</h4>
                                 <p class="text-primary text-sm">¿Qué proponen?</p>
                             </div>
                         </div>
-                        <div
-                            class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-xl shadow-md p-4 flex items-center space-x-4 hover:shadow-xl transition-shadow">
+                        <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-xl shadow-md p-4 flex items-center space-x-4 hover:shadow-xl transition-shadow">
                             <img src="images/news-3.jpg" alt="Candidato" class="w-16 h-16 rounded-full object-cover" />
                             <div>
                                 <h4 class="font-bold">Planes de Gobierno:</h4>
@@ -390,181 +269,113 @@
                         </div>
                     </div>
                 </section>
-
+                
                 <section class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
                     <div class="w-full">
                         <h2 class="text-2xl font-bold mb-2">📊 RANKING DE CANDIDATOS</h2>
-                        <p class="text-light-text-secondary dark:text-dark-text-secondary mb-6 text-sm">Simulación
-                            basada en Ipsos Perú - Intención de Voto para Plancha Presidencial</p>
+                        <p class="text-light-text-secondary dark:text-dark-text-secondary mb-6 text-sm">Simulación basada en Ipsos Perú - Intención de Voto para Plancha Presidencial</p>
                         <div class="space-y-3">
-                            <div
-                                class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-lg p-3 flex items-center space-x-4 border-l-4 border-yellow-400">
+                            <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-lg p-3 flex items-center space-x-4 border-l-4 border-yellow-400">
                                 <div class="text-2xl">🥇</div>
                                 <div class="flex-grow">
                                     <p class="font-bold">Julio Casas</p>
-                                    <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Fuerza
-                                        Popular</p>
+                                    <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Fuerza Popular</p>
                                 </div>
                                 <p class="font-semibold text-primary">38%</p>
-                                <div
-                                    class="px-2 py-1 text-xs font-bold rounded bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300">
-                                    +2.1%</div>
+                                <div class="px-2 py-1 text-xs font-bold rounded bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300">+2.1%</div>
                             </div>
-                            <div
-                                class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-lg p-3 flex items-center space-x-4 border-l-4 border-gray-400">
+                            <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-lg p-3 flex items-center space-x-4 border-l-4 border-gray-400">
                                 <div class="text-2xl">🥈</div>
                                 <div class="flex-grow">
                                     <p class="font-bold">Martina Guerra</p>
-                                    <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Alianza
-                                        para el Progreso</p>
+                                    <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Alianza para el Progreso</p>
                                 </div>
                                 <p class="font-semibold text-primary">32%</p>
-                                <div
-                                    class="px-2 py-1 text-xs font-bold rounded bg-red-100 dark:bg-red-900 text-red-500 dark:text-red-300">
-                                    -0.5%</div>
+                                <div class="px-2 py-1 text-xs font-bold rounded bg-red-100 dark:bg-red-900 text-red-500 dark:text-red-300">-0.5%</div>
                             </div>
-                            <div
-                                class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-lg p-3 flex items-center space-x-4 border-l-4 border-orange-400">
+                            <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-lg p-3 flex items-center space-x-4 border-l-4 border-orange-400">
                                 <div class="text-2xl">🥉</div>
                                 <div class="flex-grow">
                                     <p class="font-bold">Franco Sifuentes</p>
-                                    <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Perú
-                                        Libre</p>
+                                    <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Perú Libre</p>
                                 </div>
                                 <p class="font-semibold text-primary">28%</p>
-                                <div
-                                    class="px-2 py-1 text-xs font-bold rounded bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300">
-                                    +1.8%</div>
+                                <div class="px-2 py-1 text-xs font-bold rounded bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300">+1.8%</div>
                             </div>
-                            <div
-                                class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-lg p-3 flex items-center space-x-4 border-l-4 border-blue-400">
-                                <div
-                                    class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 w-8 h-8 rounded-full flex items-center justify-center font-bold">
-                                    4</div>
+                            <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-lg p-3 flex items-center space-x-4 border-l-4 border-blue-400">
+                                <div class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 w-8 h-8 rounded-full flex items-center justify-center font-bold">4</div>
                                 <div class="flex-grow">
                                     <p class="font-bold">Daniela Montes</p>
-                                    <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">
-                                        Renovación Popular</p>
+                                    <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Renovación Popular</p>
                                 </div>
                                 <p class="font-semibold text-primary">25%</p>
-                                <div
-                                    class="px-2 py-1 text-xs font-bold rounded bg-red-100 dark:bg-red-900 text-red-500 dark:text-red-300">
-                                    -1.5%</div>
+                                <div class="px-2 py-1 text-xs font-bold rounded bg-red-100 dark:bg-red-900 text-red-500 dark:text-red-300">-1.5%</div>
                             </div>
-                            <div
-                                class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-lg p-3 flex items-center space-x-4 border-l-4 border-purple-400">
-                                <div
-                                    class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 w-8 h-8 rounded-full flex items-center justify-center font-bold">
-                                    5</div>
+                            <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-lg p-3 flex items-center space-x-4 border-l-4 border-purple-400">
+                                <div class="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 w-8 h-8 rounded-full flex items-center justify-center font-bold">5</div>
                                 <div class="flex-grow">
                                     <p class="font-bold">Roberto Paz</p>
-                                    <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Somos
-                                        Perú</p>
+                                    <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Somos Perú</p>
                                 </div>
                                 <p class="font-semibold text-primary">18%</p>
-                                <div
-                                    class="px-2 py-1 text-xs font-bold rounded bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300">
-                                    +0.9%</div>
+                                <div class="px-2 py-1 text-xs font-bold rounded bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300">+0.9%</div>
                             </div>
                         </div>
-                        <a href="html/ranking-candidatos.html"
-                            class="mt-6 block w-full bg-gray-900 dark:bg-gray-200 text-white dark:text-gray-900 font-bold py-3 rounded-lg hover:bg-gray-700 dark:hover:bg-white transition-colors text-center">
+                        <a href="html/ranking-candidatos.html" class="mt-6 block w-full bg-gray-900 dark:bg-gray-200 text-white dark:text-gray-900 font-bold py-3 rounded-lg hover:bg-gray-700 dark:hover:bg-white transition-colors text-center">
                             Ver ranking Completo
                         </a>
-                        <p class="text-center text-sm text-light-text-secondary dark:text-dark-text-secondary mt-2">⏱️
-                            Actualizado el 16 de noviembre de 2025</p>
+                        <p class="text-center text-sm text-light-text-secondary dark:text-dark-text-secondary mt-2">⏱️ Actualizado el 16 de noviembre de 2025</p>
                     </div>
 
                     <div class="w-full">
-                        <h2 class="text-2xl font-bold mb-2">¿QUÉ PROPONES PARA TU FUTURO?</h2>
-                        <p
-                            class="text-light-text-secondary dark:text-dark-text-secondary mb-6 text-red-600 dark:text-red-400">
-                            Explora las principales propuestas de los candidatos presidenciales en temas clave para el
-                            desarrollo del país.</p>
-                        <div class="grid grid-cols-2 gap-6">
-                            <div
-                                class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-2xl p-6 flex flex-col items-center justify-center space-y-3 text-center shadow-md hover:shadow-xl hover:scale-105 transition-all">
+                         <h2 class="text-2xl font-bold mb-2">¿QUÉ PROPONES PARA TU FUTURO?</h2>
+                         <p class="text-light-text-secondary dark:text-dark-text-secondary mb-6 text-red-600 dark:text-red-400">Explora las principales propuestas de los candidatos presidenciales en temas clave para el desarrollo del país.</p>
+                         <div class="grid grid-cols-2 gap-6">
+                            <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-2xl p-6 flex flex-col items-center justify-center space-y-3 text-center shadow-md hover:shadow-xl hover:scale-105 transition-all">
                                 <div class="w-16 h-16 rounded-full flex items-center justify-center bg-blue-500">
-                                    <svg class="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" width="24"
-                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
-                                        <path d="M6 12v5c0 1.66 4 3 6 3s6-1.34 6-3v-5"></path>
-                                    </svg>
+                                    <svg class="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 1.66 4 3 6 3s6-1.34 6-3v-5"></path></svg>
                                 </div>
                                 <h4 class="font-bold">EDUCACIÓN</h4>
                             </div>
-                            <div
-                                class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-2xl p-6 flex flex-col items-center justify-center space-y-3 text-center shadow-md hover:shadow-xl hover:scale-105 transition-all">
+                            <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-2xl p-6 flex flex-col items-center justify-center space-y-3 text-center shadow-md hover:shadow-xl hover:scale-105 transition-all">
                                 <div class="w-16 h-16 rounded-full flex items-center justify-center bg-red-500">
-                                    <svg class="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" width="24"
-                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path
-                                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                                        </path>
-                                    </svg>
+                                    <svg class="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
                                 </div>
                                 <h4 class="font-bold">SALUD</h4>
                             </div>
-                            <div
-                                class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-2xl p-6 flex flex-col items-center justify-center space-y-3 text-center shadow-md hover:shadow-xl hover:scale-105 transition-all">
+                            <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-2xl p-6 flex flex-col items-center justify-center space-y-3 text-center shadow-md hover:shadow-xl hover:scale-105 transition-all">
                                 <div class="w-16 h-16 rounded-full flex items-center justify-center bg-green-500">
-                                    <svg class="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" width="24"
-                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <line x1="12" y1="20" x2="12" y2="10"></line>
-                                        <line x1="18" y1="20" x2="18" y2="4"></line>
-                                        <line x1="6" y1="20" x2="6" y2="16"></line>
-                                    </svg>
+                                    <svg class="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
                                 </div>
                                 <h4 class="font-bold">ECONOMÍA</h4>
                             </div>
-                            <div
-                                class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-2xl p-6 flex flex-col items-center justify-center space-y-3 text-center shadow-md hover:shadow-xl hover:scale-105 transition-all">
+                            <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-2xl p-6 flex flex-col items-center justify-center space-y-3 text-center shadow-md hover:shadow-xl hover:scale-105 transition-all">
                                 <div class="w-16 h-16 rounded-full flex items-center justify-center bg-gray-700">
-                                    <svg class="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" width="24"
-                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                                        <path d="m9 12 2 2 4-4"></path>
-                                    </svg>
+                                    <svg class="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
                                 </div>
                                 <h4 class="font-bold">SEGURIDAD</h4>
                             </div>
-                            <div
-                                class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-2xl p-6 flex flex-col items-center justify-center space-y-3 text-center shadow-md hover:shadow-xl hover:scale-105 transition-all">
+                            <div class="bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-2xl p-6 flex flex-col items-center justify-center space-y-3 text-center shadow-md hover:shadow-xl hover:scale-105 transition-all">
                                 <div class="w-16 h-16 rounded-full flex items-center justify-center bg-teal-500">
-                                    <svg class="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" width="24"
-                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M20 12c0 4.4-3.6 8-8 8s-8-3.6-8-8 3.6-8 8-8c.5 0 1 .1 1.5.2"></path>
-                                        <path d="M12 16a6 6 0 0 0 0-12v12z"></path>
-                                        <path d="M12 2c3.3 0 6 2.7 6 6s-2.7 6-6 6"></path>
-                                    </svg>
+                                    <svg class="w-8 h-8 text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12c0 4.4-3.6 8-8 8s-8-3.6-8-8 3.6-8 8-8c.5 0 1 .1 1.5.2"></path><path d="M12 16a6 6 0 0 0 0-12v12z"></path><path d="M12 2c3.3 0 6 2.7 6 6s-2.7 6-6 6"></path></svg>
                                 </div>
                                 <h4 class="font-bold">AMBIENTE</h4>
                             </div>
-                        </div>
+                         </div>
                     </div>
                 </section>
-
+                
                 <section class="flex flex-col md:flex-row items-center justify-between">
                     <div class="flex items-center space-x-4 mb-8 md:mb-0">
-                        <svg class="w-12 h-12 text-red-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                        </svg>
+                        <svg class="w-12 h-12 text-red-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
                         <div>
                             <h3 class="text-xl font-bold">Tutorial de Voto</h3>
-                            <p class="text-light-text-secondary dark:text-dark-text-secondary">Aprende a usar la app y a
-                                votar correctamente.</p>
+                            <p class="text-light-text-secondary dark:text-dark-text-secondary">Aprende a usar la app y a votar correctamente.</p>
                         </div>
                     </div>
-
+                    <div>
+                      <img src="images/chatbot.png" alt="chatbot" class="w-24 h-24" />
+                    </div>
                 </section>
             </div>
         </div>
@@ -574,17 +385,12 @@
         <div class="bg-light-text dark:bg-dark-text text-light-bg-secondary dark:text-dark-bg-secondary py-12">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
                 <h2 class="text-xl md:text-2xl font-serif max-w-2xl text-center md:text-left mb-6 md:mb-0">
-                    Mantente al día. Suscríbete y se el primero en recibir las noticias y alertas críticas de las
-                    Elecciones Generales Perú.
+                    Mantente al día. Suscríbete y se el primero en recibir las noticias y alertas críticas de las Elecciones Generales Perú.
                 </h2>
                 <form class="w-full max-w-md" id="newsletter-form">
                     <div class="flex items-center bg-white rounded-lg overflow-hidden">
-                        <input type="email" placeholder="Escribe tu correo aquí"
-                            class="w-full p-3 text-gray-800 placeholder-gray-500 focus:outline-none" required
-                            aria-label="Email para suscripción" />
-                        <button type="submit"
-                            class="bg-gray-800 text-white font-bold px-6 py-3 hover:bg-gray-700 transition-colors"
-                            aria-label="Suscribirse a newsletter">
+                        <input type="email" placeholder="Escribe tu correo aquí" class="w-full p-3 text-gray-800 placeholder-gray-500 focus:outline-none" required aria-label="Email para suscripción" />
+                        <button type="submit" class="bg-gray-800 text-white font-bold px-6 py-3 hover:bg-gray-700 transition-colors" aria-label="Suscribirse a newsletter">
                             Inscribirme
                         </button>
                     </div>
@@ -599,7 +405,7 @@
                         <h3 class="text-sm font-semibold uppercase tracking-wider mb-4">Una iniciativa de:</h3>
                         <div class="flex items-center space-x-6 mb-4">
                             <img src="img/logo-el-comercio.jpg" alt="El Comercio" class="h-10 bg-yellow-400 p-2" />
-                            <img src="img/logo-utp.jpg" alt="UTP" class="h-12 bg-red-600 p-2" />
+                            <img src="img/logo-utp.jpg" alt="UTP" class="h-12 bg-red-600 p-2"/>
                         </div>
                         <p class="text-sm">Equipo Hackathon. Todos los datos son obtenidos de fuentes públicas.</p>
                     </div>
@@ -607,26 +413,19 @@
                     <div>
                         <h3 class="text-sm font-semibold uppercase tracking-wider mb-4">Recursos</h3>
                         <ul class="space-y-2 text-sm">
-                            <li><a href="https://www.utp.edu.pe/sites/default/files/2025-10/Hackathon-UTP-El-Comercio-2025.pdf"
-                                    class="hover:text-primary transition-colors">Términos y condiciones de uso</a></li>
-                            <li><a href="https://www.utp.edu.pe/sites/default/files/2025-10/Hackathon-UTP-El-Comercio-2025.pdf"
-                                    class="hover:text-primary transition-colors">Buenas prácticas</a></li>
-                            <li><a href="https://www.utp.edu.pe/sites/default/files/2025-10/Hackathon-UTP-El-Comercio-2025.pdf"
-                                    class="hover:text-primary transition-colors">Políticas de privacidad</a></li>
-                            <li><a href="https://www.utp.edu.pe/sites/default/files/2025-10/Hackathon-UTP-El-Comercio-2025.pdf"
-                                    class="hover:text-primary transition-colors">Política integrada de gestión</a></li>
-                            <li><a href="https://www.utp.edu.pe/sites/default/files/2025-10/Hackathon-UTP-El-Comercio-2025.pdf"
-                                    class="hover:text-primary transition-colors">Política de cookies</a></li>
-                            <li><a href="https://www.utp.edu.pe/sites/default/files/2025-10/Hackathon-UTP-El-Comercio-2025.pdf"
-                                    class="hover:text-primary transition-colors">Contáctanos</a></li>
+                            <li><a href="https://www.utp.edu.pe/sites/default/files/2025-10/Hackathon-UTP-El-Comercio-2025.pdf" class="hover:text-primary transition-colors">Términos y condiciones de uso</a></li>
+                            <li><a href="https://www.utp.edu.pe/sites/default/files/2025-10/Hackathon-UTP-El-Comercio-2025.pdf" class="hover:text-primary transition-colors">Buenas prácticas</a></li>
+                            <li><a href="https://www.utp.edu.pe/sites/default/files/2025-10/Hackathon-UTP-El-Comercio-2025.pdf" class="hover:text-primary transition-colors">Políticas de privacidad</a></li>
+                            <li><a href="https://www.utp.edu.pe/sites/default/files/2025-10/Hackathon-UTP-El-Comercio-2025.pdf" class="hover:text-primary transition-colors">Política integrada de gestión</a></li>
+                            <li><a href="https://www.utp.edu.pe/sites/default/files/2025-10/Hackathon-UTP-El-Comercio-2025.pdf" class="hover:text-primary transition-colors">Política de cookies</a></li>
+                            <li><a href="https://www.utp.edu.pe/sites/default/files/2025-10/Hackathon-UTP-El-Comercio-2025.pdf" class="hover:text-primary transition-colors">Contáctanos</a></li>
                         </ul>
                     </div>
                 </div>
 
-                <div
-                    class="mt-12 border-t border-gray-300 dark:border-gray-700 pt-8 flex flex-col sm:flex-row justify-between items-center">
-                    <p class="text-sm mb-4 sm:mb-0">&copy; 2025 Elecciones Perú 2026. Todos los derechos reservados.</p>
-
+                <div class="mt-12 border-t border-gray-300 dark:border-gray-700 pt-8 flex flex-col sm:flex-row justify-between items-center">
+                     <p class="text-sm mb-4 sm:mb-0">&copy; 2025 Elecciones Perú 2026. Todos los derechos reservados.</p>
+                     
                 </div>
             </div>
         </div>
@@ -634,26 +433,21 @@
 
     <script src="js/script.js"></script>
     <script>
-            (function () { if (!window.chatbase || window.chatbase("getState") !== "initialized") { window.chatbase = (...arguments) => { if (!window.chatbase.q) { window.chatbase.q = [] } window.chatbase.q.push(arguments) }; window.chatbase = new Proxy(window.chatbase, { get(target, prop) { if (prop === "q") { return target.q } return (...args) => target(prop, ...args) } }) } const onLoad = function () { const script = document.createElement("script"); script.src = "https://www.chatbase.co/embed.min.js"; script.id = "6uOPwrkFOT7qzxZHL1vmI"; script.domain = "www.chatbase.co"; document.body.appendChild(script) }; if (document.readyState === "complete") { onLoad() } else { window.addEventListener("load", onLoad) } })();
-    </script>
-
-    <script>
-        // Newsletter form validation
-        document.addEventListener('DOMContentLoaded', function () {
-            const form = document.getElementById('newsletter-form');
-            if (form) {
-                form.addEventListener('submit', function (e) {
-                    const emailInput = form.querySelector('input[type="email"]');
-                    if (!emailInput.value.trim() || !emailInput.checkValidity()) {
-                        e.preventDefault();
-                        alert('Por favor ingresa un correo electrónico válido');
-                        emailInput.focus();
-                    }
-                });
+      // Newsletter form validation
+      document.addEventListener('DOMContentLoaded', function(){
+        const form = document.getElementById('newsletter-form');
+        if(form){
+          form.addEventListener('submit', function(e){
+            const emailInput = form.querySelector('input[type="email"]');
+            if(!emailInput.value.trim() || !emailInput.checkValidity()){
+              e.preventDefault();
+              alert('Por favor ingresa un correo electrónico válido');
+              emailInput.focus();
             }
-        });
+          });
+        }
+      });
     </script>
     <script src="js/idioma.js"></script>
 </body>
-
 </html>

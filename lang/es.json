@@ -3,9 +3,12 @@
   "nav_calendario": "Calendario",
   "nav_candidatos": "Candidatos",
   "nav_partido_politico": "Partido Político",
+  "nav_donde_voto": "¿Dónde Voto?",
   "nav_noticias": "Noticias",
   "nav_idioma": "Idioma",
   "hero_title": "Elecciones 2026",
   "hero_subtitle": "Tu Voz, Tu Voto. Elecciones Generales Perú 2026",
-  "hero_description": "Información esencial y en tiempo real para un proceso transparente."
+  "hero_description": "Información esencial y en tiempo real para un proceso transparente.",
+  "donde_voto_title": "¿Dónde Voto?",
+  "donde_voto_subtitle": "Encuentra tu local de votación y toda la información que necesitas."
 }

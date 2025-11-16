@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
         try {
-            const response = await fetch(`../lang/${lang}.json`);
+            const path = window.location.pathname.includes('/html/') ? '../lang/' : 'lang/';
+            const response = await fetch(`${path}${lang}.json`);
             if (!response.ok) {
                 throw new Error(`Failed to load ${lang}.json`);
             }
