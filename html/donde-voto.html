@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es" class="">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>¿Dónde Voto? - Elecciones Perú 2026</title>
+    <!-- Theme detection script -->
+    <script>
+      (function() {
+        const isDarkMode = localStorage.getItem('color-theme') === 'dark' || 
+                           (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (isDarkMode) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#DC2626',
+              secondary: '#1D4ED8',
+              dark: {
+                bg: '#111827',
+                'bg-secondary': '#1F2937',
+                text: '#F9FAFB',
+                'text-secondary': '#9CA3AF',
+              },
+              light: {
+                 bg: '#F9FAFB',
+                'bg-secondary': '#FFFFFF',
+                text: '#111827',
+                'text-secondary': '#4B5563',
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    <link rel="stylesheet" href="../css/style.css">
+  </head>
+  <body class="bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text font-sans transition-colors duration-300">
+    
+    <header class="bg-light-bg-secondary/80 dark:bg-dark-bg-secondary/80 backdrop-blur-sm sticky top-0 z-50 shadow-md">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+          <div class="flex-shrink-0">
+            <a href="../index.html" class="flex flex-col items-start">
+              <span class="font-bold text-xl text-primary tracking-tight">ELECCIONES PERÚ 2026</span>
+              <span class="text-xs text-light-text-secondary dark:text-dark-text-secondary">Infórmate Perú</span>
+            </a>
+          </div>
+          
+          <nav class="hidden md:flex md:items-center md:space-x-8">
+            <a href="../index.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Inicio</a>
+            <a href="calendario.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Calendario</a>
+            <a href="candidatos.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Candidatos</a>
+            <a href="partido-politico.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Partido Político</a>
+            <a href="donde-voto.html" class="text-sm font-medium text-primary dark:text-primary transition-colors font-semibold">¿Dónde Voto?</a>
+            <a href="noticias.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Noticias</a>
+            <a href="#" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Idioma</a>
+          </nav>
+
+          <div class="flex items-center">
+             <button id="theme-toggle" type="button" class="p-2 rounded-full text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" aria-label="Toggle dark mode">
+                <svg id="theme-toggle-dark-icon" class="hidden w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                <svg id="theme-toggle-light-icon" class="hidden w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </button>
+            <div class="md:hidden ml-2">
+              <button id="mobile-menu-button" type="button" class="p-2 rounded-md text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700" aria-controls="mobile-menu" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hidden md:hidden" id="mobile-menu">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a href="../index.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Inicio</a>
+          <a href="calendario.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Calendario</a>
+          <a href="candidatos.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Candidatos</a>
+          <a href="partido-politico.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Partido Político</a>
+          <a href="donde-voto.html" class="block px-3 py-2 rounded-md text-base font-medium text-primary dark:text-primary">¿Dónde Voto?</a>
+          <a href="noticias.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Noticias</a>
+          <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Idioma</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <section class="max-w-5xl mx-auto">
+        <div class="mb-8">
+          <h1 class="text-4xl font-bold">¿Dónde Voto?</h1>
+          <p class="text-light-text-secondary dark:text-dark-text-secondary mt-2">Encuentra tu local de votación y toda la información que necesitas.</p>
+          <div class="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md">
+            <p class="text-sm text-blue-800 dark:text-blue-200">ℹ️ Sistema de demostración con datos de ejemplo</p>
+          </div>
+        </div>
+
+        <!-- Tab selector -->
+        <div class="flex gap-2 mb-8 border-b border-gray-200 dark:border-gray-700">
+          <button id="tab-elector" class="px-6 py-3 font-semibold text-primary border-b-2 border-primary transition-colors" data-tab="elector">
+            🗳️ Soy Elector
+          </button>
+          <button id="tab-miembro" class="px-6 py-3 font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary border-b-2 border-transparent transition-colors" data-tab="miembro">
+            🏛️ Soy Miembro de Mesa
+          </button>
+        </div>
+
+        <!-- TAB 1: ELECTOR -->
+        <div id="content-elector" class="tab-content">
+          <!-- Search form -->
+          <div class="bg-white dark:bg-dark-bg-secondary rounded-lg p-6 mb-8 border border-gray-200 dark:border-gray-700">
+            <h2 class="text-xl font-semibold mb-4">Buscar mi local de votación</h2>
+            <div class="flex flex-col sm:flex-row gap-3">
+              <input type="text" id="dni-elector" placeholder="Ingresa tu DNI (8 dígitos)" class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-dark-bg text-light-text dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-primary" maxlength="8" />
+              <button id="btn-search-elector" class="px-6 py-2 bg-primary text-white rounded-md hover:opacity-90 font-medium transition-opacity">Buscar</button>
+            </div>
+          </div>
+
+          <!-- Results (hidden until search) -->
+          <div id="elector-results" class="hidden">
+            <!-- Loading state -->
+            <div id="elector-loading" class="hidden text-center py-8">
+              <div class="inline-block animate-spin">⏳</div>
+              <p class="mt-2 text-light-text-secondary dark:text-dark-text-secondary">Buscando información...</p>
+            </div>
+
+            <!-- Results content -->
+            <div id="elector-data" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <!-- Voting location info -->
+              <div class="bg-white dark:bg-dark-bg-secondary rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-semibold mb-4">📍 Tu Local de Votación</h3>
+                <div class="space-y-2 text-sm">
+                  <p><strong>Institución:</strong> <span id="ed-institucion"></span></p>
+                  <p><strong>Dirección:</strong> <span id="ed-direccion"></span></p>
+                  <p><strong>Distrito:</strong> <span id="ed-distrito"></span></p>
+                  <p><strong>Número de Mesa:</strong> <span class="bg-primary text-white px-2 py-1 rounded font-bold" id="ed-mesa"></span></p>
+                  <p><strong>Hora de Apertura:</strong> <span id="ed-hora"></span></p>
+                </div>
+              </div>
+
+              <!-- Map -->
+              <div>
+                <h3 class="text-lg font-semibold mb-2">🗺️ Ubicación</h3>
+                <div id="elector-map" class="rounded-lg border border-gray-200 dark:border-gray-700 h-72 bg-gray-100 dark:bg-gray-700"></div>
+              </div>
+
+              <!-- Instructions -->
+              <div class="bg-white dark:bg-dark-bg-secondary rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-semibold mb-4">📋 Instrucciones para Votar</h3>
+                <ol class="space-y-2 text-sm list-decimal list-inside">
+                  <li>Llega 15 minutos antes de la apertura</li>
+                  <li>Presenta tu DNI original</li>
+                  <li>Recibirás la cédula de sufragio</li>
+                  <li>Ingresa a la cabina de votación</li>
+                  <li>Marca tu voto con claridad</li>
+                  <li>Introduce en la urna</li>
+                  <li>Retira tu constancia de voto</li>
+                </ol>
+              </div>
+
+              <!-- Security recommendations -->
+              <div class="bg-white dark:bg-dark-bg-secondary rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-semibold mb-4">🔒 Recomendaciones de Seguridad</h3>
+                <ul class="space-y-2 text-sm list-disc list-inside">
+                  <li>Lleva tu DNI en lugar seguro</li>
+                  <li>No compartas información personal</li>
+                  <li>Vota sin presiones externas</li>
+                  <li>Mantén tu voto confidencial</li>
+                  <li>Si hay anomalías, reclama ante los miembros de mesa</li>
+                </ul>
+              </div>
+
+              <!-- Legal framework -->
+              <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6 border border-blue-200 dark:border-blue-800 col-span-1 lg:col-span-2">
+                <h3 class="text-lg font-semibold mb-2">⚖️ Marco Legal</h3>
+                <p class="text-sm text-blue-800 dark:text-blue-200">
+                  Tu voto es confidencial y protegido por ley. Según la Constitución Política del Perú, el sufragio es obligatorio, pero tu elección es personal e inviolable. 
+                  Para más información, consulta <a href="https://www.jne.gob.pe" target="_blank" rel="noopener" class="text-primary hover:underline">www.jne.gob.pe</a>.
+                </p>
+              </div>
+              <!-- Download button: solo visible tras búsqueda exitosa -->
+              <div id="elector-download-btn" class="col-span-1 lg:col-span-2 flex justify-end gap-2 mt-4 hidden">
+                <a href="../Ejemplo.pdf" download="Ejemplo.pdf" class="px-6 py-2 bg-secondary text-white rounded-md hover:opacity-90 font-medium transition-opacity flex items-center gap-2">
+                  📥 Descargar Información (PDF)
+                </a>
+              </div>
+            </div>
+
+            <!-- Error state -->
+            <div id="elector-error" class="hidden bg-red-50 dark:bg-red-900/20 rounded-lg p-6 border border-red-200 dark:border-red-800">
+              <p class="text-sm text-red-800 dark:text-red-200">No se encontró información para ese DNI. Verifica que hayas ingresado 8 dígitos.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: MIEMBRO DE MESA -->
+        <div id="content-miembro" class="tab-content hidden">
+          <!-- Search form -->
+          <div class="bg-white dark:bg-dark-bg-secondary rounded-lg p-6 mb-8 border border-gray-200 dark:border-gray-700">
+            <h2 class="text-xl font-semibold mb-4">Buscar mi asignación de mesa</h2>
+            <div class="flex flex-col sm:flex-row gap-3">
+              <input type="text" id="dni-miembro" placeholder="Ingresa tu DNI (8 dígitos)" class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-dark-bg text-light-text dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-primary" maxlength="8" />
+              <button id="btn-search-miembro" class="px-6 py-2 bg-primary text-white rounded-md hover:opacity-90 font-medium transition-opacity">Buscar</button>
+            </div>
+          </div>
+
+          <!-- Results (hidden until search) -->
+          <div id="miembro-results" class="hidden">
+            <!-- Loading state -->
+            <div id="miembro-loading" class="hidden text-center py-8">
+              <div class="inline-block animate-spin">⏳</div>
+              <p class="mt-2 text-light-text-secondary dark:text-dark-text-secondary">Buscando información...</p>
+            </div>
+
+            <!-- Results content -->
+            <div id="miembro-data" class="hidden space-y-6">
+              <!-- Assignment info -->
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white dark:bg-dark-bg-secondary rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+                  <h3 class="text-lg font-semibold mb-4">📍 Tu Asignación</h3>
+                  <div class="space-y-2 text-sm">
+                    <p><strong>Institución:</strong> <span id="mm-institucion"></span></p>
+                    <p><strong>Dirección:</strong> <span id="mm-direccion"></span></p>
+                    <p><strong>Número de Mesa:</strong> <span class="bg-primary text-white px-2 py-1 rounded font-bold" id="mm-mesa"></span></p>
+                    <p><strong>Cargo:</strong> <span class="bg-secondary text-white px-2 py-1 rounded font-bold" id="mm-cargo"></span></p>
+                    <p><strong>Horario de Llegada:</strong> <span id="mm-horario"></span></p>
+                  </div>
+                </div>
+
+                <!-- Map -->
+                <div>
+                  <h3 class="text-lg font-semibold mb-2">🗺️ Ubicación</h3>
+                  <div id="miembro-map" class="rounded-lg border border-gray-200 dark:border-gray-700 h-72 bg-gray-100 dark:bg-gray-700"></div>
+                </div>
+              </div>
+
+              <!-- Calendar of activities -->
+              <div class="bg-white dark:bg-dark-bg-secondary rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-semibold mb-4">📅 Calendario de Actividades Previas</h3>
+                <div class="space-y-3 text-sm">
+                  <div class="flex gap-3 pb-3 border-b border-gray-200 dark:border-gray-700">
+                    <span class="text-lg">📋</span>
+                    <div>
+                      <p class="font-semibold">Inscripción y Acreditación</p>
+                      <p class="text-light-text-secondary dark:text-dark-text-secondary">30 Septiembre 2026 - 15 Octubre 2026</p>
+                    </div>
+                  </div>
+                  <div class="flex gap-3 pb-3 border-b border-gray-200 dark:border-gray-700">
+                    <span class="text-lg">🎓</span>
+                    <div>
+                      <p class="font-semibold">Capacitación Obligatoria</p>
+                      <p class="text-light-text-secondary dark:text-dark-text-secondary">16 Octubre 2026 - 23 Octubre 2026 (Por zona)</p>
+                    </div>
+                  </div>
+                  <div class="flex gap-3 pb-3 border-b border-gray-200 dark:border-gray-700">
+                    <span class="text-lg">✓</span>
+                    <div>
+                      <p class="font-semibold">Confirmación 72h Antes</p>
+                      <p class="text-light-text-secondary dark:text-dark-text-secondary">23 Octubre 2026 - 24 Octubre 2026</p>
+                    </div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-lg">🗳️</span>
+                    <div>
+                      <p class="font-semibold">Jornada de Votación</p>
+                      <p class="text-light-text-secondary dark:text-dark-text-secondary">26 Octubre 2026 (5:00 AM - 4:00 PM)</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Role-specific duties -->
+              <div class="bg-white dark:bg-dark-bg-secondary rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-semibold mb-4">📝 Tus Deberes según tu Cargo</h3>
+                <div id="mm-duties" class="space-y-3 text-sm"></div>
+              </div>
+
+              <!-- Installation and procedures -->
+              <div class="bg-white dark:bg-dark-bg-secondary rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-semibold mb-4">🔧 Instalación y Procedimientos</h3>
+                <div class="space-y-4">
+                  <div>
+                    <h4 class="font-semibold text-sm mb-2">⏰ Instalación de la Mesa (6:00 AM)</h4>
+                    <ol class="text-sm space-y-1 list-decimal list-inside text-light-text-secondary dark:text-dark-text-secondary">
+                      <li>Todos los miembros deben estar presentes 30 minutos antes</li>
+                      <li>Revisar lista de votantes y materiales</li>
+                      <li>Instalar la mesa y urna</li>
+                      <li>Verificar equipamiento electoral</li>
+                      <li>Abrir acta de inicio</li>
+                    </ol>
+                  </div>
+                  <div>
+                    <h4 class="font-semibold text-sm mb-2">🗳️ Durante el Sufragio (7:00 AM - 4:00 PM)</h4>
+                    <ol class="text-sm space-y-1 list-decimal list-inside text-light-text-secondary dark:text-dark-text-secondary">
+                      <li>Verificar identidad de votantes</li>
+                      <li>Controlar que el voto sea confidencial</li>
+                      <li>Registrar votos emitidos</li>
+                      <li>Mantener orden en la mesa</li>
+                      <li>Cuidar integridad del proceso</li>
+                    </ol>
+                  </div>
+                  <div>
+                    <h4 class="font-semibold text-sm mb-2">📦 Cierre y Entrega de Actas (4:00 PM)</h4>
+                    <ol class="text-sm space-y-1 list-decimal list-inside text-light-text-secondary dark:text-dark-text-secondary">
+                      <li>Cerrar urnas</li>
+                      <li>Contar y registrar votos</li>
+                      <li>Completar actas con resultados</li>
+                      <li>Firmar documentos (todos los miembros)</li>
+                      <li>Entregar actas a autoridades electorales</li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Download button: solo visible tras búsqueda exitosa -->
+            <div id="miembro-download-btn" class="flex justify-end gap-2 mt-4 hidden">
+              <a href="../Ejemplo.pdf" download="Ejemplo.pdf" class="px-6 py-2 bg-secondary text-white rounded-md hover:opacity-90 font-medium transition-opacity flex items-center gap-2">
+                📥 Descargar Información (PDF)
+              </a>
+            </div>
+
+            <!-- Error state -->
+            <div id="miembro-error" class="hidden bg-red-50 dark:bg-red-900/20 rounded-lg p-6 border border-red-200 dark:border-red-800">
+              <p class="text-sm text-red-800 dark:text-red-200">No se encontró información para ese DNI. Verifica que hayas ingresado 8 dígitos.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="text-light-text-secondary dark:text-dark-text-secondary">
+        <div class="bg-gray-200 dark:bg-gray-800 py-12">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mt-12 border-t border-gray-300 dark:border-gray-700 pt-8 flex flex-col sm:flex-row justify-between items-center">
+                     <p class="text-sm mb-4 sm:mb-0">&copy; 2025 Elecciones Perú 2026. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <script src="../js/donde-voto.js"></script>
+    <script src="../js/script.js"></script>
+  </body>
+</html>

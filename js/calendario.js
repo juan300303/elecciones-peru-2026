@@ -55,65 +55,86 @@ document.addEventListener('DOMContentLoaded', function(){
     let currentMonth = today.getMonth(); // 0-indexed
     let selectedDate = null;
 
-    // Render lists
+    // Render lists as cards with pagination
+    const EVENTS_PER_PAGE = 4;
+    const paginacion = { elector: 1, miembro: 1, proceso: 1 };
+
     function renderList(tipo){
       const container = document.getElementById(`${tipo}-list`);
-      if(!container){
-        console.warn('List container not found for tipo:', tipo);
+      const pagContainer = document.getElementById(`${tipo}-pagination`);
+      if(!container || !pagContainer){
+        console.warn('List or pagination container not found for tipo:', tipo);
         return;
       }
       container.innerHTML = '';
+      pagContainer.innerHTML = '';
       const items = (calendarios[tipo] || []).slice().sort((a,b)=> new Date(a.fecha) - new Date(b.fecha));
       if(items.length === 0){
         container.innerHTML = '<p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">No hay eventos disponibles.</p>';
         return;
       }
 
-      items.forEach(ev => {
+      // Paginación
+      const totalPages = Math.ceil(items.length / EVENTS_PER_PAGE);
+      if(paginacion[tipo] > totalPages) paginacion[tipo] = 1;
+      const page = paginacion[tipo];
+      const start = (page-1)*EVENTS_PER_PAGE;
+      const pageItems = items.slice(start, start+EVENTS_PER_PAGE);
+
+      pageItems.forEach(ev => {
         try {
-          const div = document.createElement('div');
-          div.className = 'evento';
-          div.setAttribute('tabindex','0');
-          div.dataset.fecha = ev.fecha;
+          const card = document.createElement('div');
+          card.className = 'rounded-lg shadow border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-bg-secondary p-4 flex flex-col gap-2 hover:shadow-lg transition cursor-pointer';
+          card.setAttribute('tabindex','0');
+          card.dataset.fecha = ev.fecha;
 
           const fecha = document.createElement('div');
-          fecha.className = 'fecha';
+          fecha.className = 'text-xs font-semibold text-secondary mb-1';
           fecha.textContent = formatDate(ev.fecha);
 
-          const detalle = document.createElement('div');
-          detalle.className = 'detalle';
           const titulo = document.createElement('div');
+          titulo.className = 'font-bold text-base mb-1';
           titulo.textContent = ev.evento;
+
           const meta = document.createElement('div');
-          meta.className = 'text-sm text-light-text-secondary dark:text-dark-text-secondary';
+          meta.className = 'text-xs text-light-text-secondary dark:text-dark-text-secondary';
           const flags = [];
           if(ev.critico) flags.push('Crítico');
           if(ev.importante) flags.push('Importante');
           meta.textContent = flags.join(' • ');
 
-          detalle.appendChild(titulo);
-          if(flags.length) detalle.appendChild(meta);
-
           // badge
+          let badge = '';
           if(ev.critico || ev.importante){
-            const badge = document.createElement('span');
-            badge.className = 'badge ' + (ev.critico? 'badge-critico' : 'badge-important');
-            badge.textContent = ev.critico? 'CRÍTICO' : 'IMPORTANTE';
-            detalle.appendChild(document.createElement('br'));
-            detalle.appendChild(badge);
+            badge = `<span class="inline-block px-2 py-1 rounded text-xs font-bold ${ev.critico ? 'bg-primary text-white' : 'bg-yellow-400 text-black'} ml-1">${ev.critico ? 'CRÍTICO' : 'IMPORTANTE'}</span>`;
           }
 
-          div.appendChild(fecha);
-          div.appendChild(detalle);
-          container.appendChild(div);
+          card.innerHTML = `${fecha.outerHTML}${titulo.outerHTML}${meta.outerHTML}${badge}`;
+
+          container.appendChild(card);
 
           // clicking an event highlights corresponding date in mini calendar
-          div.addEventListener('click', ()=> selectDate(ev.fecha));
-          div.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); div.click(); } });
+          card.addEventListener('click', ()=> selectDate(ev.fecha));
+          card.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); card.click(); } });
         } catch(e) {
           console.warn('Error rendering event:', ev, e);
         }
       });
+
+      // Render paginación si hay más de 1 página
+      if(totalPages > 1){
+        for(let i=1; i<=totalPages; i++){
+          const btn = document.createElement('button');
+          btn.textContent = i;
+          btn.className = 'mx-1 px-3 py-1 rounded border text-sm ' + (i===page ? 'bg-primary text-white border-primary' : 'bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-light-text-secondary dark:text-dark-text-secondary hover:bg-primary hover:text-white');
+          btn.disabled = (i===page);
+          btn.addEventListener('click', ()=>{
+            paginacion[tipo] = i;
+            renderList(tipo);
+          });
+          pagContainer.appendChild(btn);
+        }
+      }
     }
 
   function formatDate(iso){
@@ -306,6 +327,14 @@ document.addEventListener('DOMContentLoaded', function(){
     ['elector','miembro','proceso'].forEach(t=>renderList(t));
     // initial view
     activate('elector');
+
+    // Re-render lists on tab change to reset paginación
+    btns.forEach(b=>{
+      b.addEventListener('click', ()=>{
+        paginacion[b.dataset.tipo] = 1;
+        renderList(b.dataset.tipo);
+      });
+    });
   } catch(e) {
     console.error('Calendar initialization error:', e);
     console.error('Stack trace:', e.stack);
