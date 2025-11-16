@@ -67,6 +67,7 @@
             <a href="calendario.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Calendario</a>
             <a href="candidatos.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Candidatos</a>
             <a href="partido-politico.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Partido Político</a>
+            <a href="donde-voto.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">¿Dónde Voto?</a>
             <a href="noticias.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Noticias</a>
             <a href="#" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Idioma</a>
           </nav>
@@ -92,6 +93,7 @@
           <a href="calendario.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Calendario</a>
           <a href="candidatos.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Candidatos</a>
           <a href="partido-politico.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Partido Político</a>
+          <a href="donde-voto.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">¿Dónde Voto?</a>
           <a href="noticias.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Noticias</a>
           <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Idioma</a>
         </div>
@@ -132,7 +134,10 @@
               <h2 class="text-xl font-semibold text-light-text dark:text-dark-text">Electores</h2>
               <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Fechas relevantes para votantes</p>
             </div>
-            <div class="event-list" id="elector-list"></div>
+            <div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="elector-list"></div>
+              <div class="flex justify-center mt-4" id="elector-pagination"></div>
+            </div>
           </div>
 
           <div id="miembro-content" class="calendario-vista" aria-hidden="true">
@@ -140,7 +145,10 @@
               <h2 class="text-xl font-semibold text-light-text dark:text-dark-text">Miembro de Mesa</h2>
               <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Eventos y responsabilidades para jurados</p>
             </div>
-            <div class="event-list" id="miembro-list"></div>
+            <div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="miembro-list"></div>
+              <div class="flex justify-center mt-4" id="miembro-pagination"></div>
+            </div>
           </div>
 
           <div id="proceso-content" class="calendario-vista" aria-hidden="true">
@@ -148,7 +156,10 @@
               <h2 class="text-xl font-semibold text-light-text dark:text-dark-text">Proceso Electoral</h2>
               <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Cronograma oficial completo</p>
             </div>
-            <div class="event-list" id="proceso-list"></div>
+            <div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="proceso-list"></div>
+              <div class="flex justify-center mt-4" id="proceso-pagination"></div>
+            </div>
           </div>
         </div>
       </div>

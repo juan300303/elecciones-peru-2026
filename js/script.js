@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const daysEl = document.getElementById('days');
         const hoursEl = document.getElementById('hours');
         const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
 
         const electionDate = new Date('2026-04-12T00:00:00');
 
@@ -110,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(daysEl) daysEl.textContent = String(diffDays).padStart(2, '0');
             if(hoursEl) hoursEl.textContent = String(diffHours).padStart(2, '0');
             if(minutesEl) minutesEl.textContent = String(diffMinutes).padStart(2, '0');
+            if(secondsEl) secondsEl.textContent = String(diffSeconds).padStart(2, '0');
         };
 
         const countdownInterval = setInterval(updateCountdown, 1000);
