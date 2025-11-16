@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calendario - Elecciones Perú 2026</title>
-    <!-- Theme detection script - runs before page renders to prevent flash -->
+    
     <script>
       (function() {
         const isDarkMode = localStorage.getItem('color-theme') === 'dark' || 
@@ -46,11 +46,616 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/calendario.css">
     <link rel="icon" href="../img/logo.png" type="image/png">
+    
+    <style>
+      
+      .calendario-sidebar {
+        background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+      }
+
+      .dark .calendario-sidebar {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+      }
+
+      .mini-calendar {
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        width: 100%;
+      }
+
+      .dark .mini-calendar {
+        border-color: #374151;
+        background: #1f2937;
+      }
+
+      .mini-calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+        margin-bottom: 12px;
+      }
+
+      .mini-calendar-header-day {
+        text-align: center;
+        font-weight: 600;
+        font-size: 0.75rem;
+        color: #6b7280;
+        padding: 8px 0;
+      }
+
+      .mini-day {
+        aspect-ratio: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        font-size: 0.875rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+        background-color: #ffffff;
+        color: #111827;
+        position: relative;
+        padding: 4px 2px;
+        min-height: 80px; 
+        overflow: hidden;
+      }
+
+      .dark .mini-day {
+        background-color: #1f2937;
+        color: #f9fafb;
+      }
+
+      .mini-day:hover {
+        background-color: #f3f4f6;
+        border-color: #dc2626;
+        transform: scale(1.02);
+      }
+
+      .dark .mini-day:hover {
+        background-color: #374151;
+        border-color: #dc2626;
+      }
+
+      .mini-day.other-month {
+        color: #9ca3af;
+        background-color: #f9fafb;
+        opacity: 0.5;
+      }
+
+      .dark .mini-day.other-month {
+        color: #6b7280;
+        background-color: #111827;
+      }
+
+      
+      .mini-day.today {
+        background-color: #fee2e2; 
+        border: 1px solid #fecaca;
+      }
+
+      .dark .mini-day.today {
+        background-color: #7f1d1d; 
+        border: 1px solid #991b1b;
+      }
+
+      .mini-day.today .day-number {
+        color: #000000 !important; 
+        font-weight: 900 !important; 
+        font-size: 1rem !important; 
+      }
+
+      .dark .mini-day.today .day-number {
+        color: #ffffff !important; /* Blanco en modo oscuro  */
+      }
+
+      /* CONTENEDOR COMPLETO ROJO PARA DÍAS CON EVENTOS - SIN BORDE */
+      .mini-day.has-events {
+        background-color: rgba(220, 38, 38, 0.08);
+        position: relative;
+      }
+
+      .dark .mini-day.has-events {
+        background-color: rgba(127, 29, 29, 0.2);
+      }
+
+      .mini-day.has-events.important {
+        background-color: rgba(220, 38, 38, 0.15);
+      }
+
+      .dark .mini-day.has-events.important {
+        background-color: rgba(127, 29, 29, 0.3);
+      }
+
+      .mini-day.has-events.critical {
+        background-color: rgba(220, 38, 38, 0.25);
+        font-weight: 600;
+      }
+
+      .dark .mini-day.has-events.critical {
+        background-color: rgba(127, 29, 29, 0.4);
+      }
+
+      /* DÍA SELECCIONADO - ROJO MÁS SUAVE */
+      .mini-day.selected {
+        background-color: #f87171; /* Rojo más suave */
+        color: white;
+        font-weight: 600;
+        box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.3);
+      }
+
+      .dark .mini-day.selected {
+        background-color: #dc2626; /* Rojo normal en modo oscuro */
+      }
+
+      /* Indicador de eventos */
+      .event-indicator {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        width: 6px;
+        height: 6px;
+        background-color: #dc2626;
+        border-radius: 50%;
+      }
+
+      .dark .event-indicator {
+        background-color: #f87171;
+      }
+
+      
+      .day-number {
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 2px;
+        z-index: 2;
+      }
+
+      
+      .event-previews {
+        width: 100%;
+        margin-top: 2px;
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        max-height: 48px; 
+        overflow: hidden;
+      }
+
+      .event-preview {
+        background-color: transparent; /* FONDO TRANSPARENTE */
+        border-radius: 3px;
+        padding: 1px 3px;
+        font-size: 0.6rem;
+        color: #991b1b; 
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
+        font-weight: 500;
+        line-height: 1.1;
+        border: none; 
+      }
+
+      .dark .event-preview {
+        background-color: transparent; 
+        color: #fecaca; 
+        border: none; 
+      }
+
+      .event-preview.critical {
+        background-color: transparent; 
+        font-weight: 600;
+        color: #dc2626; 
+        border: none; 
+      }
+
+      .dark .event-preview.critical {
+        background-color: transparent; 
+        color: #f87171; 
+        border: none; 
+      }
+
+      
+      .btn-calendario {
+        padding: 12px 20px;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        background-color: #f9fafb;
+        color: #4b5563;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .dark .btn-calendario {
+        border-color: #4b5563;
+        background-color: #374151;
+        color: #d1d5db;
+      }
+
+      .btn-calendario:hover {
+        background-color: #e5e7eb;
+        border-color: #9ca3af;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .dark .btn-calendario:hover {
+        background-color: #4b5563;
+        border-color: #6b7280;
+      }
+
+      .btn-calendario.active {
+        background-color: #dc2626;
+        color: white;
+        border-color: #dc2626;
+        box-shadow: 0 4px 8px rgba(220, 38, 38, 0.2);
+      }
+
+      /* Estilos para eventos  */
+      .evento-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 16px;
+        background-color: white;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .dark .evento-card {
+        border-color: #374151;
+        background-color: #1f2937;
+      }
+
+      .evento-card:hover {
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        transform: translateY(-4px);
+      }
+
+      .dark .evento-card:hover {
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      }
+
+      .evento-fecha {
+        font-size: 0.875rem;
+        color: #dc2626;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .dark .evento-fecha {
+        color: #f87171;
+      }
+
+      .evento-titulo {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 10px;
+      }
+
+      .dark .evento-titulo {
+        color: #f9fafb;
+      }
+
+      .evento-descripcion {
+        font-size: 0.9rem;
+        color: #6b7280;
+        line-height: 1.5;
+      }
+
+      .dark .evento-descripcion {
+        color: #d1d5db;
+      }
+
+      .evento-importante {
+        border-left: 4px solid #dc2626;
+      }
+
+      .evento-critico {
+        border-left: 4px solid #991b1b;
+        background-color: #fef2f2;
+      }
+
+      .dark .evento-critico {
+        background-color: #450a0a;
+      }
+
+     
+      .paginacion {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 20px;
+      }
+
+      .btn-paginacion {
+        padding: 8px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        background-color: white;
+        color: #4b5563;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-weight: 500;
+      }
+
+      .dark .btn-paginacion {
+        border-color: #4b5563;
+        background-color: #374151;
+        color: #d1d5db;
+      }
+
+      .btn-paginacion:hover {
+        background-color: #f3f4f6;
+      }
+
+      .dark .btn-paginacion:hover {
+        background-color: #4b5563;
+      }
+
+      .btn-paginacion.active {
+        background-color: #dc2626;
+        color: white;
+        border-color: #dc2626;
+      }
+
+      .btn-paginacion:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .btn-paginacion:disabled:hover {
+        background-color: white;
+      }
+
+      .dark .btn-paginacion:disabled:hover {
+        background-color: #374151;
+      }
+
+      /* Información seleccionada  */
+      .selected-info {
+        border-radius: 12px;
+        padding: 20px;
+        background-color: #f9fafb;
+        border: 1px solid #e5e7eb;
+        min-height: 150px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .dark .selected-info {
+        background-color: #111827;
+        border-color: #374151;
+      }
+
+      .selected-date {
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 12px;
+        font-size: 1.1rem;
+      }
+
+      .dark .selected-date {
+        color: #f9fafb;
+      }
+
+      .selected-events {
+        margin-top: 12px;
+      }
+
+      .no-events {
+        color: #9ca3af;
+        font-style: italic;
+        text-align: center;
+        padding: 20px 0;
+      }
+
+      .dark .no-events {
+        color: #6b7280;
+      }
+
+      /* Vista de calendario */
+      .calendario-vista {
+        display: none;
+      }
+
+      .calendario-vista.active {
+        display: block;
+      }
+
+      /* Notificaciones  */
+      .notification-container {
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        z-index: 1000;
+        max-width: 350px;
+      }
+
+      .notification {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        padding: 16px;
+        margin-bottom: 10px;
+        border-left: 4px solid #dc2626;
+        animation: slideIn 0.3s ease-out;
+        display: flex;
+        align-items: flex-start;
+      }
+
+      .dark .notification {
+        background: #1f2937;
+        border-left: 4px solid #f87171;
+      }
+
+      .notification-icon {
+        color: #dc2626;
+        margin-right: 12px;
+        font-size: 1.25rem;
+      }
+
+      .dark .notification-icon {
+        color: #f87171;
+      }
+
+      .notification-content {
+        flex: 1;
+      }
+
+      .notification-title {
+        font-weight: 700;
+        margin-bottom: 4px;
+        color: #111827;
+      }
+
+      .dark .notification-title {
+        color: #f9fafb;
+      }
+
+      .notification-message {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-bottom: 8px;
+      }
+
+      .dark .notification-message {
+        color: #d1d5db;
+      }
+
+      .notification-close {
+        background: none;
+        border: none;
+        color: #9ca3af;
+        cursor: pointer;
+        font-size: 1.125rem;
+        padding: 0;
+        margin-left: 8px;
+      }
+
+      .notification-close:hover {
+        color: #6b7280;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+      }
+
+      /* Ajustes de layout principal */
+      .calendario-main {
+        width: 60%;
+      }
+
+      /* Estructura  para evitar superposición */
+      .calendar-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+
+      .calendar-grid-container {
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+        padding: 8px; 
+      }
+
+      /* Botones de navegación del calendario  */
+      .calendar-nav-btn {
+        padding: 8px 12px;
+        border-radius: 8px;
+        background-color: #f3f4f6;
+        color: #4b5563;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-weight: 600;
+      }
+
+      .dark .calendar-nav-btn {
+        background-color: #374151;
+        color: #d1d5db;
+      }
+
+      .calendar-nav-btn:hover {
+        background-color: #e5e7eb;
+      }
+
+      .dark .calendar-nav-btn:hover {
+        background-color: #4b5563;
+      }
+
+      /* Encabezado del calendario */
+      .calendar-header {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: #111827;
+      }
+
+      .dark .calendar-header {
+        color: #f9fafb;
+      }
+
+      /* Títulos de sección  */
+      .section-title {
+        font-weight: 800;
+        font-size: 2rem;
+        margin-bottom: 8px;
+        background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .dark .section-title {
+        background: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .section-subtitle {
+        font-size: 1.1rem;
+        color: #6b7280;
+        margin-bottom: 24px;
+      }
+
+      .dark .section-subtitle {
+        color: #9ca3af;
+      }
+    </style>
   </head>
   <body class="bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text font-sans transition-colors duration-300">
+    
+    <!-- Contenedor de notificaciones -->
+    <div id="notification-container" class="notification-container"></div>
     
     <header class="bg-light-bg-secondary/80 dark:bg-dark-bg-secondary/80 backdrop-blur-sm sticky top-0 z-50 shadow-md">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -64,9 +669,9 @@
           
           <nav class="hidden md:flex md:items-center md:space-x-8">
             <a href="../index.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Inicio</a>
-            <a href="calendario.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Calendario</a>
+            <a href="calendario.html" class="text-sm font-medium text-primary dark:text-primary transition-colors border-b-2 border-primary">Calendario</a>
             <a href="candidatos.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Candidatos</a>
-            <a href="partido-politico1.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Partido Político</a>
+            <a href="partido-politico.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Partido Político</a>
             <a href="donde-voto.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">¿Dónde Voto?</a>
             <a href="noticias.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Noticias</a>
             <a href="#" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Idioma</a>
@@ -90,7 +695,7 @@
       <div class="hidden md:hidden" id="mobile-menu">
         <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           <a href="../index.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Inicio</a>
-          <a href="calendario.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Calendario</a>
+          <a href="calendario.html" class="block px-3 py-2 rounded-md text-base font-medium text-primary dark:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">Calendario</a>
           <a href="candidatos.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Candidatos</a>
           <a href="partido-politico.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Partido Político</a>
           <a href="donde-voto.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">¿Dónde Voto?</a>
@@ -102,27 +707,30 @@
 
     <main class="flex flex-col lg:flex-row gap-0 min-h-screen" style="margin-top: -60px; padding-top: 80px;">
       <!-- Sidebar calendar (left) -->
-      <aside class="calendario-sidebar lg:w-1/3 bg-light-bg-secondary dark:bg-dark-bg-secondary/40 px-4 sm:px-6 py-8">
-        <div class="mini-calendar sticky top-20 bg-white dark:bg-dark-bg rounded-lg p-4 border border-gray-100 dark:border-gray-700 shadow-sm">
-          <h2 class="text-lg font-semibold mb-4 text-light-text dark:text-dark-text">Calendario</h2>
+      <aside class="calendario-sidebar lg:w-2/5 bg-light-bg-secondary dark:bg-dark-bg-secondary/40 px-4 sm:px-6 py-8">
+        <div class="mini-calendar sticky top-20 bg-white dark:bg-dark-bg rounded-xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm calendar-container">
+          <!-- TÍTULO  -->
+          <h2 class="text-xl font-bold mb-4 text-primary text-center">Calendario Electoral</h2>
           <div class="flex items-center justify-between mb-4">
-            <button id="mini-prev" class="text-sm px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800">◀</button>
-            <div id="mini-month" class="text-sm font-semibold"></div>
-            <button id="mini-next" class="text-sm px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800">▶</button>
+            <button id="mini-prev" class="calendar-nav-btn">◀</button>
+            <div id="mini-month" class="calendar-header"></div>
+            <button id="mini-next" class="calendar-nav-btn">▶</button>
           </div>
-          <div id="mini-calendar" class="mini-calendar-grid" role="grid" aria-label="Calendario mini"></div>
-          <div id="selected-info" class="selected-info mt-4 text-sm text-light-text-secondary dark:text-dark-text-secondary bg-gray-50 dark:bg-gray-800/30 p-3 rounded">Selecciona una fecha para ver eventos</div>
+          <div class="calendar-grid-container">
+            <div id="mini-calendar" class="mini-calendar-grid" role="grid" aria-label="Calendario mini"></div>
+          </div>
+          <div id="selected-info" class="selected-info mt-4 text-sm text-light-text-secondary dark:text-dark-text-secondary bg-gray-50 dark:bg-gray-800/30 p-4 rounded-xl">Selecciona una fecha para ver eventos</div>
         </div>
       </aside>
 
       <!-- Main content (right) -->
-      <div class="calendario-main lg:w-2/3 bg-white dark:bg-dark-bg px-4 sm:px-6 py-8">
-        <div class="calendario-header mb-6">
-          <h1 class="text-3xl font-bold text-light-text dark:text-dark-text mb-2">Calendario Electoral</h1>
-          <p class="text-light-text-secondary dark:text-dark-text-secondary">Selecciona una vista para ver fechas relevantes</p>
+      <div class="calendario-main lg:w-3/5 bg-white dark:bg-dark-bg px-4 sm:px-6 py-8">
+        <div class="calendario-header mb-8">
+          <h1 class="section-title">Fechas Importantes</h1>
+          <p class="section-subtitle">Selecciona una categoría para ver eventos relevantes</p>
         </div>
 
-        <div class="calendario-selector mb-6" role="tablist" aria-label="Seleccionar calendario">
+        <div class="calendario-selector mb-8" role="tablist" aria-label="Seleccionar calendario">
           <button class="btn-calendario active" data-tipo="elector" aria-pressed="true">👤 Electores</button>
           <button class="btn-calendario" data-tipo="miembro" aria-pressed="false">🪑 Miembro Mesa</button>
           <button class="btn-calendario" data-tipo="proceso" aria-pressed="false">🏛️ Proceso</button>
@@ -130,35 +738,35 @@
 
         <div class="calendario-content">
           <div id="elector-content" class="calendario-vista active" aria-hidden="false">
-            <div class="vista-header mb-4">
-              <h2 class="text-xl font-semibold text-light-text dark:text-dark-text">Electores</h2>
-              <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Fechas relevantes para votantes</p>
+            <div class="vista-header mb-6">
+              <h2 class="text-2xl font-bold text-light-text dark:text-dark-text mb-2">Electores</h2>
+              <p class="text-base text-light-text-secondary dark:text-dark-text-secondary">Fechas relevantes para votantes</p>
             </div>
             <div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="elector-list"></div>
-              <div class="flex justify-center mt-4" id="elector-pagination"></div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="elector-list"></div>
+              <div class="paginacion mt-6" id="elector-pagination"></div>
             </div>
           </div>
 
           <div id="miembro-content" class="calendario-vista" aria-hidden="true">
-            <div class="vista-header mb-4">
-              <h2 class="text-xl font-semibold text-light-text dark:text-dark-text">Miembro de Mesa</h2>
-              <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Eventos y responsabilidades para jurados</p>
+            <div class="vista-header mb-6">
+              <h2 class="text-2xl font-bold text-light-text dark:text-dark-text mb-2">Miembro de Mesa</h2>
+              <p class="text-base text-light-text-secondary dark:text-dark-text-secondary">Eventos y responsabilidades para jurados</p>
             </div>
             <div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="miembro-list"></div>
-              <div class="flex justify-center mt-4" id="miembro-pagination"></div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="miembro-list"></div>
+              <div class="paginacion mt-6" id="miembro-pagination"></div>
             </div>
           </div>
 
           <div id="proceso-content" class="calendario-vista" aria-hidden="true">
-            <div class="vista-header mb-4">
-              <h2 class="text-xl font-semibold text-light-text dark:text-dark-text">Proceso Electoral</h2>
-              <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Cronograma oficial completo</p>
+            <div class="vista-header mb-6">
+              <h2 class="text-2xl font-bold text-light-text dark:text-dark-text mb-2">Proceso Electoral</h2>
+              <p class="text-base text-light-text-secondary dark:text-dark-text-secondary">Cronograma oficial completo</p>
             </div>
             <div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="proceso-list"></div>
-              <div class="flex justify-center mt-4" id="proceso-pagination"></div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="proceso-list"></div>
+              <div class="paginacion mt-6" id="proceso-pagination"></div>
             </div>
           </div>
         </div>
@@ -175,7 +783,644 @@
         </div>
     </footer>
 
-    <script src="../js/script.js"></script>
-    <script src="../js/calendario.js"></script>
+    <script>
+      // Datos de eventos electorales para Perú 2026
+      const eventosElectorales = [
+        // Eventos para electores
+        {
+          id: 1,
+          tipo: 'elector',
+          fecha: '2026-01-12',
+          titulo: 'Inicio del padrón electoral',
+          descripcion: 'Consulta si estás incluido en el padrón electoral para las elecciones 2026.',
+          importancia: 'media'
+        },
+        {
+          id: 2,
+          tipo: 'elector',
+          fecha: '2026-02-15',
+          titulo: 'Inscripción en el RENIEC para votar',
+          descripcion: 'Último día para inscribirse en el RENIEC y poder ejercer el derecho al voto.',
+          importancia: 'alta'
+        },
+        {
+          id: 3,
+          tipo: 'elector',
+          fecha: '2026-03-01',
+          titulo: 'Publicación de locales de votación',
+          descripcion: 'Consulta tu local de votación en la página web de la ONPE.',
+          importancia: 'media'
+        },
+        {
+          id: 4,
+          tipo: 'elector',
+          fecha: '2026-04-10',
+          titulo: 'Voto anticipado para personas con discapacidad',
+          descripcion: 'Personas con discapacidad severa pueden ejercer su voto de forma anticipada.',
+          importancia: 'media'
+        },
+        {
+          id: 5,
+          tipo: 'elector',
+          fecha: '2026-04-12',
+          titulo: 'ELECCIÓN PRESIDENCIAL Y CONGRESAL',
+          descripcion: 'Día de las elecciones generales. Ejerce tu derecho al voto de 7:00 am a 5:00 pm.',
+          importancia: 'critica'
+        },
+        {
+          id: 6,
+          tipo: 'elector',
+          fecha: '2026-06-09',
+          titulo: 'Segunda vuelta presidencial (si aplica)',
+          descripcion: 'En caso de que ningún candidato alcance el 50%+1 de votos válidos.',
+          importancia: 'critica'
+        },
+        
+        // Eventos para miembros de mesa
+        {
+          id: 7,
+          tipo: 'miembro',
+          fecha: '2026-03-15',
+          titulo: 'Publicación de miembros de mesa',
+          descripcion: 'Consulta si has sido seleccionado como miembro de mesa para las elecciones.',
+          importancia: 'alta'
+        },
+        {
+          id: 8,
+          tipo: 'miembro',
+          fecha: '2026-03-20',
+          titulo: 'Capacitación para miembros de mesa',
+          descripcion: 'Primera jornada de capacitación obligatoria para miembros de mesa.',
+          importancia: 'media'
+        },
+        {
+          id: 9,
+          tipo: 'miembro',
+          fecha: '2026-04-11',
+          titulo: 'Instalación de mesas de sufragio',
+          descripcion: 'Los miembros de mesa deben instalarse en sus locales asignados.',
+          importancia: 'alta'
+        },
+        {
+          id: 10,
+          tipo: 'miembro',
+          fecha: '2026-04-12',
+          titulo: 'Jornada electoral - Miembros de mesa',
+          descripcion: 'Día completo de trabajo para los miembros de mesa desde las 6:00 am.',
+          importancia: 'critica'
+        },
+        
+        // Eventos del proceso electoral
+        {
+          id: 11,
+          tipo: 'proceso',
+          fecha: '2025-12-01',
+          titulo: 'Inscripción de organizaciones políticas',
+          descripcion: 'Inicio del periodo para que los partidos políticos se inscriban ante el JNE.',
+          importancia: 'alta'
+        },
+        {
+          id: 12,
+          tipo: 'proceso',
+          fecha: '2026-01-15',
+          titulo: 'Presentación de listas de candidatos',
+          descripcion: 'Fecha límite para que los partidos presenten sus listas de candidatos.',
+          importancia: 'alta'
+        },
+        {
+          id: 13,
+          tipo: 'proceso',
+          fecha: '2026-02-01',
+          titulo: 'Campaña electoral',
+          descripcion: 'Inicio oficial del periodo de campaña electoral.',
+          importancia: 'media'
+        },
+        {
+          id: 14,
+          tipo: 'proceso',
+          fecha: '2026-04-08',
+          titulo: 'Fin de campaña electoral',
+          descripcion: 'Último día de campaña electoral según la normativa peruana.',
+          importancia: 'alta'
+        },
+        {
+          id: 15,
+          tipo: 'proceso',
+          fecha: '2026-04-12',
+          titulo: 'Jornada de elecciones generales',
+          descripcion: 'Elecciones para Presidente, Vicepresidentes y Congresistas de la República.',
+          importancia: 'critica'
+        },
+        {
+          id: 16,
+          tipo: 'proceso',
+          fecha: '2026-07-28',
+          titulo: 'Transmisión de mando presidencial',
+          descripcion: 'El nuevo Presidente electo asume el cargo en el Congreso de la República.',
+          importancia: 'alta'
+        },
+        // Evento para hoy (16/11/2025) como ejemplo
+        {
+          id: 17,
+          tipo: 'elector',
+          fecha: '2025-11-16',
+          titulo: 'Recordatorio: Verifica tu DNI para votar',
+          descripcion: 'Asegúrate de que tu DNI esté vigente y en buen estado para las elecciones.',
+          importancia: 'media'
+        },
+        // Más eventos para demostrar la funcionalidad
+        {
+          id: 18,
+          tipo: 'elector',
+          fecha: '2025-11-20',
+          titulo: 'Información sobre candidatos',
+          descripcion: 'Consulta las propuestas de los candidatos presidenciales.',
+          importancia: 'media'
+        },
+        {
+          id: 19,
+          tipo: 'proceso',
+          fecha: '2025-11-25',
+          titulo: 'Debate presidencial',
+          descripcion: 'Primer debate entre los candidatos a la presidencia.',
+          importancia: 'alta'
+        }
+      ];
+
+      // Variables globales
+      let currentDate = new Date();
+      let selectedDate = null;
+      let currentView = 'elector';
+      let currentPage = {
+        elector: 1,
+        miembro: 1,
+        proceso: 1
+      };
+      const itemsPerPage = 4;
+
+      // Inicialización
+      document.addEventListener('DOMContentLoaded', function() {
+        initMiniCalendar();
+        initEventViews();
+        initCalendarSelector();
+        loadEventsForView(currentView, currentPage[currentView]);
+        
+        // Mostrar eventos del día actual
+        const today = new Date();
+        const todayStr = formatDate(today);
+        showEventsForDate(todayStr);
+        
+        // Mostrar notificaciones para eventos de hoy
+        checkTodaysEvents();
+        
+        // Inicializar tema y menú móvil
+        initThemeToggle();
+        initMobileMenu();
+      });
+
+      // Inicializar el mini calendario
+      function initMiniCalendar() {
+        renderMiniCalendar(currentDate);
+        
+        // Event listeners para navegación del calendario
+        document.getElementById('mini-prev').addEventListener('click', function() {
+          currentDate.setMonth(currentDate.getMonth() - 1);
+          renderMiniCalendar(currentDate);
+        });
+        
+        document.getElementById('mini-next').addEventListener('click', function() {
+          currentDate.setMonth(currentDate.getMonth() + 1);
+          renderMiniCalendar(currentDate);
+        });
+      }
+
+      // Renderizar el mini calendario - ESTRUCTURA CORREGIDA
+      function renderMiniCalendar(date) {
+        const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+          "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        
+        // Actualizar el encabezado del mes
+        document.getElementById('mini-month').textContent = 
+          `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+        
+        const calendarGrid = document.getElementById('mini-calendar');
+        
+        // LIMPIAR COMPLETAMENTE el calendario anterior
+        while (calendarGrid.firstChild) {
+          calendarGrid.removeChild(calendarGrid.firstChild);
+        }
+        
+        // Crear encabezados de días
+        const dayHeaders = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+        dayHeaders.forEach(day => {
+          const dayHeader = document.createElement('div');
+          dayHeader.className = 'mini-calendar-header-day';
+          dayHeader.textContent = day;
+          calendarGrid.appendChild(dayHeader);
+        });
+        
+        // Obtener primer día del mes y último día del mes
+        const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        
+        // Días del mes anterior para completar la primera semana
+        const startingDayOfWeek = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
+        const prevMonthLastDay = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
+        
+        // Agregar días del mes anterior
+        for (let i = startingDayOfWeek - 1; i >= 0; i--) {
+          const dayElement = createDayElement(prevMonthLastDay - i, 'other-month');
+          calendarGrid.appendChild(dayElement);
+        }
+        
+        // Agregar días del mes actual
+        const today = new Date();
+        const todayStr = formatDate(today);
+        
+        for (let day = 1; day <= lastDay.getDate(); day++) {
+          const dateStr = formatDate(new Date(date.getFullYear(), date.getMonth(), day));
+          const dayElement = createDayElement(day, 'current-month', dateStr, dateStr === todayStr);
+          calendarGrid.appendChild(dayElement);
+        }
+        
+        // Calcular días del próximo mes para completar la cuadrícula
+        const totalCells = 42; // 6 semanas * 7 días
+        const daysInCalendar = startingDayOfWeek + lastDay.getDate();
+        const nextMonthDays = totalCells - daysInCalendar;
+        
+        for (let day = 1; day <= nextMonthDays; day++) {
+          const dayElement = createDayElement(day, 'other-month');
+          calendarGrid.appendChild(dayElement);
+        }
+      }
+
+      // Función para crear elementos de día - ESTRUCTURA MEJORADA
+      function createDayElement(dayNumber, type, dateStr = null, isToday = false) {
+        const dayElement = document.createElement('div');
+        
+        // Clase base
+        dayElement.className = 'mini-day';
+        
+        // Agregar clases según el tipo
+        if (type === 'other-month') {
+          dayElement.classList.add('other-month');
+        }
+        
+        // DÍA ACTUAL - fondo rojo pero número en negro negrita
+        if (isToday) {
+          dayElement.classList.add('today');
+        }
+        
+        // Si es un día del mes actual con fecha
+        if (dateStr) {
+          dayElement.setAttribute('data-date', dateStr);
+          
+          // Verificar eventos para esta fecha
+          const eventsForDay = eventosElectorales.filter(event => event.fecha === dateStr);
+          
+          if (eventsForDay.length > 0) {
+            // CONTENEDOR COMPLETO ROJO - toda la celda
+            dayElement.classList.add('has-events');
+            
+            // Determinar el nivel de importancia
+            const hasCriticalEvents = eventsForDay.some(event => event.importancia === 'critica');
+            const hasImportantEvents = eventsForDay.some(event => event.importancia === 'alta');
+            
+            if (hasCriticalEvents) {
+              dayElement.classList.add('critical');
+            } else if (hasImportantEvents) {
+              dayElement.classList.add('important');
+            }
+            
+            // Agregar indicador de eventos
+            const eventIndicator = document.createElement('div');
+            eventIndicator.className = 'event-indicator';
+            dayElement.appendChild(eventIndicator);
+            
+            // Agregar vista previa de eventos - FONDO TRANSPARENTE Y SIN BORDE
+            const eventPreviews = document.createElement('div');
+            eventPreviews.className = 'event-previews';
+            
+            // Mostrar hasta 2 eventos como vista previa (2 filas)
+            eventsForDay.slice(0, 2).forEach(event => {
+              const eventPreview = document.createElement('div');
+              eventPreview.className = `event-preview ${event.importancia === 'critica' ? 'critical' : ''}`;
+              
+              // Mostrar texto del evento (máximo 10 caracteres para 2 filas)
+              let previewText = event.titulo;
+              if (previewText.length > 10) {
+                previewText = previewText.substring(0, 10) + '...';
+              }
+              
+              eventPreview.textContent = previewText;
+              eventPreview.title = event.titulo; // Tooltip con el título completo
+              eventPreviews.appendChild(eventPreview);
+            });
+            
+            dayElement.appendChild(eventPreviews);
+          }
+          
+          // Resaltar si está seleccionado
+          if (selectedDate === dateStr) {
+            dayElement.classList.add('selected');
+          }
+          
+          dayElement.addEventListener('click', function() {
+            selectDate(dateStr);
+          });
+        }
+        
+        // Agregar el número del día - ESTILO MEJORADO
+        const dayNumberElement = document.createElement('div');
+        dayNumberElement.className = 'day-number';
+        dayNumberElement.textContent = dayNumber;
+        dayElement.appendChild(dayNumberElement);
+        
+        return dayElement;
+      }
+
+      // Seleccionar una fecha
+      function selectDate(dateStr) {
+        selectedDate = dateStr;
+        renderMiniCalendar(currentDate);
+        showEventsForDate(dateStr);
+      }
+
+      // Mostrar eventos para una fecha específica
+      function showEventsForDate(dateStr) {
+        const selectedInfo = document.getElementById('selected-info');
+        const dateObj = new Date(dateStr);
+        const formattedDate = formatDisplayDate(dateObj);
+        
+        const eventsForDate = eventosElectorales.filter(event => event.fecha === dateStr);
+        
+        let html = `<div class="selected-date">${formattedDate}</div>`;
+        
+        if (eventsForDate.length > 0) {
+          html += '<div class="selected-events">';
+          eventsForDate.forEach(event => {
+            const importanceClass = getImportanceClass(event.importancia);
+            html += `
+              <div class="evento-card ${importanceClass}">
+                <div class="evento-titulo">${event.titulo}</div>
+                <div class="evento-descripcion">${event.descripcion}</div>
+              </div>
+            `;
+          });
+          html += '</div>';
+        } else {
+          html += '<div class="no-events">No hay eventos programados para esta fecha.</div>';
+        }
+        
+        selectedInfo.innerHTML = html;
+      }
+
+      // Verificar eventos de hoy y mostrar notificaciones
+      function checkTodaysEvents() {
+        const today = new Date();
+        const todayStr = formatDate(today);
+        const todaysEvents = eventosElectorales.filter(event => event.fecha === todayStr);
+        
+        if (todaysEvents.length > 0) {
+          // Mostrar notificación para cada evento de hoy
+          todaysEvents.forEach(event => {
+            showNotification(event.titulo, event.descripcion);
+          });
+        }
+      }
+
+      // Mostrar notificación
+      function showNotification(title, message) {
+        const notificationContainer = document.getElementById('notification-container');
+        const notificationId = 'notification-' + Date.now();
+        
+        const notification = document.createElement('div');
+        notification.id = notificationId;
+        notification.className = 'notification';
+        notification.innerHTML = `
+          <div class="notification-icon">📅</div>
+          <div class="notification-content">
+            <div class="notification-title">${title}</div>
+            <div class="notification-message">${message}</div>
+          </div>
+          <button class="notification-close" onclick="closeNotification('${notificationId}')">×</button>
+        `;
+        
+        notificationContainer.appendChild(notification);
+        
+        // Auto cerrar después de 8 segundos
+        setTimeout(() => {
+          closeNotification(notificationId);
+        }, 8000);
+      }
+
+      // Cerrar notificación
+      function closeNotification(id) {
+        const notification = document.getElementById(id);
+        if (notification) {
+          notification.style.animation = 'slideOut 0.3s ease-out';
+          setTimeout(() => {
+            if (notification.parentNode) {
+              notification.parentNode.removeChild(notification);
+            }
+          }, 300);
+        }
+      }
+
+      // Inicializar vistas de eventos
+      function initEventViews() {
+        // Ocultar todas las vistas primero
+        document.querySelectorAll('.calendario-vista').forEach(view => {
+          view.classList.remove('active');
+          view.setAttribute('aria-hidden', 'true');
+        });
+        
+        // Mostrar la vista activa
+        document.getElementById(`${currentView}-content`).classList.add('active');
+        document.getElementById(`${currentView}-content`).setAttribute('aria-hidden', 'false');
+      }
+
+      // Inicializar selector de calendario
+      function initCalendarSelector() {
+        const buttons = document.querySelectorAll('.btn-calendario');
+        
+        buttons.forEach(button => {
+          button.addEventListener('click', function() {
+            // Remover clase activa de todos los botones
+            buttons.forEach(btn => {
+              btn.classList.remove('active');
+              btn.setAttribute('aria-pressed', 'false');
+            });
+            
+            // Agregar clase activa al botón clickeado
+            this.classList.add('active');
+            this.setAttribute('aria-pressed', 'true');
+            
+            // Cambiar vista
+            currentView = this.getAttribute('data-tipo');
+            initEventViews();
+            loadEventsForView(currentView, currentPage[currentView]);
+          });
+        });
+      }
+
+      // Cargar eventos para una vista específica
+      function loadEventsForView(viewType, page) {
+        const eventList = document.getElementById(`${viewType}-list`);
+        const pagination = document.getElementById(`${viewType}-pagination`);
+        
+        // Filtrar eventos por tipo
+        const filteredEvents = eventosElectorales.filter(event => event.tipo === viewType);
+        
+        // Calcular paginación
+        const totalPages = Math.ceil(filteredEvents.length / itemsPerPage);
+        const startIndex = (page - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const eventsToShow = filteredEvents.slice(startIndex, endIndex);
+        
+        // Renderizar eventos
+        eventList.innerHTML = '';
+        
+        if (eventsToShow.length === 0) {
+          eventList.innerHTML = '<div class="no-events text-center py-4">No hay eventos para mostrar.</div>';
+        } else {
+          eventsToShow.forEach(event => {
+            const importanceClass = getImportanceClass(event.importancia);
+            const formattedDate = formatDisplayDate(new Date(event.fecha));
+            
+            const eventElement = document.createElement('div');
+            eventElement.className = `evento-card ${importanceClass}`;
+            eventElement.innerHTML = `
+              <div class="evento-fecha">${formattedDate}</div>
+              <div class="evento-titulo">${event.titulo}</div>
+              <div class="evento-descripcion">${event.descripcion}</div>
+            `;
+            
+            // Hacer clickeable para mostrar en el calendario
+            eventElement.addEventListener('click', function() {
+              selectDate(event.fecha);
+              
+              // Navegar al mes correspondiente en el calendario
+              const eventDate = new Date(event.fecha);
+              if (eventDate.getMonth() !== currentDate.getMonth() || 
+                  eventDate.getFullYear() !== currentDate.getFullYear()) {
+                currentDate = new Date(eventDate.getFullYear(), eventDate.getMonth(), 1);
+                renderMiniCalendar(currentDate);
+              }
+            });
+            
+            eventList.appendChild(eventElement);
+          });
+        }
+        
+        // Renderizar paginación - NUEVO ESTILO
+        renderPagination(pagination, page, totalPages, viewType);
+      }
+
+      // Renderizar controles de paginación - NUEVO ESTILO
+      function renderPagination(container, currentPage, totalPages, viewType) {
+        container.innerHTML = '';
+        
+        if (totalPages <= 1) return;
+        
+        // Botón anterior
+        const prevButton = document.createElement('button');
+        prevButton.className = 'btn-paginacion';
+        prevButton.innerHTML = '←';
+        prevButton.disabled = currentPage === 1;
+        prevButton.addEventListener('click', function() {
+          if (currentPage > 1) {
+            currentPage[viewType] = currentPage - 1;
+            loadEventsForView(viewType, currentPage - 1);
+          }
+        });
+        container.appendChild(prevButton);
+        
+        // Números de página
+        for (let i = 1; i <= totalPages; i++) {
+          const pageButton = document.createElement('button');
+          pageButton.className = `btn-paginacion ${i === currentPage ? 'active' : ''}`;
+          pageButton.textContent = i;
+          pageButton.addEventListener('click', function() {
+            currentPage[viewType] = i;
+            loadEventsForView(viewType, i);
+          });
+          container.appendChild(pageButton);
+        }
+        
+        // Botón siguiente
+        const nextButton = document.createElement('button');
+        nextButton.className = 'btn-paginacion';
+        nextButton.innerHTML = '→';
+        nextButton.disabled = currentPage === totalPages;
+        nextButton.addEventListener('click', function() {
+          if (currentPage < totalPages) {
+            currentPage[viewType] = currentPage + 1;
+            loadEventsForView(viewType, currentPage + 1);
+          }
+        });
+        container.appendChild(nextButton);
+      }
+
+      // Funciones auxiliares
+      function formatDate(date) {
+        return date.toISOString().split('T')[0];
+      }
+
+      function formatDisplayDate(date) {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        return date.toLocaleDateString('es-ES', options);
+      }
+
+      function getImportanceClass(importance) {
+        switch(importance) {
+          case 'critica':
+            return 'evento-critico';
+          case 'alta':
+            return 'evento-importante';
+          default:
+            return '';
+        }
+      }
+
+      
+      function initThemeToggle() {
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('theme-toggle-light-icon');
+        const moonIcon = document.getElementById('theme-toggle-dark-icon');
+        
+        if (document.documentElement.classList.contains('dark')) {
+          sunIcon.classList.remove('hidden');
+          moonIcon.classList.add('hidden');
+        } else {
+          sunIcon.classList.add('hidden');
+          moonIcon.classList.remove('hidden');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+          document.documentElement.classList.toggle('dark');
+          const isDarkMode = document.documentElement.classList.contains('dark');
+          localStorage.setItem('color-theme', isDarkMode ? 'dark' : 'light');
+          
+          sunIcon.classList.toggle('hidden');
+          moonIcon.classList.toggle('hidden');
+        });
+      }
+      
+      // Script para el menú móvil
+      function initMobileMenu() {
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+          const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
+          mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+          mobileMenu.classList.toggle('hidden');
+        });
+      }
+
+      // Hacer la función closeNotification global para que funcione en el onclick
+      window.closeNotification = closeNotification;
+    </script>
   </body>
 </html>
