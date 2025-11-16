@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="es" class="">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalles del Partido - Elecciones Perú 2026</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <!-- INCLUIR LA BASE DE DATOS -->
+    <script src="db-partidos.js"></script>
+    
+    <script>
+      (function() {
+        const isDarkMode = localStorage.getItem('color-theme') === 'dark' || 
+                           (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (isDarkMode) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#DC2626',
+              'blood-red': '#8B0000',
+              secondary: '#1D4ED8',
+              dark: {
+                bg: '#111827',
+                'bg-secondary': '#1F2937',
+                text: '#F9FAFB',
+                'text-secondary': '#9CA3AF',
+              },
+              light: {
+                 bg: '#F9FAFB',
+                'bg-secondary': '#FFFFFF',
+                text: '#111827',
+                'text-secondary': '#4B5563',
+              },
+              'card-light-bg': '#FFFFFF',
+              'card-light-border': '#E5E7EB',
+              'card-dark-bg': '#1a1a1a',
+              'card-dark-border': '#333333',
+              'card-shadow': 'rgba(139, 0, 0, 0.2)',
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" href="../img/logo.png" type="image/png">
+    
+    <style>
+      .party-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .party-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(220, 38, 38, 0) 0%, rgba(220, 38, 38, 0) 100%);
+        transition: background 0.3s ease;
+        z-index: 1;
+        border-radius: 0.75rem;
+      }
+      
+      .party-card:hover::before {
+        background: linear-gradient(135deg, rgba(220, 38, 38, 0.05) 0%, rgba(139, 0, 0, 0.1) 100%);
+      }
+      
+      .party-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px -5px rgba(139, 0, 0, 0.3);
+      }
+      
+      .party-logo {
+        height: 120px;
+        object-fit: contain;
+        position: relative;
+        z-index: 2;
+      }
+      
+      .card-gradient {
+        background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+      }
+      
+      .dark .card-gradient {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+      }
+      
+      .card-content {
+        position: relative;
+        z-index: 2;
+      }
+      
+      .tab-active {
+        border-bottom: 2px solid #DC2626;
+        color: #DC2626;
+        font-weight: 600;
+      }
+      
+      .dark .tab-active {
+        border-bottom: 2px solid #8B0000;
+        color: #8B0000;
+      }
+      
+      .progress-bar {
+        height: 8px;
+        border-radius: 4px;
+        background-color: #E5E7EB;
+        overflow: hidden;
+      }
+      
+      .dark .progress-bar {
+        background-color: #374151;
+      }
+      
+      .progress-fill {
+        height: 100%;
+        background-color: #DC2626;
+        border-radius: 4px;
+      }
+      
+      .dark .progress-fill {
+        background-color: #8B0000;
+      }
+      
+      .candidate-card {
+        transition: all 0.3s ease;
+      }
+      
+      .candidate-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+      
+      .badge-representation {
+        background-color: #3B82F6;
+        color: white;
+      }
+      
+      .badge-new {
+        background-color: #F59E0B;
+        color: white;
+      }
+      
+      .badge-active {
+        background-color: #10B981;
+        color: white;
+      }
+      
+      .filter-active {
+        background-color: #DC2626;
+        color: white;
+      }
+      
+      .dark .filter-active {
+        background-color: #8B0000;
+        color: white;
+      }
+      
+      .loading {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        color: white;
+      }
+
+      .axis-expandable {
+        transition: all 0.3s ease;
+        overflow: hidden;
+      }
+
+      .axis-collapsed {
+        max-height: none;
+      }
+
+      .axis-expanded {
+        max-height: none;
+      }
+
+      /* NUEVO DISEÑO PROFESIONAL PARA LÍNEA DE TIEMPO */
+      .timeline-profesional {
+        position: relative;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .timeline-profesional::after {
+        content: '';
+        position: absolute;
+        width: 3px;
+        background: linear-gradient(to bottom, #DC2626, #8B0000);
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        margin-left: -1.5px;
+        border-radius: 2px;
+        z-index: 1;
+      }
+
+      .timeline-item-profesional {
+        padding: 10px 40px;
+        position: relative;
+        width: 50%;
+        box-sizing: border-box;
+      }
+
+      .timeline-item-profesional::after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: #DC2626;
+        border: 4px solid white;
+        border-radius: 50%;
+        top: 20px;
+        right: -10px;
+        z-index: 2;
+        box-shadow: 0 0 0 3px #DC2626;
+      }
+
+      .dark .timeline-item-profesional::after {
+        background-color: #8B0000;
+        border-color: #1F2937;
+        box-shadow: 0 0 0 3px #8B0000;
+      }
+
+      .timeline-item-profesional:nth-child(even) {
+        left: 50%;
+      }
+
+      .timeline-item-profesional:nth-child(even)::after {
+        left: -10px;
+        right: auto;
+      }
+
+      .timeline-content-profesional {
+        padding: 20px 25px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid #E5E7EB;
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .dark .timeline-content-profesional {
+        background: #1F2937;
+        border-color: #374151;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .timeline-content-profesional:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+      }
+
+      .dark .timeline-content-profesional:hover {
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      }
+
+      .timeline-year-profesional {
+        position: absolute;
+        top: 15px;
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #DC2626;
+        background: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        border: 2px solid #DC2626;
+        box-shadow: 0 2px 10px rgba(220, 38, 38, 0.2);
+        z-index: 2;
+      }
+
+      .dark .timeline-year-profesional {
+        color: #8B0000;
+        background: #1F2937;
+        border-color: #8B0000;
+        box-shadow: 0 2px 10px rgba(139, 0, 0, 0.3);
+      }
+
+      .timeline-item-profesional:nth-child(odd) .timeline-year-profesional {
+        right: -80px;
+      }
+
+      .timeline-item-profesional:nth-child(even) .timeline-year-profesional {
+        left: -80px;
+      }
+
+      .timeline-badge-profesional {
+        display: inline-block;
+        background: linear-gradient(135deg, #DC2626, #8B0000);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 10px;
+        text-align: left;
+      }
+
+      /* Estilos para tooltips corregidos */
+      .tooltip-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .tooltip-content {
+        visibility: hidden;
+        width: 280px;
+        background-color: #1F2937;
+        color: white;
+        text-align: left;
+        border-radius: 8px;
+        padding: 12px;
+        position: absolute;
+        z-index: 1000;
+        bottom: 125%;
+        opacity: 0;
+        transition: opacity 0.3s;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        font-size: 0.875rem;
+        line-height: 1.4;
+        border: 1px solid #374151;
+    }
+
+    /* Tooltips del lado IZQUIERDO (elementos pares) */
+    .timeline-item-profesional:nth-child(odd) .tooltip-content {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* Tooltips del lado DERECHO (elementos pares) - POSICIÓN CORREGIDA */
+    .timeline-item-profesional:nth-child(even) .tooltip-content {
+        right: -140px; /* Movido más a la derecha para evitar la línea */
+        left: auto;
+        transform: none;
+    }
+
+    .tooltip-content::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        border-width: 5px;
+        border-style: solid;
+        z-index: 1001;
+    }
+
+    /* Flecha para tooltips del lado IZQUIERDO */
+    .timeline-item-profesional:nth-child(odd) .tooltip-content::after {
+        left: 50%;
+        margin-left: -5px;
+        border-color: #1F2937 transparent transparent transparent;
+    }
+
+    /* Flecha para tooltips del lado DERECHO - POSICIÓN CORREGIDA */
+    .timeline-item-profesional:nth-child(even) .tooltip-content::after {
+        right: 135px; /* Ajustado para alinear con el nuevo posicionamiento */
+        left: auto;
+        margin-left: 0;
+        border-color: #1F2937 transparent transparent transparent;
+    }
+
+    .tooltip-container:hover .tooltip-content {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .light .tooltip-content {
+        background-color: white;
+        color: #1F2937;
+        border: 1px solid #E5E7EB;
+    }
+
+    .light .tooltip-content::after {
+        border-color: white transparent transparent transparent;
+    }
+
+    .progress-tooltip {
+        width: 200px;
+    }
+
+    .year-badge {
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .year-badge:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .progress-container {
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .progress-container:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Responsive para tooltips */
+    @media screen and (max-width: 768px) {
+        .timeline-profesional::after {
+            left: 31px;
+        }
+
+        .timeline-item-profesional {
+            width: 100%;
+            padding-left: 70px;
+            padding-right: 25px;
+        }
+
+        .timeline-item-profesional:nth-child(even) {
+            left: 0;
+        }
+
+        .timeline-item-profesional::after {
+            left: 21px;
+            right: auto;
+        }
+
+        .timeline-item-profesional:nth-child(odd) .timeline-year-profesional,
+        .timeline-item-profesional:nth-child(even) .timeline-year-profesional {
+            left: 70px;
+            right: auto;
+            top: -10px;
+        }
+
+        /* Tooltips en móvil - posición central */
+        .timeline-item-profesional:nth-child(odd) .tooltip-content,
+        .timeline-item-profesional:nth-child(even) .tooltip-content {
+            left: 50%;
+            right: auto;
+            transform: translateX(-50%);
+            width: 250px;
+        }
+
+        .timeline-item-profesional:nth-child(odd) .tooltip-content::after,
+        .timeline-item-profesional:nth-child(even) .tooltip-content::after {
+            left: 50%;
+            right: auto;
+            margin-left: -5px;
+        }
+    }
+    </style>
+</head>
+<body class="bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text font-sans transition-colors duration-300">
+    
+    <!-- Loading Indicator -->
+    <div id="loading" class="loading">
+        <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-white mb-4"></div>
+        <p>Generando PDF, por favor espere...</p>
+    </div>
+
+    <header class="bg-light-bg-secondary/80 dark:bg-dark-bg-secondary/80 backdrop-blur-sm sticky top-0 z-50 shadow-md">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+          <div class="flex-shrink-0">
+            <a href="../index.html" class="flex flex-col items-start">
+              <span class="font-bold text-xl text-primary tracking-tight">ELECCIONES PERÚ 2026</span>
+              <span class="text-xs text-light-text-secondary dark:text-dark-text-secondary">Infórmate Perú</span>
+            </a>
+          </div>
+          
+          <nav class="hidden md:flex md:items-center md:space-x-8">
+            <a href="../index.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Inicio</a>
+            <a href="calendario.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Calendario</a>
+            <a href="candidatos.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Candidatos</a>
+            <a href="partido-politico.html" class="text-sm font-medium text-primary dark:text-primary transition-colors border-b-2 border-primary">Partido Político</a>
+            <a href="noticias.html" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Noticias</a>
+            <a href="#" class="text-sm font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">Idioma</a>
+          </nav>
+
+          <div class="flex items-center">
+             <button id="theme-toggle" type="button" class="p-2 rounded-full text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" aria-label="Toggle dark mode">
+                <svg id="theme-toggle-dark-icon" class="hidden w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                <svg id="theme-toggle-light-icon" class="hidden w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </button>
+            <div class="md:hidden ml-2">
+              <button id="mobile-menu-button" type="button" class="p-2 rounded-md text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700" aria-controls="mobile-menu" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hidden md:hidden" id="mobile-menu">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Inicio</a>
+          <a href="calendario.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Calendario</a>
+          <a href="candidatos.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Candidatos</a>
+          <a href="partido-politico.html" class="block px-3 py-2 rounded-md text-base font-medium text-primary dark:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">Partido Político</a>
+          <a href="noticias.html" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Noticias</a>
+          <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-colors">Idioma</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Header con navegación -->
+        <div class="flex items-center justify-between mb-6">
+            <a href="partido-politico1.html" class="flex items-center text-primary dark:text-blood-red hover:underline">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Volver a Partidos
+            </a>
+            <div class="flex items-center space-x-4">
+                <button id="follow-btn" class="flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                    <svg class="w-5 h-5 mr-2 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+                    </svg>
+                    <span id="follow-text">Seguir</span>
+                </button>
+                <button class="flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                    </svg>
+                    Compartir
+                </button>
+            </div>
+        </div>
+
+        <!-- Encabezado del partido (DINÁMICO) -->
+        <div id="party-header" class="bg-card-light-bg dark:bg-card-dark-bg border border-card-light-border dark:border-card-dark-border rounded-xl p-6 mb-8 card-gradient">
+            <!-- Se llenará con JavaScript -->
+        </div>
+
+        <!-- Navegación por pestañas -->
+        <div class="border-b border-gray-200 dark:border-gray-700 mb-8">
+            <nav class="flex space-x-8 overflow-x-auto">
+                <button id="info-tab" class="tab-active py-4 px-1 text-sm font-medium whitespace-nowrap">Información</button>
+                <button id="description-tab" class="py-4 px-1 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 whitespace-nowrap">Descripción</button>
+                <button id="candidates-tab" class="py-4 px-1 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 whitespace-nowrap">Candidatos</button>
+                <button id="plan-tab" class="py-4 px-1 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 whitespace-nowrap">Plan de Gobierno</button>
+                <button id="history-tab" class="py-4 px-1 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 whitespace-nowrap">Historia</button>
+            </nav>
+        </div>
+
+        <!-- Contenido de las pestañas -->
+        <div id="info-content" class="tab-content">
+            <!-- Contenido de información general -->
+        </div>
+
+        <div id="description-content" class="tab-content hidden">
+            <!-- Contenido de descripción -->
+        </div>
+
+        <div id="candidates-content" class="tab-content hidden">
+            <!-- Contenido de candidatos -->
+        </div>
+
+        <div id="plan-content" class="tab-content hidden">
+            <!-- Contenido de plan de gobierno -->
+        </div>
+
+        <div id="history-content" class="tab-content hidden">
+            <!-- Contenido de historia -->
+        </div>
+    </main>
+
+    <footer class="text-light-text-secondary dark:text-dark-text-secondary">
+        <div class="bg-gray-200 dark:bg-gray-800 py-12">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mt-12 border-t border-gray-300 dark:border-gray-700 pt-8 flex flex-col sm:flex-row justify-between items-center">
+                     <p class="text-sm mb-4 sm:mb-0">&copy; 2025 Elecciones Perú 2026. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // =============================================
+        // SISTEMA DE CARGA DINÁMICA - CORREGIDO
+        // =============================================
+
+        // Función para obtener el partido de la URL
+        function getPartyFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('partido');
+        }
+
+        // Función para cargar datos del partido - CORREGIDA
+        function loadPartyData() {
+            const partySlug = getPartyFromURL();
+            
+            console.log("Slug del partido:", partySlug);
+            
+            if (!partySlug) {
+                console.error("No se encontró slug en la URL");
+                window.location.href = 'partido-politico1.html';
+                return null;
+            }
+
+            // Verificar si la base de datos está cargada
+            if (typeof AllPartiesData === 'undefined') {
+                console.error("Base de datos AllPartiesData no cargada");
+                return null;
+            }
+
+            const partyData = AllPartiesData[partySlug];
+            
+            console.log("Datos del partido:", partyData);
+            
+            if (!partyData) {
+                console.error(`Partido ${partySlug} no encontrado en la base de datos`);
+                window.location.href = 'partido-politico1.html';
+                return null;
+            }
+
+            return partyData;
+        }
+
+        // =============================================
+        // INICIALIZACIÓN PRINCIPAL - CORREGIDA
+        // =============================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM cargado, iniciando aplicación...");
+            
+            // Esperar un momento para asegurar que la base de datos esté cargada
+            setTimeout(function() {
+                initializeApplication();
+            }, 100);
+        });
+
+        function initializeApplication() {
+            console.log("Inicializando aplicación...");
+            
+            const currentPartyData = loadPartyData();
+
+            // Si no hay datos válidos, no continuar
+            if (!currentPartyData) {
+                console.error("No se pudieron cargar los datos del partido");
+                document.body.innerHTML = `
+                    <div class="p-8 text-center">
+                        <h2 class="text-2xl text-red-600 mb-4">Error al cargar los datos del partido</h2>
+                        <p class="mb-4">Redirigiendo a la lista de partidos...</p>
+                        <a href="partido-politico1.html" class="bg-primary text-white px-4 py-2 rounded">Volver a Partidos</a>
+                    </div>
+                `;
+                setTimeout(() => {
+                    window.location.href = 'partido-politico1.html';
+                }, 3000);
+                return;
+            }
+
+            console.log("Datos cargados correctamente:", currentPartyData.name);
+
+            // =============================================
+            // ESTRUCTURA DE DATOS CENTRALIZADA
+            // =============================================
+            const AppData = {
+                party: currentPartyData,
+                candidates: currentPartyData.candidates,
+                governmentPlan: currentPartyData.governmentPlan,
+                history: currentPartyData.history
+            };
+
+            // =============================================
+            // MÓDULO DE GESTIÓN DE ESTADO
+            // =============================================
+            const StateManager = {
+                currentTab: 'info',
+                isFollowing: false,
+                currentCandidateFilter: 'presidential',
+                currentCongressIndex: 0,
+                axesExpanded: false,
+
+                init() {
+                    this.loadFromStorage();
+                },
+
+                saveToStorage() {
+                    const state = {
+                        isFollowing: this.isFollowing,
+                        currentTab: this.currentTab
+                    };
+                    localStorage.setItem('partyState', JSON.stringify(state));
+                },
+
+                loadFromStorage() {
+                    const saved = localStorage.getItem('partyState');
+                    if (saved) {
+                        const state = JSON.parse(saved);
+                        this.isFollowing = state.isFollowing || false;
+                        this.currentTab = state.currentTab || 'info';
+                    }
+                }
+            };
+
+            // =============================================
+            // MÓDULO DE RENDERIZADO
+            // =============================================
+            const RenderEngine = {
+                // Renderizar el header del partido
+                renderPartyHeader() {
+                    const container = document.getElementById('party-header');
+                    const party = AppData.party;
+                    
+                    container.innerHTML = `
+                        <div class="flex flex-col md:flex-row items-center">
+                            <div class="w-32 h-32 flex items-center justify-center mb-4 md:mb-0 md:mr-6">
+                                <img src="${party.logo}" alt="Logo de ${party.name}" class="w-full h-full object-contain">
+                            </div>
+                            <div class="text-center md:text-left">
+                                <h1 class="text-3xl font-black text-primary dark:text-blood-red mb-2">${party.name}</h1>
+                                <p class="text-lg text-gray-600 dark:text-gray-400 italic">"${party.slogan}"</p>
+                                <div class="flex flex-wrap justify-center md:justify-start mt-4 gap-2">
+                                    <span class="badge-representation px-3 py-1 rounded-full text-xs font-semibold">
+                                        ${party.info.representation !== "0 congresistas" ? 'CON REPRESENTACIÓN' : 'SIN REPRESENTACIÓN'}
+                                    </span>
+                                    <span class="badge-active px-3 py-1 rounded-full text-xs font-semibold">ACTIVO</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                },
+
+                // Renderizar información general
+                renderInfo() {
+                    const container = document.getElementById('info-content');
+                    container.innerHTML = `
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            ${this.createInfoCard('Información General', this.generateInfoItems())}
+                            ${this.createInfoCard('Información Adicional', this.generateAdditionalInfo())}
+                        </div>
+                    `;
+                },
+
+                createInfoCard(title, content) {
+                    return `
+                        <div class="bg-card-light-bg dark:bg-card-dark-bg border border-card-light-border dark:border-card-dark-border rounded-xl p-6 card-gradient">
+                            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">${title}</h2>
+                            <div class="space-y-4">${content}</div>
+                        </div>
+                    `;
+                },
+
+                generateInfoItems() {
+                    const info = AppData.party.info;
+                    const items = [
+                        { icon: '📅', label: 'Fundación', value: info.foundation },
+                        { icon: '🎨', label: 'Colores', value: info.colors },
+                        { icon: '💡', label: 'Ideología', value: info.ideology },
+                        { icon: '👥', label: 'Líder Actual', value: info.leader },
+                        { icon: '🏛️', label: 'Representación Congresal', value: info.representation },
+                        { icon: '📊', label: 'Resultados Elecciones Pasadas', value: info.lastResults },
+                        { icon: '📍', label: 'Sede Central', value: info.headquarters },
+                        { icon: '🌐', label: 'Página Web', value: info.website, isLink: true }
+                    ];
+
+                    return items.map(item => `
+                        <div class="flex items-start">
+                            <span class="text-gray-500 dark:text-gray-400 mr-3 mt-1">${item.icon}</span>
+                            <div>
+                                <p class="font-medium text-gray-700 dark:text-gray-300">${item.label}</p>
+                                ${item.isLink ? 
+                                    `<a href="${item.value}" target="_blank" class="text-primary dark:text-blood-red hover:underline">${item.value}</a>` :
+                                    `<p class="text-gray-600 dark:text-gray-400">${item.value}</p>`
+                                }
+                            </div>
+                        </div>
+                    `).join('');
+                },
+
+                generateAdditionalInfo() {
+                    const info = AppData.party.info;
+                    return `
+                        <div>
+                            <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-2">Fundador</h3>
+                            <p class="text-gray-600 dark:text-gray-400">${info.founder}</p>
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-2">Posición Política</h3>
+                            <p class="text-gray-600 dark:text-gray-400">${info.position}</p>
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-2">Afiliación Internacional</h3>
+                            <p class="text-gray-600 dark:text-gray-400">${info.affiliation}</p>
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-gray-700 dark:text-gray-300 mb-2">Redes Sociales</h3>
+                            ${this.generateSocialLinks()}
+                        </div>
+                    `;
+                },
+
+                generateSocialLinks() {
+                    return `
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path></svg>
+                            </a>
+                            <a href="#" class="text-blue-400 hover:text-blue-600 dark:text-blue-300 dark:hover:text-blue-200">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path></svg>
+                            </a>
+                            <a href="#" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd"></path></svg>
+                            </a>
+                        </div>
+                    `;
+                },
+
+                // Renderizar descripción
+                renderDescription() {
+                    const container = document.getElementById('description-content');
+                    const desc = AppData.party.description;
+                    
+                    container.innerHTML = `
+                        <div class="bg-card-light-bg dark:bg-card-dark-bg border border-card-light-border dark:border-card-dark-border rounded-xl p-6 card-gradient">
+                            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">Descripción del Partido</h2>
+                            <div class="prose dark:prose-invert max-w-none">
+                                <p class="text-gray-700 dark:text-gray-300 mb-4">${desc.general}</p>
+                                
+                                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mt-6 mb-3">Principios Ideológicos</h3>
+                                <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 mb-4 space-y-2">
+                                    ${desc.principles.map(principle => `<li>${principle}</li>`).join('')}
+                                </ul>
+                                
+                                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mt-6 mb-3">Trayectoria Histórica</h3>
+                                <p class="text-gray-700 dark:text-gray-300 mb-4">${desc.history}</p>
+                                
+                                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mt-6 mb-3">Estructura Organizativa</h3>
+                                <p class="text-gray-700 dark:text-gray-300 mb-4">${desc.structure}</p>
+                                
+                                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mt-6 mb-3">Símbolos e Identidad</h3>
+                                <p class="text-gray-700 dark:text-gray-300">${desc.symbols}</p>
+                            </div>
+                        </div>
+                    `;
+                },
+
+                // Renderizar plan de gobierno
+                renderGovernmentPlan() {
+                    const container = document.getElementById('plan-content');
+                    const axesToShow = StateManager.axesExpanded ? 
+                        AppData.governmentPlan.axes : 
+                        AppData.governmentPlan.axes.slice(0, 4);
+
+                    container.innerHTML = `
+                        <div class="bg-card-light-bg dark:bg-card-dark-bg border border-card-light-border dark:border-card-dark-border rounded-xl p-6 card-gradient mb-8">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200">Plan de Gobierno 2026-2031</h2>
+                                <button id="download-pdf" class="flex items-center px-4 py-2 bg-primary dark:bg-blood-red text-white rounded-lg hover:bg-primary/90 dark:hover:bg-blood-red/90 transition-colors">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                    Descargar PDF Completo
+                                </button>
+                            </div>
+
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">EJES PRINCIPALES:</h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                ${axesToShow.map(axis => this.createAxisCard(axis)).join('')}
+                            </div>
+
+                            ${AppData.governmentPlan.axes.length > 4 ? `
+                                <div class="text-center">
+                                    <button id="toggle-axes" class="text-primary dark:text-blood-red font-medium hover:underline flex items-center justify-center mx-auto">
+                                        ${StateManager.axesExpanded ? 'Ver Menos Ejes' : 'Ver Todos los Ejes'}
+                                        <svg class="w-4 h-4 ml-1 transform ${StateManager.axesExpanded ? 'rotate-180' : 'rotate-0'} transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                },
+
+                createAxisCard(axis) {
+                    return `
+                        <div class="candidate-card bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+                            <h4 class="font-bold text-primary dark:text-blood-red mb-3 flex items-center">
+                                <span class="mr-2">${axis.icon}</span> ${axis.name}
+                            </h4>
+                            <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-1">
+                                ${axis.proposals.map(proposal => `<li>${proposal}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                },
+
+                // Renderizar historia
+                renderHistory() {
+                    const container = document.getElementById('history-content');
+                    const isDarkMode = document.documentElement.classList.contains('dark');
+                    const tooltipClass = isDarkMode ? '' : 'light';
+                    
+                    container.innerHTML = `
+                        <div class="bg-card-light-bg dark:bg-card-dark-bg border border-card-light-border dark:border-card-dark-border rounded-xl p-6 card-gradient mb-8">
+                            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-6">Historia y Trayectoria</h2>
+                            
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                <!-- Contenedor Línea de Tiempo Profesional -->
+                                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-6 text-center">Línea de Tiempo Histórica</h3>
+                                    <div class="timeline-profesional">
+                                        ${AppData.history.timeline.map((item, index) => `
+                                            <div class="timeline-item-profesional ${index % 2 === 0 ? '' : 'even'}">
+                                                <div class="timeline-content-profesional">
+                                                    <span class="timeline-badge-profesional">${item.badge}</span>
+                                                    <h4 class="timeline-title-profesional">${item.event}</h4>
+                                                    <p class="timeline-detail-profesional">${item.detail}</p>
+                                                    <div class="tooltip-container">
+                                                        <button class="text-primary dark:text-blood-red text-sm font-medium hover:underline">
+                                                            Más información
+                                                        </button>
+                                                        <div class="tooltip-content ${tooltipClass}">
+                                                            <strong>${item.year}: ${item.event}</strong><br>
+                                                            ${item.tooltip}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="timeline-year-profesional">${item.year}</div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+
+                                <!-- Contenedor Resultados Electorales Históricos -->
+                                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Resultados Electorales Históricos</h3>
+                                    <div class="space-y-6">
+                                        ${AppData.history.results.map(result => `
+                                            <div class="progress-container bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+                                                <div class="tooltip-container w-full">
+                                                    <div class="flex justify-between items-center mb-3">
+                                                        <span class="font-semibold text-gray-800 dark:text-gray-200">${result.year}</span>
+                                                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">${result.percentage} (${result.congressmen} congresistas)</span>
+                                                    </div>
+                                                    <div class="progress-bar">
+                                                        <div class="progress-fill" style="width: ${result.width}"></div>
+                                                    </div>
+                                                    <div class="tooltip-content progress-tooltip ${tooltipClass}">
+                                                        <strong>Elecciones ${result.year}</strong><br>
+                                                        ${result.tooltip}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                },
+
+                // Renderizar candidatos
+                renderCandidates() {
+                    const container = document.getElementById('candidates-content');
+                    container.innerHTML = `
+                        <div class="bg-card-light-bg dark:bg-card-dark-bg border border-card-light-border dark:border-card-dark-border rounded-xl p-6 card-gradient mb-8">
+                            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4">Candidatos 2026</h2>
+                            ${this.renderCandidateFilters()}
+                            ${this.renderCandidateContent()}
+                        </div>
+                    `;
+                },
+
+                renderCandidateFilters() {
+                    return `
+                        <div class="flex space-x-4 mb-6 overflow-x-auto">
+                            <button id="presidential-filter" class="${StateManager.currentCandidateFilter === 'presidential' ? 'filter-active' : 'bg-gray-200 dark:bg-gray-700'} px-4 py-2 rounded-lg font-medium transition-colors">Presidencial</button>
+                            <button id="congress-filter" class="${StateManager.currentCandidateFilter === 'congress' ? 'filter-active' : 'bg-gray-200 dark:bg-gray-700'} px-4 py-2 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">Congreso</button>
+                            <button id="andino-filter" class="${StateManager.currentCandidateFilter === 'andino' ? 'filter-active' : 'bg-gray-200 dark:bg-gray-700'} px-4 py-2 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">Parlamento Andino</button>
+                        </div>
+                    `;
+                },
+
+                renderCandidateContent() {
+                    switch (StateManager.currentCandidateFilter) {
+                        case 'presidential':
+                            return this.renderPresidentialCandidates();
+                        case 'congress':
+                            return this.renderCongressCandidates();
+                        case 'andino':
+                            return this.renderAndinoCandidates();
+                    }
+                },
+
+                renderPresidentialCandidates() {
+                    return `
+                        <div id="presidential-content" class="candidate-section">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">PLANCHA PRESIDENCIAL:</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                ${AppData.candidates.presidential.map(candidate => `
+                                    <div class="candidate-card bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+                                        <div class="w-20 h-20 bg-gray-300 dark:bg-gray-600 rounded-full mx-auto mb-3 flex items-center justify-center">
+                                            <span class="text-gray-500 dark:text-gray-400 text-sm">Foto</span>
+                                        </div>
+                                        <p class="text-center font-medium text-gray-800 dark:text-gray-200">${candidate.position}: ${candidate.name}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                },
+
+                renderCongressCandidates() {
+                    const visibleCandidates = AppData.candidates.congress.slice(0, StateManager.currentCongressIndex + 5);
+                    
+                    return `
+                        <div id="congress-content" class="candidate-section">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">CANDIDATOS AL CONGRESO:</h3>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4" id="congress-candidates">
+                                ${visibleCandidates.map(candidate => `
+                                    <div class="candidate-card bg-white dark:bg-gray-800 rounded-lg p-3 border border-gray-200 dark:border-gray-700 text-center">
+                                        <div class="w-16 h-16 bg-gray-300 dark:bg-gray-600 rounded-full mx-auto mb-2 flex items-center justify-center">
+                                            <span class="text-gray-500 dark:text-gray-400 text-xs">Foto</span>
+                                        </div>
+                                        <p class="text-sm font-medium text-gray-800 dark:text-gray-200">${candidate}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            ${StateManager.currentCongressIndex + 5 < AppData.candidates.congress.length ? `
+                                <div class="text-center mt-4">
+                                    <button id="load-more-congress" class="text-primary dark:text-blood-red font-medium hover:underline">+5 más...</button>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                },
+
+                renderAndinoCandidates() {
+                    return `
+                        <div id="andino-content" class="candidate-section">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">CANDIDATOS AL PARLAMENTO ANDINO:</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                ${AppData.candidates.andino.map(candidate => `
+                                    <div class="candidate-card bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700 text-center">
+                                        <div class="w-16 h-16 bg-gray-300 dark:bg-gray-600 rounded-full mx-auto mb-2 flex items-center justify-center">
+                                            <span class="text-gray-500 dark:text-gray-400 text-xs">Foto</span>
+                                        </div>
+                                        <p class="text-sm font-medium text-gray-800 dark:text-gray-200">${candidate}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+            };
+
+            // =============================================
+            // MÓDULO DE UTILIDADES
+            // =============================================
+            const PDFGenerator = {
+                async generatePDF() {
+                    try {
+                        DocumentManager.showLoading();
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        
+                        const { jsPDF } = window.jspdf;
+                        const doc = new jsPDF();
+                        
+                        // Configuración inicial
+                        doc.setFont('helvetica');
+                        doc.setFontSize(20);
+                        doc.setTextColor(220, 38, 38);
+                        
+                        // Título
+                        doc.text('PLAN DE GOBIERNO 2026-2031', 105, 20, { align: 'center' });
+                        doc.setFontSize(16);
+                        doc.setTextColor(0, 0, 0);
+                        doc.text(AppData.party.name.toUpperCase(), 105, 30, { align: 'center' });
+                        doc.setFontSize(12);
+                        doc.text(`"${AppData.party.slogan}"`, 105, 38, { align: 'center' });
+                        
+                        // Línea separadora
+                        doc.setDrawColor(220, 38, 38);
+                        doc.setLineWidth(0.5);
+                        doc.line(20, 45, 190, 45);
+                        
+                        let yPosition = 60;
+                        
+                        // Agregar cada eje al PDF
+                        AppData.governmentPlan.axes.forEach((axis, index) => {
+                            if (yPosition > 250) {
+                                doc.addPage();
+                                yPosition = 20;
+                            }
+                            
+                            doc.setFontSize(14);
+                            doc.setTextColor(220, 38, 38);
+                            doc.text(axis.name, 20, yPosition);
+                            yPosition += 8;
+                            
+                            doc.setFontSize(10);
+                            doc.setTextColor(0, 0, 0);
+                            axis.proposals.forEach(proposal => {
+                                if (yPosition > 270) {
+                                    doc.addPage();
+                                    yPosition = 20;
+                                }
+                                doc.text(`• ${proposal}`, 25, yPosition);
+                                yPosition += 6;
+                            });
+                            
+                            yPosition += 10;
+                        });
+                        
+                        doc.setFontSize(8);
+                        doc.setTextColor(128, 128, 128);
+                        doc.text('Generado desde Elecciones Perú 2026 - www.eleccionesperu2026.com', 105, 285, { align: 'center' });
+                        
+                        doc.save(`Plan_de_Gobierno_${AppData.party.name.replace(/\s+/g, '_')}_2026-2031.pdf`);
+                        
+                    } catch (error) {
+                        console.error('Error al generar PDF:', error);
+                        alert('Error al generar el PDF. Por favor, intente nuevamente.');
+                    } finally {
+                        DocumentManager.hideLoading();
+                    }
+                }
+            };
+
+            // =============================================
+            // MÓDULO DE GESTIÓN DEL DOCUMENTO
+            // =============================================
+            const DocumentManager = {
+                init() {
+                    this.setupEventListeners();
+                    StateManager.init();
+                },
+
+                setupEventListeners() {
+                    // Tabs principales
+                    document.getElementById('info-tab').addEventListener('click', () => this.switchTab('info'));
+                    document.getElementById('description-tab').addEventListener('click', () => this.switchTab('description'));
+                    document.getElementById('candidates-tab').addEventListener('click', () => this.switchTab('candidates'));
+                    document.getElementById('plan-tab').addEventListener('click', () => this.switchTab('plan'));
+                    document.getElementById('history-tab').addEventListener('click', () => this.switchTab('history'));
+
+                    // Botón de seguir
+                    document.getElementById('follow-btn').addEventListener('click', () => this.toggleFollow());
+
+                    // Tema
+                    document.getElementById('theme-toggle').addEventListener('click', () => this.toggleTheme());
+
+                    // Menú móvil
+                    document.getElementById('mobile-menu-button').addEventListener('click', () => this.toggleMobileMenu());
+                },
+
+                switchTab(tabName) {
+                    StateManager.currentTab = tabName;
+                    StateManager.saveToStorage();
+                    this.loadTabContent(tabName);
+                },
+
+                loadTabContent(tabName) {
+                    // Actualizar tabs activos
+                    document.querySelectorAll('nav button').forEach(btn => {
+                        btn.classList.remove('tab-active');
+                        btn.classList.add('text-gray-500', 'dark:text-gray-400');
+                    });
+                    
+                    const activeTab = document.getElementById(`${tabName}-tab`);
+                    activeTab.classList.add('tab-active');
+                    activeTab.classList.remove('text-gray-500', 'dark:text-gray-400');
+
+                    // Ocultar todo el contenido
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.add('hidden');
+                    });
+
+                    // Mostrar contenido activo
+                    const activeContent = document.getElementById(`${tabName}-content`);
+                    activeContent.classList.remove('hidden');
+
+                    // Renderizar contenido específico
+                    switch(tabName) {
+                        case 'info':
+                            RenderEngine.renderInfo();
+                            break;
+                        case 'description':
+                            RenderEngine.renderDescription();
+                            break;
+                        case 'candidates':
+                            RenderEngine.renderCandidates();
+                            this.setupCandidateEvents();
+                            break;
+                        case 'plan':
+                            RenderEngine.renderGovernmentPlan();
+                            this.setupPlanEvents();
+                            break;
+                        case 'history':
+                            RenderEngine.renderHistory();
+                            break;
+                    }
+                },
+
+                setupCandidateEvents() {
+                    // Filtros de candidatos
+                    document.getElementById('presidential-filter')?.addEventListener('click', () => this.switchCandidateFilter('presidential'));
+                    document.getElementById('congress-filter')?.addEventListener('click', () => this.switchCandidateFilter('congress'));
+                    document.getElementById('andino-filter')?.addEventListener('click', () => this.switchCandidateFilter('andino'));
+
+                    // Cargar más candidatos
+                    document.getElementById('load-more-congress')?.addEventListener('click', () => this.loadMoreCongressCandidates());
+                },
+
+                setupPlanEvents() {
+                    // Toggle ejes
+                    document.getElementById('toggle-axes')?.addEventListener('click', () => this.toggleAxes());
+                    
+                    // Descargar PDF
+                    document.getElementById('download-pdf')?.addEventListener('click', () => PDFGenerator.generatePDF());
+                },
+
+                switchCandidateFilter(filter) {
+                    StateManager.currentCandidateFilter = filter;
+                    RenderEngine.renderCandidates();
+                    this.setupCandidateEvents();
+                },
+
+                loadMoreCongressCandidates() {
+                    StateManager.currentCongressIndex += 5;
+                    RenderEngine.renderCandidates();
+                    this.setupCandidateEvents();
+                },
+
+                toggleFollow() {
+                    StateManager.isFollowing = !StateManager.isFollowing;
+                    const followBtn = document.getElementById('follow-btn');
+                    const followText = document.getElementById('follow-text');
+                    
+                    if (StateManager.isFollowing) {
+                        followText.textContent = 'Siguiendo';
+                        followBtn.classList.remove('bg-gray-200', 'dark:bg-gray-700');
+                        followBtn.classList.add('bg-yellow-100', 'dark:bg-yellow-900');
+                    } else {
+                        followText.textContent = 'Seguir';
+                        followBtn.classList.remove('bg-yellow-100', 'dark:bg-yellow-900');
+                        followBtn.classList.add('bg-gray-200', 'dark:bg-gray-700');
+                    }
+                    
+                    StateManager.saveToStorage();
+                },
+
+                toggleAxes() {
+                    StateManager.axesExpanded = !StateManager.axesExpanded;
+                    RenderEngine.renderGovernmentPlan();
+                    this.setupPlanEvents();
+                },
+
+                toggleTheme() {
+                    const html = document.documentElement;
+                    const isDark = html.classList.contains('dark');
+                    const sunIcon = document.getElementById('theme-toggle-light-icon');
+                    const moonIcon = document.getElementById('theme-toggle-dark-icon');
+                    
+                    html.classList.toggle('dark');
+                    localStorage.setItem('color-theme', isDark ? 'light' : 'dark');
+                    
+                    sunIcon.classList.toggle('hidden');
+                    moonIcon.classList.toggle('hidden');
+                },
+
+                toggleMobileMenu() {
+                    const menu = document.getElementById('mobile-menu');
+                    const button = document.getElementById('mobile-menu-button');
+                    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                    
+                    button.setAttribute('aria-expanded', !isExpanded);
+                    menu.classList.toggle('hidden');
+                },
+
+                showLoading() {
+                    document.getElementById('loading').style.display = 'flex';
+                },
+
+                hideLoading() {
+                    document.getElementById('loading').style.display = 'none';
+                }
+            };
+
+            
+
+            // =============================================
+            // INICIALIZACIÓN FINAL
+            // =============================================
+            DocumentManager.init();
+            
+            // Renderizar header primero
+            RenderEngine.renderPartyHeader();
+            
+            // Cargar contenido inicial
+            DocumentManager.loadTabContent(StateManager.currentTab);
+            
+            // Actualizar estado de seguimiento
+            if (StateManager.isFollowing) {
+                DocumentManager.toggleFollow();
+            }
+
+            console.log("Aplicación inicializada correctamente");
+        }
+
+    </script>
+</body>
+</html>
