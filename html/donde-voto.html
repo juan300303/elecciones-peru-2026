@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>¿Dónde Voto? - Elecciones Perú 2026</title>
-    <!-- Theme detection script -->
+    
     <script>
       (function() {
         const isDarkMode = localStorage.getItem('color-theme') === 'dark' || 
@@ -47,8 +47,188 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
-    <link rel="stylesheet" href="../css/style.css">
     <link rel="icon" href="../img/logo.png" type="image/png">
+    
+    <style>
+      /* Estilos para títulos de sección mejorados */
+      .section-title {
+        font-weight: 800;
+        font-size: 2.5rem;
+        margin-bottom: 8px;
+        background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .dark .section-title {
+        background: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .section-subtitle {
+        font-size: 1.2rem;
+        color: #6b7280;
+        margin-bottom: 32px;
+      }
+
+      .dark .section-subtitle {
+        color: #9ca3af;
+      }
+
+      /* Estilos para pestañas mejoradas */
+      .tab-button {
+        position: relative;
+        padding: 12px 24px;
+        font-weight: 600;
+        border-bottom: 3px solid transparent;
+        transition: all 0.3s ease;
+        border-radius: 8px 8px 0 0;
+      }
+
+      .tab-button.active {
+        color: #dc2626;
+        border-bottom-color: #dc2626;
+        background: rgba(220, 38, 38, 0.05);
+      }
+
+      .dark .tab-button.active {
+        background: rgba(220, 38, 38, 0.1);
+      }
+
+      .tab-button:hover:not(.active) {
+        background: rgba(0, 0, 0, 0.05);
+      }
+
+      .dark .tab-button:hover:not(.active) {
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      /* Estilos para tarjetas mejoradas */
+      .info-card {
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        transition: all 0.3s ease;
+        background: white;
+      }
+
+      .dark .info-card {
+        background: #1f2937;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+      }
+
+      .info-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+
+      .dark .info-card:hover {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Estilos para botones mejorados */
+      .search-button {
+        background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+        transition: all 0.3s ease;
+      }
+
+      .search-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px rgba(220, 38, 38, 0.2);
+      }
+
+      .download-button {
+        background: linear-gradient(135deg, #1D4ED8 0%, #1e40af 100%);
+        transition: all 0.3s ease;
+      }
+
+      .download-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px rgba(29, 78, 216, 0.2);
+      }
+
+      /* Estilos para campos de entrada */
+      .input-field {
+        transition: all 0.3s ease;
+        border: 2px solid #e5e7eb;
+      }
+
+      .dark .input-field {
+        border-color: #4b5563;
+      }
+
+      .input-field:focus {
+        border-color: #dc2626;
+        box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+      }
+
+      /* Animación de carga mejorada */
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+
+      .loading-pulse {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+
+      /* Badges mejorados */
+      .badge-primary {
+        background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+        color: white;
+        font-weight: 700;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.875rem;
+      }
+
+      .badge-secondary {
+        background: linear-gradient(135deg, #1D4ED8 0%, #1e40af 100%);
+        color: white;
+        font-weight: 700;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.875rem;
+      }
+
+      /* Mapa mejorado */
+      .map-container {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      }
+
+      .dark .map-container {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+      }
+
+     
+      .search-form-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      @media (min-width: 640px) {
+        .search-form-container {
+          flex-direction: row;
+          align-items: center; /* CENTRADO VERTICAL  */
+        }
+        
+        .search-input-container {
+          flex: 1;
+        }
+        
+        .search-button-container {
+          flex-shrink: 0;
+          display: flex;
+          align-items: center; /* CENTRADO VERTICAL */
+          height: 100%;
+        }
+      }
+    </style>
   </head>
   <body class="bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text font-sans transition-colors duration-300">
     
@@ -101,181 +281,360 @@
     </header>
 
     <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <section class="max-w-5xl mx-auto">
-        <div class="mb-8">
-          <h1 class="text-4xl font-bold">¿Dónde Voto?</h1>
-          <p class="text-light-text-secondary dark:text-dark-text-secondary mt-2">Encuentra tu local de votación y toda la información que necesitas.</p>
-          <div class="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md">
-            <p class="text-sm text-blue-800 dark:text-blue-200">ℹ️ Sistema de demostración con datos de ejemplo</p>
+      <section class="max-w-6xl mx-auto">
+        <!-- Encabezado mejorado -->
+        <div class="text-center mb-12">
+          <h1 class="section-title">¿Dónde Voto?</h1>
+          <p class="section-subtitle">Encuentra tu local de votación y toda la información que necesitas para ejercer tu derecho al voto</p>
+          <div class="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl max-w-2xl mx-auto">
+            <p class="text-sm text-blue-800 dark:text-blue-200 flex items-center justify-center gap-2">
+              <span class="text-lg">ℹ️</span>
+              Sistema de demostración con datos de ejemplo para las Elecciones Perú 2026
+            </p>
           </div>
         </div>
 
-        <!-- Tab selector -->
-        <div class="flex gap-2 mb-8 border-b border-gray-200 dark:border-gray-700">
-          <button id="tab-elector" class="px-6 py-3 font-semibold text-primary border-b-2 border-primary transition-colors" data-tab="elector">
-            🗳️ Soy Elector
+        <!-- Selector de pestañas mejorado -->
+        <div class="flex gap-1 mb-8 bg-gray-100 dark:bg-gray-800 p-2 rounded-xl max-w-md mx-auto">
+          <button id="tab-elector" class="tab-button flex-1 flex items-center justify-center gap-2 active" data-tab="elector">
+            <span class="text-lg">🗳️</span>
+            <span>Soy Elector</span>
           </button>
-          <button id="tab-miembro" class="px-6 py-3 font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary border-b-2 border-transparent transition-colors" data-tab="miembro">
-            🏛️ Soy Miembro de Mesa
+          <button id="tab-miembro" class="tab-button flex-1 flex items-center justify-center gap-2" data-tab="miembro">
+            <span class="text-lg">🏛️</span>
+            <span>Miembro de Mesa</span>
           </button>
         </div>
 
         <!-- TAB 1: ELECTOR -->
         <div id="content-elector" class="tab-content">
-          <!-- Search form -->
-          <div class="bg-white dark:bg-dark-bg-secondary rounded-lg p-6 mb-8 border border-gray-200 dark:border-gray-700">
-            <h2 class="text-xl font-semibold mb-4">Buscar mi local de votación</h2>
-            <div class="flex flex-col sm:flex-row gap-3">
-              <input type="text" id="dni-elector" placeholder="Ingresa tu DNI (8 dígitos)" class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-dark-bg text-light-text dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-primary" maxlength="8" />
-              <button id="btn-search-elector" class="px-6 py-2 bg-primary text-white rounded-md hover:opacity-90 font-medium transition-opacity">Buscar</button>
+          <!-- Formulario de búsqueda mejorado -->
+          <div class="info-card p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-2 flex items-center gap-2">
+              <span class="text-primary">🔍</span>
+              Buscar mi local de votación
+            </h2>
+            <p class="text-light-text-secondary dark:text-dark-text-secondary mb-6">
+              Ingresa tu número de DNI para encontrar tu local de votación asignado
+            </p>
+            <div class="search-form-container">
+              <div class="search-input-container">
+                <label for="dni-elector" class="block text-sm font-medium mb-2">Número de DNI</label>
+                <input 
+                  type="text" 
+                  id="dni-elector" 
+                  placeholder="Ingresa tu DNI (8 dígitos)" 
+                  class="input-field w-full px-4 py-3 rounded-lg bg-white dark:bg-dark-bg text-light-text dark:text-dark-text focus:outline-none"
+                  maxlength="8"
+                  pattern="[0-9]{8}"
+                  inputmode="numeric"
+                />
+                <p class="text-xs text-light-text-secondary dark:text-dark-text-secondary mt-2">
+                  Solo números, sin espacios ni caracteres especiales
+                </p>
+              </div>
+              <div class="search-button-container">
+                <button id="btn-search-elector" class="search-button w-full sm:w-auto px-8 py-3 text-white rounded-lg font-semibold flex items-center justify-center gap-2 whitespace-nowrap">
+                  <span>Buscar</span>
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
 
-          <!-- Results (hidden until search) -->
+          <!-- Resultados (ocultos hasta la búsqueda) -->
           <div id="elector-results" class="hidden">
-            <!-- Loading state -->
-            <div id="elector-loading" class="hidden text-center py-8">
-              <div class="inline-block animate-spin">⏳</div>
-              <p class="mt-2 text-light-text-secondary dark:text-dark-text-secondary">Buscando información...</p>
+            <!-- Estado de carga -->
+            <div id="elector-loading" class="hidden text-center py-12">
+              <div class="inline-flex flex-col items-center gap-4">
+                <div class="loading-pulse text-6xl">🗳️</div>
+                <div>
+                  <p class="text-lg font-semibold mb-2">Buscando información...</p>
+                  <p class="text-light-text-secondary dark:text-dark-text-secondary">Consultando base de datos del RENIEC</p>
+                </div>
+              </div>
             </div>
 
-            <!-- Results content -->
-            <div id="elector-data" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <!-- Voting location info -->
-              <div class="bg-white dark:bg-dark-bg-secondary rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-semibold mb-4">📍 Tu Local de Votación</h3>
-                <div class="space-y-2 text-sm">
-                  <p><strong>Institución:</strong> <span id="ed-institucion"></span></p>
-                  <p><strong>Dirección:</strong> <span id="ed-direccion"></span></p>
-                  <p><strong>Distrito:</strong> <span id="ed-distrito"></span></p>
-                  <p><strong>Número de Mesa:</strong> <span class="bg-primary text-white px-2 py-1 rounded font-bold" id="ed-mesa"></span></p>
-                  <p><strong>Hora de Apertura:</strong> <span id="ed-hora"></span></p>
+            <!-- Contenido de resultados -->
+            <div id="elector-data" class="hidden space-y-6">
+              <!-- Información del local de votación -->
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="info-card p-6">
+                  <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <span class="text-primary">📍</span>
+                    Tu Local de Votación
+                  </h3>
+                  <div class="space-y-4">
+                    <div class="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-700">
+                      <span class="font-semibold">Institución Educativa:</span>
+                      <span id="ed-institucion" class="text-primary font-bold">Colegio Nacional Alfonso Ugarte</span>
+                    </div>
+                    <div class="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-700">
+                      <span class="font-semibold">Dirección:</span>
+                      <span id="ed-direccion" class="text-right">Av. Alfonso Ugarte 123, Cercado de Lima</span>
+                    </div>
+                    <div class="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-700">
+                      <span class="font-semibold">Distrito:</span>
+                      <span id="ed-distrito" class="bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full">Cercado de Lima</span>
+                    </div>
+                    <div class="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-700">
+                      <span class="font-semibold">Número de Mesa:</span>
+                      <span id="ed-mesa" class="badge-primary">MESA 0421</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                      <span class="font-semibold">Horario de Votación:</span>
+                      <span id="ed-hora" class="text-green-600 dark:text-green-400 font-bold">7:00 AM - 4:00 PM</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Mapa -->
+                <div>
+                  <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <span class="text-primary">🗺️</span>
+                    Ubicación en el Mapa
+                  </h3>
+                  <div id="elector-map" class="map-container h-80 bg-gray-100 dark:bg-gray-700"></div>
+                  <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary mt-2 text-center">
+                    Ubicación aproximada de tu local de votación
+                  </p>
                 </div>
               </div>
 
-              <!-- Map -->
-              <div>
-                <h3 class="text-lg font-semibold mb-2">🗺️ Ubicación</h3>
-                <div id="elector-map" class="rounded-lg border border-gray-200 dark:border-gray-700 h-72 bg-gray-100 dark:bg-gray-700"></div>
+              <!-- Información adicional en grid -->
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Instrucciones para votar -->
+                <div class="info-card p-6">
+                  <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <span class="text-primary">📋</span>
+                    Instrucciones para Votar
+                  </h3>
+                  <ol class="space-y-3 text-sm">
+                    <li class="flex items-start gap-3">
+                      <span class="badge-primary flex-shrink-0 mt-1">1</span>
+                      <span><strong>Llega con anticipación:</strong> Recomendamos 30 minutos antes del cierre</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                      <span class="badge-primary flex-shrink-0 mt-1">2</span>
+                      <span><strong>Documentación:</strong> Presenta tu DNI físico y vigente</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                      <span class="badge-primary flex-shrink-0 mt-1">3</span>
+                      <span><strong>Recepción:</strong> Recibirás la cédula de sufragio del miembro de mesa</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                      <span class="badge-primary flex-shrink-0 mt-1">4</span>
+                      <span><strong>Votación:</strong> Ingresa a la cabina y marca tu voto con claridad</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                      <span class="badge-primary flex-shrink-0 mt-1">5</span>
+                      <span><strong>Urna:</strong> Dobla tu cédula e introdúcela en la urna correspondiente</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                      <span class="badge-primary flex-shrink-0 mt-1">6</span>
+                      <span><strong>Constancia:</strong> Retira tu constancia de votación antes de retirarte</span>
+                    </li>
+                  </ol>
+                </div>
+
+                <!-- Recomendaciones de seguridad -->
+                <div class="info-card p-6">
+                  <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <span class="text-primary">🔒</span>
+                    Recomendaciones de Seguridad
+                  </h3>
+                  <ul class="space-y-3 text-sm">
+                    <li class="flex items-start gap-3">
+                      <span class="text-green-500 mt-1">✓</span>
+                      <span><strong>Documento seguro:</strong> Lleva tu DNI en un lugar protegido</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                      <span class="text-green-500 mt-1">✓</span>
+                      <span><strong>Privacidad:</strong> No compartas información personal innecesaria</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                      <span class="text-green-500 mt-1">✓</span>
+                      <span><strong>Libertad:</strong> Vota sin presiones externas de ningún tipo</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                      <span class="text-green-500 mt-1">✓</span>
+                      <span><strong>Confidencialidad:</strong> Mantén tu voto en absoluta reserva</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                      <span class="text-green-500 mt-1">✓</span>
+                      <span><strong>Denuncia:</strong> Si observas anomalías, informa inmediatamente a los miembros de mesa</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
 
-              <!-- Instructions -->
-              <div class="bg-white dark:bg-dark-bg-secondary rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-semibold mb-4">📋 Instrucciones para Votar</h3>
-                <ol class="space-y-2 text-sm list-decimal list-inside">
-                  <li>Llega 15 minutos antes de la apertura</li>
-                  <li>Presenta tu DNI original</li>
-                  <li>Recibirás la cédula de sufragio</li>
-                  <li>Ingresa a la cabina de votación</li>
-                  <li>Marca tu voto con claridad</li>
-                  <li>Introduce en la urna</li>
-                  <li>Retira tu constancia de voto</li>
-                </ol>
-              </div>
-
-              <!-- Security recommendations -->
-              <div class="bg-white dark:bg-dark-bg-secondary rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-semibold mb-4">🔒 Recomendaciones de Seguridad</h3>
-                <ul class="space-y-2 text-sm list-disc list-inside">
-                  <li>Lleva tu DNI en lugar seguro</li>
-                  <li>No compartas información personal</li>
-                  <li>Vota sin presiones externas</li>
-                  <li>Mantén tu voto confidencial</li>
-                  <li>Si hay anomalías, reclama ante los miembros de mesa</li>
-                </ul>
-              </div>
-
-              <!-- Legal framework -->
-              <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6 border border-blue-200 dark:border-blue-800 col-span-1 lg:col-span-2">
-                <h3 class="text-lg font-semibold mb-2">⚖️ Marco Legal</h3>
-                <p class="text-sm text-blue-800 dark:text-blue-200">
-                  Tu voto es confidencial y protegido por ley. Según la Constitución Política del Perú, el sufragio es obligatorio, pero tu elección es personal e inviolable. 
-                  Para más información, consulta <a href="https://www.jne.gob.pe" target="_blank" rel="noopener" class="text-primary hover:underline">www.jne.gob.pe</a>.
+              <!-- Marco legal -->
+              <div class="info-card p-6 bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
+                <h3 class="text-xl font-bold mb-4 flex items-center gap-2 text-blue-800 dark:text-blue-200">
+                  <span>⚖️</span>
+                  Marco Legal y Protección
+                </h3>
+                <p class="text-blue-800 dark:text-blue-200 mb-4">
+                  Tu voto es confidencial y está protegido por la Constitución Política del Perú. El sufragio es obligatorio para ciudadanos entre 18 y 70 años, pero tu elección es personal, libre y secreta.
                 </p>
-              </div>
-              <!-- Download button: solo visible tras búsqueda exitosa -->
-              <div id="elector-download-btn" class="col-span-1 lg:col-span-2 flex justify-end gap-2 mt-4 hidden">
-                <a href="../Ejemplo.pdf" download="Ejemplo.pdf" class="px-6 py-2 bg-secondary text-white rounded-md hover:opacity-90 font-medium transition-opacity flex items-center gap-2">
-                  📥 Descargar Información (PDF)
-                </a>
+                <div class="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+                  <p class="text-sm text-blue-700 dark:text-blue-300">
+                    Para información oficial: <a href="https://www.jne.gob.pe" target="_blank" rel="noopener" class="font-semibold hover:underline">www.jne.gob.pe</a>
+                  </p>
+                  <div id="elector-download-btn" class="flex gap-2">
+                    <button id="btn-download-elector" class="download-button px-6 py-3 text-white rounded-lg font-semibold flex items-center gap-2">
+                      <span>📥</span>
+                      Descargar Información (PDF)
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <!-- Error state -->
-            <div id="elector-error" class="hidden bg-red-50 dark:bg-red-900/20 rounded-lg p-6 border border-red-200 dark:border-red-800">
-              <p class="text-sm text-red-800 dark:text-red-200">No se encontró información para ese DNI. Verifica que hayas ingresado 8 dígitos.</p>
+            <!-- Estado de error -->
+            <div id="elector-error" class="hidden info-card p-6 bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800">
+              <div class="flex items-center gap-3">
+                <span class="text-2xl text-red-500">⚠️</span>
+                <div>
+                  <h3 class="font-semibold text-red-800 dark:text-red-200">No se encontró información</h3>
+                  <p class="text-sm text-red-700 dark:text-red-300 mt-1">
+                    No se encontró información para ese DNI. Verifica que hayas ingresado 8 dígitos numéricos.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- TAB 2: MIEMBRO DE MESA -->
         <div id="content-miembro" class="tab-content hidden">
-          <!-- Search form -->
-          <div class="bg-white dark:bg-dark-bg-secondary rounded-lg p-6 mb-8 border border-gray-200 dark:border-gray-700">
-            <h2 class="text-xl font-semibold mb-4">Buscar mi asignación de mesa</h2>
-            <div class="flex flex-col sm:flex-row gap-3">
-              <input type="text" id="dni-miembro" placeholder="Ingresa tu DNI (8 dígitos)" class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-dark-bg text-light-text dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-primary" maxlength="8" />
-              <button id="btn-search-miembro" class="px-6 py-2 bg-primary text-white rounded-md hover:opacity-90 font-medium transition-opacity">Buscar</button>
+          <!-- Formulario de búsqueda mejorado -->
+          <div class="info-card p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-2 flex items-center gap-2">
+              <span class="text-primary">🔍</span>
+              Buscar mi asignación de mesa
+            </h2>
+            <p class="text-light-text-secondary dark:text-dark-text-secondary mb-6">
+              Ingresa tu número de DNI para consultar tu asignación como miembro de mesa
+            </p>
+            <div class="search-form-container">
+              <div class="search-input-container">
+                <label for="dni-miembro" class="block text-sm font-medium mb-2">Número de DNI</label>
+                <input 
+                  type="text" 
+                  id="dni-miembro" 
+                  placeholder="Ingresa tu DNI (8 dígitos)" 
+                  class="input-field w-full px-4 py-3 rounded-lg bg-white dark:bg-dark-bg text-light-text dark:text-dark-text focus:outline-none"
+                  maxlength="8"
+                  pattern="[0-9]{8}"
+                  inputmode="numeric"
+                />
+                <p class="text-xs text-light-text-secondary dark:text-dark-text-secondary mt-2">
+                  Solo números, sin espacios ni caracteres especiales
+                </p>
+              </div>
+              <div class="search-button-container">
+                <button id="btn-search-miembro" class="search-button w-full sm:w-auto px-8 py-3 text-white rounded-lg font-semibold flex items-center justify-center gap-2 whitespace-nowrap">
+                  <span>Buscar</span>
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
 
-          <!-- Results (hidden until search) -->
+          <!-- Resultados (ocultos hasta la búsqueda) -->
           <div id="miembro-results" class="hidden">
-            <!-- Loading state -->
-            <div id="miembro-loading" class="hidden text-center py-8">
-              <div class="inline-block animate-spin">⏳</div>
-              <p class="mt-2 text-light-text-secondary dark:text-dark-text-secondary">Buscando información...</p>
+            <!-- Estado de carga -->
+            <div id="miembro-loading" class="hidden text-center py-12">
+              <div class="inline-flex flex-col items-center gap-4">
+                <div class="loading-pulse text-6xl">🏛️</div>
+                <div>
+                  <p class="text-lg font-semibold mb-2">Consultando asignación...</p>
+                  <p class="text-light-text-secondary dark:text-dark-text-secondary">Verificando base de datos del JNE</p>
+                </div>
+              </div>
             </div>
 
-            <!-- Results content -->
+            <!-- Contenido de resultados -->
             <div id="miembro-data" class="hidden space-y-6">
-              <!-- Assignment info -->
+              <!-- Información de asignación -->
               <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="bg-white dark:bg-dark-bg-secondary rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-                  <h3 class="text-lg font-semibold mb-4">📍 Tu Asignación</h3>
-                  <div class="space-y-2 text-sm">
-                    <p><strong>Institución:</strong> <span id="mm-institucion"></span></p>
-                    <p><strong>Dirección:</strong> <span id="mm-direccion"></span></p>
-                    <p><strong>Número de Mesa:</strong> <span class="bg-primary text-white px-2 py-1 rounded font-bold" id="mm-mesa"></span></p>
-                    <p><strong>Cargo:</strong> <span class="bg-secondary text-white px-2 py-1 rounded font-bold" id="mm-cargo"></span></p>
-                    <p><strong>Horario de Llegada:</strong> <span id="mm-horario"></span></p>
+                <div class="info-card p-6">
+                  <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <span class="text-primary">📍</span>
+                    Tu Asignación Electoral
+                  </h3>
+                  <div class="space-y-4">
+                    <div class="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-700">
+                      <span class="font-semibold">Institución:</span>
+                      <span id="mm-institucion" class="text-primary font-bold">Colegio Nacional Alfonso Ugarte</span>
+                    </div>
+                    <div class="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-700">
+                      <span class="font-semibold">Dirección:</span>
+                      <span id="mm-direccion" class="text-right">Av. Alfonso Ugarte 123, Cercado de Lima</span>
+                    </div>
+                    <div class="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-700">
+                      <span class="font-semibold">Número de Mesa:</span>
+                      <span id="mm-mesa" class="badge-primary">MESA 0421</span>
+                    </div>
+                    <div class="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-700">
+                      <span class="font-semibold">Cargo Asignado:</span>
+                      <span id="mm-cargo" class="badge-secondary">PRESIDENTE</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                      <span class="font-semibold">Horario de Llegada:</span>
+                      <span id="mm-horario" class="text-green-600 dark:text-green-400 font-bold">5:30 AM (Puntualidad obligatoria)</span>
+                    </div>
                   </div>
                 </div>
 
-                <!-- Map -->
+                <!-- Mapa -->
                 <div>
-                  <h3 class="text-lg font-semibold mb-2">🗺️ Ubicación</h3>
-                  <div id="miembro-map" class="rounded-lg border border-gray-200 dark:border-gray-700 h-72 bg-gray-100 dark:bg-gray-700"></div>
+                  <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <span class="text-primary">🗺️</span>
+                    Ubicación del Local
+                  </h3>
+                  <div id="miembro-map" class="map-container h-80 bg-gray-100 dark:bg-gray-700"></div>
+                  <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary mt-2 text-center">
+                    Ubicación de tu local asignado para la jornada electoral
+                  </p>
                 </div>
               </div>
 
-              <!-- Calendar of activities -->
-              <div class="bg-white dark:bg-dark-bg-secondary rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-semibold mb-4">📅 Calendario de Actividades Previas</h3>
+              <!-- Calendario de actividades -->
+              <div class="info-card p-6">
+                <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                  <span class="text-primary">📅</span>
+                  Calendario de Actividades Previas
+                </h3>
                 <div class="space-y-3 text-sm">
                   <div class="flex gap-3 pb-3 border-b border-gray-200 dark:border-gray-700">
-                    <span class="text-lg">📋</span>
+                    <span class="text-lg text-primary">📋</span>
                     <div>
                       <p class="font-semibold">Inscripción y Acreditación</p>
                       <p class="text-light-text-secondary dark:text-dark-text-secondary">30 Septiembre 2026 - 15 Octubre 2026</p>
                     </div>
                   </div>
                   <div class="flex gap-3 pb-3 border-b border-gray-200 dark:border-gray-700">
-                    <span class="text-lg">🎓</span>
+                    <span class="text-lg text-primary">🎓</span>
                     <div>
                       <p class="font-semibold">Capacitación Obligatoria</p>
                       <p class="text-light-text-secondary dark:text-dark-text-secondary">16 Octubre 2026 - 23 Octubre 2026 (Por zona)</p>
                     </div>
                   </div>
                   <div class="flex gap-3 pb-3 border-b border-gray-200 dark:border-gray-700">
-                    <span class="text-lg">✓</span>
+                    <span class="text-lg text-primary">✓</span>
                     <div>
                       <p class="font-semibold">Confirmación 72h Antes</p>
                       <p class="text-light-text-secondary dark:text-dark-text-secondary">23 Octubre 2026 - 24 Octubre 2026</p>
                     </div>
                   </div>
                   <div class="flex gap-3">
-                    <span class="text-lg">🗳️</span>
+                    <span class="text-lg text-primary">🗳️</span>
                     <div>
                       <p class="font-semibold">Jornada de Votación</p>
                       <p class="text-light-text-secondary dark:text-dark-text-secondary">26 Octubre 2026 (5:00 AM - 4:00 PM)</p>
@@ -284,15 +643,42 @@
                 </div>
               </div>
 
-              <!-- Role-specific duties -->
-              <div class="bg-white dark:bg-dark-bg-secondary rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-semibold mb-4">📝 Tus Deberes según tu Cargo</h3>
-                <div id="mm-duties" class="space-y-3 text-sm"></div>
+              <!-- Deberes específicos -->
+              <div class="info-card p-6">
+                <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                  <span class="text-primary">📝</span>
+                  Tus Deberes según tu Cargo
+                </h3>
+                <div id="mm-duties" class="space-y-3 text-sm">
+                  <div class="flex items-start gap-3">
+                    <span class="badge-primary flex-shrink-0 mt-1">✓</span>
+                    <span><strong>Presidir la mesa de sufragio</strong> y dirigir el proceso electoral</span>
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <span class="badge-primary flex-shrink-0 mt-1">✓</span>
+                    <span><strong>Verificar la identidad</strong> de los electores que se presenten a votar</span>
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <span class="badge-primary flex-shrink-0 mt-1">✓</span>
+                    <span><strong>Garantizar el secreto del voto</strong> y el orden durante la votación</span>
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <span class="badge-primary flex-shrink-0 mt-1">✓</span>
+                    <span><strong>Realizar el escrutinio</strong> de los votos al cierre de la votación</span>
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <span class="badge-primary flex-shrink-0 mt-1">✓</span>
+                    <span><strong>Firmar las actas electorales</strong> y entregarlas a la autoridad competente</span>
+                  </div>
+                </div>
               </div>
 
-              <!-- Installation and procedures -->
-              <div class="bg-white dark:bg-dark-bg-secondary rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-semibold mb-4">🔧 Instalación y Procedimientos</h3>
+              <!-- Instalación y procedimientos -->
+              <div class="info-card p-6">
+                <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                  <span class="text-primary">🔧</span>
+                  Instalación y Procedimientos
+                </h3>
                 <div class="space-y-4">
                   <div>
                     <h4 class="font-semibold text-sm mb-2">⏰ Instalación de la Mesa (6:00 AM)</h4>
@@ -326,18 +712,51 @@
                   </div>
                 </div>
               </div>
+
+              <!-- Botón de descarga -->
+              <div class="info-card p-6 bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
+                <div class="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+                  <div>
+                    <h3 class="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-2">Descarga tu información</h3>
+                    <p class="text-sm text-blue-700 dark:text-blue-300">
+                      Guarda toda la información de tu asignación para tenerla a mano
+                    </p>
+                  </div>
+                  <div id="miembro-download-btn" class="flex gap-2">
+                    <button id="btn-download-miembro" class="download-button px-6 py-3 text-white rounded-lg font-semibold flex items-center gap-2">
+                      <span>📥</span>
+                      Descargar Información (PDF)
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <!-- Download button: solo visible tras búsqueda exitosa -->
-            <div id="miembro-download-btn" class="flex justify-end gap-2 mt-4 hidden">
-              <a href="../Ejemplo.pdf" download="Ejemplo.pdf" class="px-6 py-2 bg-secondary text-white rounded-md hover:opacity-90 font-medium transition-opacity flex items-center gap-2">
-                📥 Descargar Información (PDF)
-              </a>
+            <!-- Estado de no miembro de mesa -->
+            <div id="miembro-no-miembro" class="hidden info-card p-6 bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800">
+              <div class="flex items-center gap-3">
+                <span class="text-2xl text-yellow-500">ℹ️</span>
+                <div>
+                  <h3 class="font-semibold text-yellow-800 dark:text-yellow-200" id="no-miembro-nombre">Hola [Nombre],</h3>
+                  <p class="text-sm text-yellow-700 dark:text-yellow-300 mt-1">
+                    Según nuestros registros, no estás designado como miembro de mesa para las Elecciones 2026. 
+                    Si crees que esto es un error, por favor contacta al JNE para verificar tu situación.
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <!-- Error state -->
-            <div id="miembro-error" class="hidden bg-red-50 dark:bg-red-900/20 rounded-lg p-6 border border-red-200 dark:border-red-800">
-              <p class="text-sm text-red-800 dark:text-red-200">No se encontró información para ese DNI. Verifica que hayas ingresado 8 dígitos.</p>
+            <!-- Estado de error -->
+            <div id="miembro-error" class="hidden info-card p-6 bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800">
+              <div class="flex items-center gap-3">
+                <span class="text-2xl text-red-500">⚠️</span>
+                <div>
+                  <h3 class="font-semibold text-red-800 dark:text-red-200">No se encontró información</h3>
+                  <p class="text-sm text-red-700 dark:text-red-300 mt-1">
+                    No se encontró información para ese DNI. Verifica que hayas ingresado 8 dígitos numéricos.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -355,7 +774,407 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-    <script src="../js/donde-voto.js"></script>
-    <script src="../js/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <script>
+      // Inicialización del tema y menú móvil
+      document.addEventListener('DOMContentLoaded', function() {
+        initThemeToggle();
+        initMobileMenu();
+        initTabSystem();
+        initSearchFunctionality();
+        initDownloadButtons();
+      });
+
+      function initThemeToggle() {
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('theme-toggle-light-icon');
+        const moonIcon = document.getElementById('theme-toggle-dark-icon');
+        
+        if (document.documentElement.classList.contains('dark')) {
+          sunIcon.classList.remove('hidden');
+          moonIcon.classList.add('hidden');
+        } else {
+          sunIcon.classList.add('hidden');
+          moonIcon.classList.remove('hidden');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+          document.documentElement.classList.toggle('dark');
+          const isDarkMode = document.documentElement.classList.contains('dark');
+          localStorage.setItem('color-theme', isDarkMode ? 'dark' : 'light');
+          
+          sunIcon.classList.toggle('hidden');
+          moonIcon.classList.toggle('hidden');
+        });
+      }
+      
+      function initMobileMenu() {
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+          const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
+          mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+          mobileMenu.classList.toggle('hidden');
+        });
+      }
+
+      function initTabSystem() {
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+          button.addEventListener('click', () => {
+            const targetTab = button.getAttribute('data-tab');
+            
+            // Actualizar botones
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            
+            // Actualizar contenidos
+            tabContents.forEach(content => content.classList.add('hidden'));
+            document.getElementById(`content-${targetTab}`).classList.remove('hidden');
+            
+            // Limpiar resultados anteriores
+            clearResults(targetTab);
+          });
+        });
+      }
+
+      function initSearchFunctionality() {
+        // Configurar búsqueda para electores
+        const electorSearchBtn = document.getElementById('btn-search-elector');
+        const electorDniInput = document.getElementById('dni-elector');
+        
+        electorSearchBtn.addEventListener('click', () => {
+          handleSearch('elector', electorDniInput.value);
+        });
+        
+        electorDniInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            handleSearch('elector', electorDniInput.value);
+          }
+        });
+
+        // Configurar búsqueda para miembros
+        const miembroSearchBtn = document.getElementById('btn-search-miembro');
+        const miembroDniInput = document.getElementById('dni-miembro');
+        
+        miembroSearchBtn.addEventListener('click', () => {
+          handleSearch('miembro', miembroDniInput.value);
+        });
+        
+        miembroDniInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            handleSearch('miembro', miembroDniInput.value);
+          }
+        });
+      }
+
+      function handleSearch(type, dni) {
+        // Validar DNI
+        if (!dni || dni.length !== 8 || !/^\d+$/.test(dni)) {
+          showError(type, 'No se encontró información para ese DNI. Verifica que hayas ingresado 8 dígitos numéricos.');
+          return;
+        }
+
+        // Mostrar loading
+        showLoading(type);
+        
+        // Simular búsqueda (en un caso real, aquí iría una llamada API)
+        setTimeout(() => {
+          hideLoading(type);
+          
+          // Caso especial: DNI 11111111 para miembro de mesa
+          if (type === 'miembro' && dni === '11111111') {
+            showNoMiembro(dni);
+          } else {
+            showResults(type);
+            initializeMap(type);
+          }
+        }, 1500);
+      }
+
+      function showLoading(type) {
+        document.getElementById(`${type}-results`).classList.remove('hidden');
+        document.getElementById(`${type}-loading`).classList.remove('hidden');
+        document.getElementById(`${type}-data`).classList.add('hidden');
+        document.getElementById(`${type}-error`).classList.add('hidden');
+        if (type === 'miembro') {
+          document.getElementById('miembro-no-miembro').classList.add('hidden');
+        }
+      }
+
+      function hideLoading(type) {
+        document.getElementById(`${type}-loading`).classList.add('hidden');
+      }
+
+      function showResults(type) {
+        document.getElementById(`${type}-data`).classList.remove('hidden');
+        document.getElementById(`${type}-download-btn`).classList.remove('hidden');
+      }
+
+      function showNoMiembro(dni) {
+        // Generar nombre de ejemplo basado en el DNI
+        const nombres = ['María', 'Carlos', 'Ana', 'Luis', 'Sofía', 'Javier', 'Elena', 'Miguel'];
+        const apellidos = ['García', 'Rodríguez', 'Martínez', 'López', 'González', 'Pérez', 'Sánchez', 'Romero'];
+        
+        const nombreAleatorio = nombres[Math.floor(Math.random() * nombres.length)];
+        const apellidoAleatorio = apellidos[Math.floor(Math.random() * apellidos.length)];
+        
+        document.getElementById('no-miembro-nombre').textContent = `Hola ${nombreAleatorio} ${apellidoAleatorio},`;
+        document.getElementById('miembro-no-miembro').classList.remove('hidden');
+      }
+
+      function showError(type, message) {
+        document.getElementById(`${type}-results`).classList.remove('hidden');
+        document.getElementById(`${type}-error`).classList.remove('hidden');
+        document.getElementById(`${type}-loading`).classList.add('hidden');
+        document.getElementById(`${type}-data`).classList.add('hidden');
+        if (type === 'miembro') {
+          document.getElementById('miembro-no-miembro').classList.add('hidden');
+        }
+      }
+
+      function clearResults(type) {
+        document.getElementById(`${type}-results`).classList.add('hidden');
+        document.getElementById(`dni-${type}`).value = '';
+      }
+
+      function initializeMap(type) {
+        const mapElement = document.getElementById(`${type}-map`);
+        if (!mapElement) return;
+
+        // Limpiar mapa existente
+        mapElement.innerHTML = '';
+        
+        // Coordenadas de ejemplo (Lima, Perú)
+        const limaCoords = [-12.0464, -77.0428];
+        
+        // Inicializar mapa
+        const map = L.map(mapElement).setView(limaCoords, 15);
+        
+        // Añadir capa de tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Añadir marcador
+        L.marker(limaCoords)
+          .addTo(map)
+          .bindPopup('Tu local de votación<br><strong>Colegio Nacional Alfonso Ugarte</strong>')
+          .openPopup();
+      }
+
+      function initDownloadButtons() {
+        // Botón de descarga para electores
+        document.getElementById('btn-download-elector').addEventListener('click', function() {
+          generatePDF('elector');
+        });
+
+        // Botón de descarga para miembros
+        document.getElementById('btn-download-miembro').addEventListener('click', function() {
+          generatePDF('miembro');
+        });
+      }
+
+      function generatePDF(type) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // Título
+        doc.setFontSize(20);
+        doc.setTextColor(220, 38, 38);
+        doc.text(`Información de ${type === 'elector' ? 'Elector' : 'Miembro de Mesa'} - Elecciones Perú 2026`, 20, 20);
+        
+        // Contenido
+        doc.setFontSize(12);
+        doc.setTextColor(0, 0, 0);
+        
+        let yPosition = 40;
+        
+        if (type === 'elector') {
+          // Información básica para elector
+          doc.text('Local de Votación: Colegio Nacional Alfonso Ugarte', 20, yPosition);
+          yPosition += 10;
+          doc.text('Dirección: Av. Alfonso Ugarte 123, Cercado de Lima', 20, yPosition);
+          yPosition += 10;
+          doc.text('Mesa: MESA 0421', 20, yPosition);
+          yPosition += 10;
+          doc.text('Horario: 7:00 AM - 4:00 PM', 20, yPosition);
+          yPosition += 20;
+          
+          // Instrucciones para votar
+          doc.text('Instrucciones para votar:', 20, yPosition);
+          yPosition += 10;
+          const instructions = [
+            '1. Llega con anticipación (recomendamos 30 minutos antes del cierre)',
+            '2. Presenta tu DNI físico y vigente',
+            '3. Recibirás la cédula de sufragio del miembro de mesa',
+            '4. Ingresa a la cabina y marca tu voto con claridad',
+            '5. Dobla tu cédula e introdúcela en la urna correspondiente',
+            '6. Retira tu constancia de votación antes de retirarte'
+          ];
+          
+          instructions.forEach(instruction => {
+            if (yPosition > 270) {
+              doc.addPage();
+              yPosition = 20;
+            }
+            doc.text(instruction, 25, yPosition);
+            yPosition += 7;
+          });
+          
+          yPosition += 5;
+          
+          // Recomendaciones de seguridad
+          doc.text('Recomendaciones de seguridad:', 20, yPosition);
+          yPosition += 10;
+          const securityTips = [
+            '• Lleva tu DNI en un lugar protegido',
+            '• No compartas información personal innecesaria',
+            '• Vota sin presiones externas de ningún tipo',
+            '• Mantén tu voto en absoluta reserva',
+            '• Si observas anomalías, informa inmediatamente a los miembros de mesa'
+          ];
+          
+          securityTips.forEach(tip => {
+            if (yPosition > 270) {
+              doc.addPage();
+              yPosition = 20;
+            }
+            doc.text(tip, 25, yPosition);
+            yPosition += 7;
+          });
+          
+        } else {
+          // Información para miembro de mesa
+          doc.text('Asignación como Miembro de Mesa:', 20, yPosition);
+          yPosition += 10;
+          doc.text('Institución: Colegio Nacional Alfonso Ugarte', 20, yPosition);
+          yPosition += 10;
+          doc.text('Dirección: Av. Alfonso Ugarte 123, Cercado de Lima', 20, yPosition);
+          yPosition += 10;
+          doc.text('Mesa: MESA 0421', 20, yPosition);
+          yPosition += 10;
+          doc.text('Cargo: PRESIDENTE', 20, yPosition);
+          yPosition += 10;
+          doc.text('Horario de Llegada: 5:30 AM', 20, yPosition);
+          yPosition += 20;
+          
+          // Calendario de actividades
+          doc.text('Calendario de Actividades:', 20, yPosition);
+          yPosition += 10;
+          const activities = [
+            '• Inscripción y Acreditación: 30 Sept - 15 Oct 2026',
+            '• Capacitación Obligatoria: 16 Oct - 23 Oct 2026',
+            '• Confirmación 72h Antes: 23 Oct - 24 Oct 2026',
+            '• Jornada de Votación: 26 Oct 2026 (5:00 AM - 4:00 PM)'
+          ];
+          
+          activities.forEach(activity => {
+            if (yPosition > 270) {
+              doc.addPage();
+              yPosition = 20;
+            }
+            doc.text(activity, 25, yPosition);
+            yPosition += 7;
+          });
+          
+          yPosition += 5;
+          
+          // Deberes según cargo - AGREGADO AL PDF
+          doc.text('Tus Deberes según tu Cargo:', 20, yPosition);
+          yPosition += 10;
+          const duties = [
+            '• Presidir la mesa de sufragio y dirigir el proceso electoral',
+            '• Verificar la identidad de los electores que se presenten a votar',
+            '• Garantizar el secreto del voto y el orden durante la votación',
+            '• Realizar el escrutinio de los votos al cierre de la votación',
+            '• Firmar las actas electorales y entregarlas a la autoridad competente'
+          ];
+          
+          duties.forEach(duty => {
+            if (yPosition > 270) {
+              doc.addPage();
+              yPosition = 20;
+            }
+            doc.text(duty, 25, yPosition);
+            yPosition += 7;
+          });
+          
+          yPosition += 5;
+          
+          // Instalación y procedimientos - AGREGADO AL PDF
+          doc.text('Instalación y Procedimientos:', 20, yPosition);
+          yPosition += 10;
+          
+          doc.text('Instalación de la Mesa (6:00 AM):', 25, yPosition);
+          yPosition += 7;
+          const installation = [
+            '1. Todos los miembros deben estar presentes 30 minutos antes',
+            '2. Revisar lista de votantes y materiales',
+            '3. Instalar la mesa y urna',
+            '4. Verificar equipamiento electoral',
+            '5. Abrir acta de inicio'
+          ];
+          
+          installation.forEach(step => {
+            if (yPosition > 270) {
+              doc.addPage();
+              yPosition = 20;
+            }
+            doc.text(step, 30, yPosition);
+            yPosition += 7;
+          });
+          
+          yPosition += 5;
+          
+          doc.text('Durante el Sufragio (7:00 AM - 4:00 PM):', 25, yPosition);
+          yPosition += 7;
+          const duringVoting = [
+            '1. Verificar identidad de votantes',
+            '2. Controlar que el voto sea confidencial',
+            '3. Registrar votos emitidos',
+            '4. Mantener orden en la mesa',
+            '5. Cuidar integridad del proceso'
+          ];
+          
+          duringVoting.forEach(step => {
+            if (yPosition > 270) {
+              doc.addPage();
+              yPosition = 20;
+            }
+            doc.text(step, 30, yPosition);
+            yPosition += 7;
+          });
+          
+          yPosition += 5;
+          
+          doc.text('Cierre y Entrega de Actas (4:00 PM):', 25, yPosition);
+          yPosition += 7;
+          const closing = [
+            '1. Cerrar urnas',
+            '2. Contar y registrar votos',
+            '3. Completar actas con resultados',
+            '4. Firmar documentos (todos los miembros)',
+            '5. Entregar actas a autoridades electorales'
+          ];
+          
+          closing.forEach(step => {
+            if (yPosition > 270) {
+              doc.addPage();
+              yPosition = 20;
+            }
+            doc.text(step, 30, yPosition);
+            yPosition += 7;
+          });
+        }
+        
+        // Guardar PDF
+        doc.save(`informacion-${type}-elecciones-2026.pdf`);
+      }
+    </script>
   </body>
 </html>
