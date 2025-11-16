@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- 1. DEFINIR TEMAS Y DATOS ---
+   
     const proposalTopics = [
         'Educación', 'Salud', 'Seguridad Ciudadana', 'Economía y Empleo',
         'Lucha contra la Corrupción', 'Infraestructura y Transporte', 'Desarrollo Social y Pobreza'
     ];
-    // --- 0. MAPA DE ICONOS (SVG de Heroicons) ---
+   
     const iconMap = {
         'Educación': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M10.363 3.59a2 2 0 00-2.726 0l-5.5 6A2 2 0 003.5 13H4v2.25A2.75 2.75 0 006.75 18h6.5A2.75 2.75 0 0016 15.25V13h.5a2 2 0 001.363-3.41l-5.5-6zM14.25 13v2.25a.75.75 0 01-.75.75h-6.5a.75.75 0 01-.75-.75V13h8z"/></svg>`,
         'Salud': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v2.5h-2.5a.75.75 0 000 1.5h2.5v2.5a.75.75 0 001.5 0v-2.5h2.5a.75.75 0 000-1.5h-2.5v-2.5z" clip-rule="evenodd" /></svg>`,
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'default': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-8a1 1 0 10-2 0v2a1 1 0 102 0v-2zm2-1a1 1 0 011-1 3 3 0 110 6 1 1 0 11-1-1V9z" clip-rule="evenodd" /></svg>`
     };
 
-    // --- 2. LEER DATOS DE LA URL ---
+    
     const params = new URLSearchParams(window.location.search);
     const idsString = params.get('candidates');
     const containerPropuestas = document.getElementById('container-propuestas');
@@ -30,18 +30,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const selectedIds = idsString.split(',');
-    const selectedCandidates = selectedIds.map(id => candidateData[id]).filter(Boolean); // 'candidateData' viene de data.js
+    const selectedCandidates = selectedIds.map(id => candidateData[id]).filter(Boolean); 
 
     if (selectedCandidates.length < 2) {
          containerPropuestas.innerHTML = `<p class="p-8 text-center text-red-500">Necesitas al menos 2 candidatos para comparar. <a href="candidatos.html" class="underline">Volver a la lista</a>.</p>`;
         return;
     }
 
-    // --- 3. FUNCIONES PARA CONSTRUIR PANELES ---
+    // tabla de comparación de propuestas 
 
-    /**
-     * Construye la tabla de comparación de Propuestas.
-     */
+   
     function buildProposalGrid(candidates, topics) {
         const gridColsStyle = `grid-template-columns: auto repeat(${candidates.length}, 1fr);`;
         let html = `<div class="comparison-grid" style="${gridColsStyle}">`;
@@ -58,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         });
 
-        // Filas de Propuestas (con Iconos)
+        // Filas de Propuestas 
         topics.forEach(topicTitle => {
             const icon = iconMap[topicTitle] || iconMap['default'];
             html += `<div class="topic-cell">${icon || ''} <span>${topicTitle}</span></div>`;
@@ -76,16 +74,14 @@ document.addEventListener('DOMContentLoaded', () => {
         return html;
     }
 
-    /**
-     * Construye las columnas de Formación o Experiencia.
-     */
-    function buildInfoPanel(candidates, dataType) { // dataType es 'formacion' o 'experiencia'
+    //columna de formación y experiencia
+    function buildInfoPanel(candidates, dataType) { 
         const gridColsClass = `grid-cols-${candidates.length}`;
-        let html = `<div class="grid ${gridColsClass} gap-6">`; // No usamos 'comparison-grid' aquí
+        let html = `<div class="grid ${gridColsClass} gap-6">`; 
 
         candidates.forEach(candidate => {
             html += `<div class="columna">`;
-            // Encabezado de la columna
+            
             html += `
                 <div class="header-cell text-center mb-4">
                     <img src="${candidate.imgUrl}" alt="Foto de ${candidate.name}"> 
@@ -109,16 +105,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 html += '<p class="text-sm italic text-light-text-secondary dark:text-dark-text-secondary">No hay datos registrados.</p>';
             }
             
-            html += `</div>`; // Cierre de .columna
+            html += `</div>`; 
         });
 
-        html += `</div>`; // Cierre del .grid
+        html += `</div>`; 
         return html;
     }
 
-    /**
-     * Lógica para hacer funcionar las Pestañas (Tabs)
-     */
+    //Lógica para hacer funcionar las Pestañas (Tabs)
+     
     function setupTabs() {
         const allTabLinks = document.querySelectorAll('[data-tab-link]');
         const allTabPanels = document.querySelectorAll('[data-tab-panel]');
@@ -128,29 +123,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 const targetId = link.dataset.target;
 
-                // Ocultar todos los paneles
+                
                 allTabPanels.forEach(panel => panel.classList.add('hidden'));
-                // Quitar 'is-active' de todos los links
+            
                 allTabLinks.forEach(l => l.classList.remove('is-active'));
 
-                // Mostrar el panel correcto
+                
                 const targetPanel = document.querySelector(targetId);
                 if (targetPanel) {
                     targetPanel.classList.remove('hidden');
                 }
-                // Activar el link correcto
+             
                 link.classList.add('is-active');
             });
         });
     }
 
-    // --- 4. EJECUTAR TODO ---
-    
-    // Construir y rellenar los 3 paneles
     containerPropuestas.innerHTML = buildProposalGrid(selectedCandidates, proposalTopics);
     containerFormacion.innerHTML = buildInfoPanel(selectedCandidates, 'formacion');
     containerExperiencia.innerHTML = buildInfoPanel(selectedCandidates, 'experiencia');
     
-    // Activar la funcionalidad de las pestañas
+   
     setupTabs();
 });

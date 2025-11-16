@@ -142,15 +142,61 @@
     <main class="pt-8 pb-16">
         <div class="max-w-6xl mx-auto my-12 px-4 sm:px-6 lg:px-8">
 
+
+             <nav class="flex text-sm mb-4" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1">
+                    <li>
+                        <a href="../index.html"
+                            class="font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">
+                            Inicio
+                        </a>
+                    </li>
+                    <li>
+                        <svg class="w-3 h-3 mx-1 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </li>
+                    <li>
+                        <a href="candidatos.html"
+                            class="font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">
+                            Candidatos
+                        </a>
+                    </li>
+                    <li>
+                        <svg class="w-3 h-3 mx-1 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </li>
+                    <li>
+                        <a href="cdtspresidenciales.html"
+                            class="font-medium text-light-text-secondary dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary transition-colors">
+                            Presidenciales
+                        </a>
+                    </li>
+                    <li>
+                        <svg class="w-3 h-3 mx-1 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </li>
+                    <li aria-current="page">
+                        <span class="font-semibold text-light-text dark:text-dark-text">
+                            Perfil
+                        </span>
+                    </li>
+                </ol>
+            </nav>
+
+
+
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
 
                 <div class="md:col-span-1">
-                    <svg class="w-24 h-24 text-gray-400 dark:text-gray-600" xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zM12 12a2 2 0 100-4 2 2 0 000 4z"
-                            clip-rule="evenodd" />
-                    </svg>
+                    <img id="candidate-image" src="" alt="Foto de perfil del candidato"
+                     class="w-full aspect-[3/4] object-cover rounded-lg shadow-md bg-gray-200 dark:bg-gray-700 mb-4">
 
                     <span class="text-primary font-semibold text-sm mt-4 block">Candidato a la Presidencia</span>
 
@@ -288,8 +334,9 @@
 
 
     <script src="../js/script.js"></script>
-    <script src="../js/perfil.js"></script>
     <script src="../js/data.js"></script>
+    <script src="../js/perfil.js"></script>
+    
 
 
 

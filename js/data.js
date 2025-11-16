@@ -1,5 +1,4 @@
 
-// La estructura ha cambiado para coincidir con las 3 pestañas
 const candidateData = {
     '1': {
         name: "Keiko Fujimori",
@@ -8,7 +7,7 @@ const candidateData = {
         planUrl: "https://apisije-e.jne.gob.pe/TRAMITE/ESCRITO/1095/ARCHIVO/FIRMADO/3017.PDF",
         jneUrl: "https://portal.jne.gob.pe/portal/Pagina/Ver/979/page/Elecciones-Generales-2026",
         bio: "Keiko Fujimori es una política peruana y lideresa de Fuerza Popular. Estudió Administración de Empresas en la Universidad de Boston y obtuvo un MBA en Columbia University. Fue Primera Dama del Perú en la década de 1990 y luego congresista entre 2006 y 2011, siendo la más votada de su elección. Ha sido candidata presidencial en tres ocasiones y continúa siendo una figura central en la política peruana.",
-        // Pestaña 1: Array de propuestas
+        
         propuestas: [
             { title: 'Educación', text: 'Impulsar la educación técnico-productiva y tecnológica (institutos, CETPROs) para que sea pertinente y se adecúe a las necesidades territoriales.' },
             { title: 'Salud', text: 'Transformar el SIS (Seguro Integral de Salud) para articularlo con EsSalud, bajo un sistema más integrado' },
@@ -18,7 +17,7 @@ const candidateData = {
             { title: 'Infraestructura y Transporte', text: 'Agilizar y estandarizar los procesos para diseñar y ejecutar proyectos de inversión pública en infraestructura educativa (colegios) y otros espacios públicos.' },
             { title: 'Desarrollo Social y Pobreza', text: 'Revisar los programas sociales para que tengan un enfoque productivo, de modo que no solo asistan, sino que permitan a las personas generar ingresos (“inclusión social productiva”).' }
         ],
-        // Pestaña 2: Array de formación
+        
         formacion: [
             { title: 'Bachelor of Science en Administración de Empresas', text: 'Boston University, EE.UU. (1997).' },
             { title: 'Máster en Administración de Empresas (MBA)', text: 'Columbia Business School, Nueva York (2004-2008).' },
@@ -119,19 +118,8 @@ const candidateData = {
 
             }
         ],
-        // --- AÑADE ESTA NUEVA SECCIÓN ---
-        antecedentes: [
-            {
-                title: 'Caso Cócteles (Investigación)',
-                text: 'Investigación por presunto lavado de activos en el financiamiento de sus campañas de 2011 y 2016. El caso se encuentra en etapa de juicio oral.',
-                source: 'Fuente: Equipo Especial Lava Jato, Ministerio Público.' // ¡La fuente es clave!
-            },
-            {
-                title: 'Obstrucción a la Justicia (Investigación)',
-                text: 'Se le investiga por presunta obstrucción a la justicia relacionada con el caso anterior.',
-                source: 'Fuente: Poder Judicial.'
-            }
-        ]
+       
+       
     },
     '3': {
         name: "Rafael López Aliaga",
@@ -218,13 +206,7 @@ const candidateData = {
 
             }
         ],
-        antecedentes: [
-            {
-                title: 'Investigación Preliminar (Lavado de Activos)',
-                text: 'Investigado preliminarmente por presunto lavado de activos vinculado a los "Panamá Papers". El candidato ha negado las acusaciones.',
-                source: 'Fuente: Ministerio Público / Reportajes de investigación.'
-            }
-        ]
+       
     },
     '4': {
         name: "Antauro Humala",
@@ -311,5 +293,5 @@ const candidateData = {
             }
         ]
     }
-    // ... (Agrega aquí los datos para el ID '5', '6', etc.)
+  
 };
