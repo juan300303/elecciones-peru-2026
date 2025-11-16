@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Candidatos - Elecciones Perú 2026</title>
+    <link rel="stylesheet" href="../css/perfil.css">
     <!-- Theme detection script - runs before page renders to prevent flash -->
     <script>
         (function () {
@@ -141,140 +142,138 @@
     <main class="pt-8 pb-16">
         <div class="max-w-6xl mx-auto my-12 px-4 sm:px-6 lg:px-8">
 
-            <h2 class="text-3xl font-bold text-light-text dark:text-dark-text mb-2">Candidatos Presidenciales 2026</h2>
-            <p class="text-lg text-gray-600 mb-6">Conoce a los candidatos que postulan a la presidencia...</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
 
-            <div class="flex flex-col md:flex-row md:items-center gap-4 mb-4">
-
-                <div class="relative flex-grow">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                            fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.477l4.804 4.804a1 1 0 01-1.414 1.414l-4.804-4.804A6 6 0 012 8z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <input type="search" id="search-input" class="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 
-           bg-light-bg-secondary dark:bg-dark-bg-secondary dark:border-gray-600"
-                        placeholder="Buscar por nombre de candidato...">
-                </div>
-
-                <select id="party-select" class="w-full md:w-auto border border-gray-300 rounded-lg shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 
-           bg-light-bg-secondary dark:bg-dark-bg-secondary dark:border-gray-600">
-                    <option value="all" selected>Todos los Partidos</option>
-                    <option value="Fuerza Popular">Fuerza Popular</option>
-                    <option value="Avanza País">Avanza País</option>
-                    <option value="Renovación Popular">Renovación Popular</option>
-                    <option value="A.N.T.A.U.R.O">A.N.T.A.U.R.O</option>
-                </select>
-
-                <button id="clear-button" class="flex-shrink-0 text-red-600 hover:text-red-800 text-sm font-medium">
-                    <span class="inline-block align-middle mr-1">×</span> Limpiar
-                </button>
-            </div>
-
-            <div classT="flex flex-col md:flex-row items-center gap-4 mb-6 p-4 bg-gray-50 rounded-lg border">
-                <button id="compare-button" disabled
-                    class="w-full md:w-auto px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-100 flex items-center justify-center gap-2 opacity-50 cursor-not-allowed">
-                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z" />
-                        <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z" />
+                <div class="md:col-span-1">
+                    <svg class="w-24 h-24 text-gray-400 dark:text-gray-600" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zM12 12a2 2 0 100-4 2 2 0 000 4z"
+                            clip-rule="evenodd" />
                     </svg>
-                    Comparar Candidatos
-                </button>
-                <small id="compare-text" class="text-gray-500 text-center md:text-left">
-                    Selecciona min 2 y max 4 </small>
+
+                    <span class="text-primary font-semibold text-sm mt-4 block">Candidato a la Presidencia</span>
+
+                    <h1 id="candidate-name" class="text-4xl font-bold text-light-text dark:text-dark-text mt-1">
+                        Cargando...
+                    </h1>
+                    <p id="candidate-party"
+                        class="text-xl text-light-text-secondary dark:text-dark-text-secondary mt-1">
+                        ...
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-3 mt-6">
+
+                        <button id="open-plan-modal-btn"
+                            class="px-5 py-2 rounded-lg text-center bg-primary text-white font-medium hover:bg-red-700">
+                            Ver Plan de Gobierno
+                        </button>
+
+                        <a id="candidate-jne" href="#" target="_blank"
+                            class="px-5 py-2 rounded-lg text-center border border-gray-300 dark:border-gray-600 bg-light-bg-secondary dark:bg-dark-bg-secondary font-medium hover:bg-gray-100 dark:hover:bg-gray-700">
+                            Perfil en JNE
+                        </a>
+                    </div>
+
+                    <div class="mt-8">
+                        <h3 class="text-lg font-semibold text-light-text dark:text-dark-text">Biografía</h3>
+                        <p id="candidate-bio"
+                            class="text-light-text-secondary dark:text-dark-text-secondary mt-2 text-sm">
+                            Cargando biografía...
+                        </p>
+                    </div>
+                </div>
+
+                <div class="md:col-span-2">
+
+                    <div class="border-b border-gray-300 dark:border-gray-700">
+                        <nav class="flex flex-wrap -mb-px" aria-label="Tabs">
+                            <button data-tab-link data-target="#tab-propuestas" class="tab-link">
+                                Propuestas Claves
+                            </button>
+                            <button data-tab-link data-target="#tab-formacion" class="tab-link">
+                                Formación Académica
+                            </button>
+                            <button data-tab-link data-target="#tab-experiencia" class="tab-link">
+                                Experiencia Profesional
+                            </button>
+                        </nav>
+                    </div>
+
+                    <div class="mt-6">
+
+                        <div data-tab-panel id="tab-propuestas" class="hidden">
+                            <h3
+                                class="text-xl font-semibold text-light-text dark:text-dark-text mb-4 flex items-center gap-2">
+                                <svg class="w-6 h-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15.042 21.672L13.684 16.6m0 0l-2.51-2.223m2.51 2.223h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Propuestas Claves
+                            </h3>
+                            <div id="propuestas-content" class="space-y-4">
+                                <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Cargando...
+                                </p>
+                            </div>
+                        </div>
+
+                        <div data-tab-panel id="tab-formacion" class="hidden">
+                            <h3 class="text-xl font-semibold text-light-text dark:text-dark-text mb-4">
+                                Formación Académica
+                            </h3>
+                            <div id="formacion-content" class="space-y-4">
+                                <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Cargando...
+                                </p>
+                            </div>
+                        </div>
+
+                        <div data-tab-panel id="tab-experiencia" class="hidden">
+                            <h3 class="text-xl font-semibold text-light-text dark:text-dark-text mb-4">
+                                Experiencia Profesional
+                            </h3>
+                            <div id="experiencia-content" class="space-y-4">
+                                <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Cargando...
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-                <div class="candidate-card border border-gray-200 rounded-lg shadow-sm overflow-hidden flex flex-col h-full 
-                        transition-all duration-300 hover:shadow-lg hover:-translate-y-1" data-name="Keiko Fujimori"
-                    data-party="Fuerza Popular">
-                    <div class="relative">
-                        <img src="../img/candidatos/keiko.png" alt="Keiko Fujimori"
-                            class="w-full h-auto aspect-[3/4] object-cover filter grayscale">
-                        <input type="checkbox" value="1"
-                            class=" candidate-checkbox absolute top-3 right-3 h-5 w-5 text-blue-600 bg-white bg-opacity-75 rounded border-gray-400 focus:ring-blue-500 cursor-pointer">
-                    </div>
-                    <div class="p-3 text-center flex-grow flex flex-col">
-                        <h5 class="text-base font-semibold text-light-text dark:text-dark-text mb-1">Keiko Fujimori</h5>
-                        <p class="text-xs font-medium text-gray-700 mb-1">Fuerza Popular</p>
-                        <p class="text-xs text-gray-500 mb-3">Candidata a la Presidencia</p>
-                        <a href="perfil.html?id=1"
-                            class="mt-auto w-full bg-blue-800 text-white px-4 py-1.5 rounded-lg font-medium text-sm hover:bg-blue-900 transition-colors">Ver
-                            Perfil</a>
-                    </div>
-                </div>
-
-                <div class="candidate-card border border-gray-200 rounded-lg shadow-sm overflow-hidden flex flex-col h-full 
-                        transition-all duration-300 hover:shadow-lg hover:-translate-y-1" data-name="Hernando de Soto"
-                    data-party="Avanza País">
-                    <div class="relative">
-                        <img src="../img/candidatos/hernando.png" alt="Hernando de Soto"
-                            class="w-full h-auto aspect-[3/4] object-cover filter grayscale">
-                        <input type="checkbox" value="2"
-                            class=" candidate-checkbox absolute top-3 right-3 h-5 w-5 text-blue-600 bg-white bg-opacity-75 rounded border-gray-400 focus:ring-blue-500 cursor-pointer">
-                    </div>
-                    <div class="p-3 text-center flex-grow flex flex-col">
-                        <h5 class="text-base font-semibold text-light-text dark:text-dark-text mb-1">Hernando de Soto
-                        </h5>
-                        <p class="text-xs font-medium text-gray-700 mb-1">Avanza País</p>
-                        <p class="text-xs text-gray-500 mb-3">Candidato a la Presidencia</p>
-                        <a href="perfil.html?id=2"
-                            class="mt-auto w-full bg-blue-800 text-white px-4 py-1.5 rounded-lg font-medium text-sm hover:bg-blue-900 transition-colors">Ver
-                            Perfil</a>
-                    </div>
-                </div>
-
-                <div class="candidate-card border border-gray-200 rounded-lg shadow-sm overflow-hidden flex flex-col h-full 
-                        transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-                    data-name="Rafael López Aliaga" data-party="Renovación Popular">
-                    <div class="relative">
-                        <img src="../img/candidatos/rafael.png" alt="Rafael López Aliaga"
-                            class="w-full h-auto aspect-[3/4] object-cover filter grayscale">
-                        <input type="checkbox" value="3"
-                            class=" candidate-checkbox absolute top-3 right-3 h-5 w-5 text-blue-600 bg-white bg-opacity-75 rounded border-gray-400 focus:ring-blue-500 cursor-pointer">
-                    </div>
-                    <div class="p-3 text-center flex-grow flex flex-col">
-                        <h5 class="text-base font-semibold text-light-text dark:text-dark-text mb-1">Rafael López Aliaga
-                        </h5>
-                        <p class="text-xs font-medium text-gray-700 mb-1">Renovación Popular</p>
-                        <p class="text-xs text-gray-500 mb-3">Candidato a la Presidencia</p>
-                        <a href="perfil.html?id=3"
-                            class="mt-auto w-full bg-blue-800 text-white px-4 py-1.5 rounded-lg font-medium text-sm hover:bg-blue-900 transition-colors">Ver
-                            Perfil</a>
-                    </div>
-                </div>
-
-                <div class="candidate-card border border-gray-200 rounded-lg shadow-sm overflow-hidden flex flex-col h-full 
-                        transition-all duration-300 hover:shadow-lg hover:-translate-y-1" data-name="Antauro Humala"
-                    data-party="A.N.T.A.U.R.O">
-                    <div class="relative">
-                        <img src="../img/candidatos/antauro.png" alt="Antauro Humala"
-                            class="w-full h-auto aspect-[3/4] object-cover filter grayscale">
-                        <input type="checkbox" value="4"
-                            class="candidate-checkbox absolute top-3 right-3 h-5 w-5 text-blue-600 bg-white bg-opacity-75 rounded border-gray-400 focus:ring-blue-500 cursor-pointer">
-                    </div>
-                    <div class="p-3 text-center flex-grow flex flex-col">
-                        <h5 class="text-base font-semibold text-light-text dark:text-dark-text mb-1">Antauro Humala</h5>
-                        <p class="text-xs font-medium text-gray-700 mb-1">A.N.T.A.U.R.O</p>
-                        <p class="text-xs text-gray-500 mb-3">Candidato a la Presidencia</p>
-                        <a href="perfil.html?id=4"
-                            class="mt-auto w-full bg-blue-800 text-white px-4 py-1.5 rounded-lg font-medium text-sm hover:bg-blue-900 transition-colors">Ver
-                            Perfil</a>
-                    </div>
-                </div>
-
-            </div>
-
-            <div id="no-results" class="text-center text-gray-500 mt-10 hidden">
-                <p>No se encontraron candidatos que coincidan con tu búsqueda.</p>
-            </div>
-
-        </div>
     </main>
+    <!--modal emergente para el plan de gobierno xd-->
+    <div id="pdf-modal-container" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+
+        <div id="pdf-modal-overlay" class="fixed inset-0 bg-black bg-opacity-75"></div>
+
+        <div
+            class="relative bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-lg shadow-2xl w-full max-w-4xl h-5/6 flex flex-col">
+
+            <div class="flex justify-between items-center p-4 border-b border-gray-300 dark:border-gray-700">
+                <h3 class="text-lg font-semibold text-light-text dark:text-dark-text">Plan de Gobierno</h3>
+                <button id="pdf-modal-close-btn"
+                    class="text-light-text-secondary dark:text-dark-text-secondary hover:text-primary">
+                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="flex-1 p-4 overflow-hidden">
+                <embed id="pdf-embed" src="" type="application/pdf" class="w-full h-full">
+            </div>
+
+            <div class="flex justify-end p-4 border-t border-gray-300 dark:border-gray-700">
+                <a id="modal-download-btn" href="#" download
+                    class="px-5 py-2 rounded-lg text-center bg-primary text-white font-medium hover:bg-red-700">
+                    Descargar PDF
+                </a>
+            </div>
+        </div>
+    </div>
 
     <footer class="text-light-text-secondary dark:text-dark-text-secondary">
         <div class="bg-gray-200 dark:bg-gray-800 py-12">
@@ -286,12 +285,12 @@
             </div>
         </div>
     </footer>
-    
 
-    <script src="../js/cdtspresidenciales.js"></script>
+
     <script src="../js/script.js"></script>
-    
-    
+    <script src="../js/perfil.js"></script>
+    <script src="../js/data.js"></script>
+
 
 
 </body>

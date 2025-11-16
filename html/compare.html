@@ -47,7 +47,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/compare.css">
     <link rel="icon" href="../img/logo.png" type="image/png">
 </head>
 
@@ -139,8 +139,57 @@
     </header>
 
     <main class="pt-8 pb-16">
-        
-        
+        <div class="max-w-7xl mx-auto my-12 px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-light-text dark:text-dark-text mb-2">Comparar Candidatos</h2>
+            <p class="text-lg text-light-text-secondary dark:text-dark-text-secondary mb-6">
+                Compara las propuestas claves, formación y experiencia de tus candidatos.
+            </p>
+
+            <div class="border-b border-gray-300 dark:border-gray-700">
+                <nav class="flex flex-wrap -mb-px" aria-label="Tabs">
+                    <button data-tab-link data-target="#panel-propuestas" class="tab-link is-active">
+                        Propuestas Claves
+                    </button>
+                    <button data-tab-link data-target="#panel-formacion" class="tab-link">
+                        Formación Académica
+                    </button>
+                    <button data-tab-link data-target="#panel-experiencia" class="tab-link">
+                        Experiencia Profesional
+                    </button>
+                </nav>
+            </div>
+
+            <div class="mt-6">
+
+                <div data-tab-panel id="panel-propuestas">
+                    <div class="overflow-x-auto shadow-md rounded-lg border border-gray-200 dark:border-gray-700">
+                        <div id="container-propuestas" class="min-w-[700px]">
+                            <p class="p-8 text-center text-light-text-secondary dark:text-dark-text-secondary">
+                                Cargando...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div data-tab-panel id="panel-formacion" class="hidden">
+                    <div class="overflow-x-auto">
+                        <div id="container-formacion" class="min-w-[700px]">
+                            <p class="p-8 text-center text-light-text-secondary dark:text-dark-text-secondary">
+                                Cargando...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div data-tab-panel id="panel-experiencia" class="hidden">
+                    <div class="overflow-x-auto">
+                        <div id="container-experiencia" class="min-w-[700px]">
+                            <p class="p-8 text-center text-light-text-secondary dark:text-dark-text-secondary">
+                                Cargando...</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </main>
 
     <footer class="text-light-text-secondary dark:text-dark-text-secondary">
@@ -156,6 +205,8 @@
 
     <script src="../js/cdtspresidenciales.js"></script>
     <script src="../js/script.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="../js/compare.js"></script>
 </body>
 
 </html>
